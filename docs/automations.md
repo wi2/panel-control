@@ -9,8 +9,10 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automation
 Before enabling automations:
 
 1. Push this repository to GitHub or GitLab and connect it in Cursor.
-2. Configure `gitConfig` in each automation with the target repo and default branch.
+2. Configure `gitConfig` in each automation with the target repo (`wi2/panel-control`) and branch (`master`).
 3. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
+
+**Remote**: `git@github.com:wi2/panel-control.git`
 
 ---
 
@@ -25,7 +27,7 @@ Validates pull requests that touch opportunity or portfolio files.
 | **Trigger** | Git — pull request opened |
 | **Path scope** | Changes under `opportunities/` or `portfolio/` |
 | **Tools** | Comment on PRs |
-| **Repo checkout** | This repository, default branch |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
 
 ### Agent instructions
 
@@ -61,7 +63,7 @@ Creates a new opportunity file and runs Discovery from a raw idea.
 | **Description** | Convert incoming startup idea into OPP file with Discovery complete |
 | **Trigger** | Webhook (copy URL and auth after saving in Automations editor) |
 | **Tools** | None (agent commits via PR) |
-| **Repo checkout** | This repository, default branch |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
 
 ### Webhook payload (suggested JSON)
 
@@ -108,7 +110,7 @@ Weekly scheduled review of due MONITOR (and BUILD) portfolio entries.
 | **Description** | Re-evaluate overdue monitoring entries and sync portfolio |
 | **Trigger** | Cron — `0 9 * * 1` (every Monday at 09:00) |
 | **Tools** | None initially; open PR if files change |
-| **Repo checkout** | This repository, default branch |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
 
 ### Agent instructions
 
