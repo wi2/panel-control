@@ -81,6 +81,11 @@ decision: null
 global_score: null
 opportunity_quality_index: null
 scores: {}
+decision_override: false
+override_rationale: null
+override_expires: null
+pipeline_stage: null
+next_review_action: null
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
@@ -153,6 +158,22 @@ confidence_level: high | medium | low
 | `low` | Mostly inferred/synthetic/unknown; early-stage |
 
 Portfolio Manager must not BUILD when Scoring, Distribution, or Risk sections have `confidence_level: low` without documented override.
+
+## Decision Override
+
+Use when the strict score gate would produce a different decision than the documented rationale (e.g. MONITOR sprint before kill at score < 50).
+
+| Field | Required when | Meaning |
+|-------|---------------|---------|
+| `decision_override` | override active | `true` only with rationale and expiry |
+| `override_rationale` | `decision_override: true` | Why strict rules are bypassed |
+| `override_expires` | `decision_override: true` | ISO date; auto-kill review if gates not met |
+| `pipeline_stage` | optional | Last completed pipeline stage (agent-maintained) |
+| `next_review_action` | optional | `promote`, `continue`, `kill`, or `validate` |
+
+Without `decision_override: true`, never place `global_score < 50` in [portfolio/monitoring.md](portfolio/monitoring.md).
+
+See [AGENTS.md](AGENTS.md) and [prompts/score-calculator.md](prompts/score-calculator.md).
 
 ## Related
 

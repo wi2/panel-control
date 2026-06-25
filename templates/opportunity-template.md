@@ -6,6 +6,11 @@ decision: null
 global_score: null
 opportunity_quality_index: null
 scores: {}
+decision_override: false
+override_rationale: null
+override_expires: null
+pipeline_stage: null
+next_review_action: null
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""

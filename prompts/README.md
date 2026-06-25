@@ -22,6 +22,15 @@ Versioned AI prompts for each stage of the evaluation pipeline.
 | Architecture | [architecture.md](architecture.md) | v1 |
 | Success Contract | [success-contract.md](success-contract.md) | v1 |
 
+### Orchestration (automation / agent)
+
+| Stage | Index | Active Version |
+|-------|-------|----------------|
+| Pipeline Orchestrator | [pipeline-orchestrator.md](pipeline-orchestrator.md) | v1 |
+| Score Calculator | [score-calculator.md](score-calculator.md) | v1 |
+
+See [AGENTS.md](../AGENTS.md) for agent operating rules.
+
 ## Versioning
 
 - **Canonical content** lives in `{stage}-v{N}.md`.

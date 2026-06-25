@@ -51,6 +51,8 @@ Each stage is driven by a versioned prompt in [`prompts/`](prompts/). Outputs ar
 | **MONITOR** | `global_score` 50–74 | [`portfolio/monitoring.md`](portfolio/monitoring.md) |
 | **KILL** | `global_score < 50` | [`portfolio/archived.md`](portfolio/archived.md) |
 
+Micro SaaS wedge decisions (independent lens): [`portfolio/micro-saas.md`](portfolio/micro-saas.md). See [`playbooks/micro-saas-portfolio.md`](playbooks/micro-saas-portfolio.md).
+
 Scoring dimensions, weights, and OQI: [`playbooks/scoring-rules.md`](playbooks/scoring-rules.md), [`playbooks/opportunity-quality-index.md`](playbooks/opportunity-quality-index.md).
 
 ## Intelligence Framework
@@ -66,6 +68,7 @@ Scoring dimensions, weights, and OQI: [`playbooks/scoring-rules.md`](playbooks/s
 | Portfolio intelligence | `portfolio_fit_score` | [`playbooks/portfolio-intelligence.md`](playbooks/portfolio-intelligence.md) |
 | Scenario planning | Optimistic / realistic / pessimistic + probabilities | [`playbooks/scenario-planning.md`](playbooks/scenario-planning.md) |
 | Opportunity quality | `opportunity_quality_index` (0–100) | [`playbooks/opportunity-quality-index.md`](playbooks/opportunity-quality-index.md) |
+| Micro SaaS Portfolio | `msfi` (0–100), wedge hard-gates | [`playbooks/micro-saas-portfolio.md`](playbooks/micro-saas-portfolio.md) |
 
 Every section includes `confidence_level: high | medium | low`.
 
@@ -95,6 +98,7 @@ See [`opportunities/_example-opportunity.md`](opportunities/_example-opportunity
 
 ## Standards
 
+- Agent operating rules: [`AGENTS.md`](AGENTS.md)
 - Markdown conventions and naming: [`CONVENTIONS.md`](CONVENTIONS.md)
 - Contribution workflow: [`CONTRIBUTING.md`](CONTRIBUTING.md)
 - Glossary: [`docs/glossary.md`](docs/glossary.md)

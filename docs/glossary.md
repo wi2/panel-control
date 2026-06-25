@@ -76,6 +76,14 @@ Assesses ongoing operational burden. Produces `maintenance_score` (1 = low burde
 
 Portfolio decision when `global_score` is 50–74, or when score qualifies for BUILD but OQI < 70. Recorded in [`portfolio/monitoring.md`](../portfolio/monitoring.md).
 
+### Micro SaaS Portfolio
+
+Secondary evaluation lens for solo-operated SaaS wedges (≤100 h build, ≤10 h/mo maintenance, €1–10 k MRR horizon). Produces `msfi` and decisions BUILD_MICRO / MONITOR_MICRO / KILL_MICRO. Recorded in [`portfolio/micro-saas.md`](../portfolio/micro-saas.md). See [`playbooks/micro-saas-portfolio.md`](../playbooks/micro-saas-portfolio.md).
+
+### micro_saas_fit_index (MSFI)
+
+Wedge fit score (0–100) for the Micro SaaS operating model. Combines MRR path, automation, build feasibility, maintenance sustainability, and solo distribution. BUILD_MICRO requires MSFI ≥ 70 and all hard-gates PASS.
+
 ### MVP Definition
 
 Minimum viable product scope. BUILD-only section. Driven by [`prompts/mvp.md`](../prompts/mvp.md).
