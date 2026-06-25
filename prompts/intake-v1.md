@@ -19,7 +19,7 @@ Create a uniquely named opportunity document with Discovery complete and `status
 
 ## Inputs Required
 
-- Idea description (1–3 paragraphs from user, webhook payload, or chat)
+- Idea description (1–3 paragraphs from user, PR `## Intake` body, or chat)
 - Optional: title, owner, tags, research links
 - [templates/opportunity-template.md](../templates/opportunity-template.md)
 - [discovery-v1.md](discovery-v1.md)
@@ -58,8 +58,7 @@ Create a uniquely named opportunity document with Discovery complete and `status
 
 ### PR suggestion
 
-Create branch `intake/OPP-YYYYMMDD-slug` and open a pull request for review.
-Run [opportunity-qa-v1.md](opportunity-qa-v1.md) on the PR before merge.
+Create branch `intake/{slug}` and open a pull request. Add label `cp:intake` for Cursor Automation **CP — Intake** (see [docs/automations.md](../docs/automations.md)).
 ```
 
 ## Constraints

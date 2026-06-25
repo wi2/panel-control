@@ -25,7 +25,7 @@ Copy [`templates/portfolio-review-template.md`](../templates/portfolio-review-te
 
 ## Automated generation
 
-The [Portfolio Review Runner](../prompts/portfolio-review-runner.md) prompt (Cursor Automation **Control Plane — MONITOR Review**) processes due entries from [portfolio/monitoring.md](../portfolio/monitoring.md) and [portfolio/active.md](../portfolio/active.md), then writes or updates review artifacts here when conditions are met.
+The [Portfolio Review Runner](../prompts/portfolio-review-runner.md) prompt (Cursor Automation **CP — Review**) processes due entries from [portfolio/monitoring.md](../portfolio/monitoring.md) and [portfolio/active.md](../portfolio/active.md), then writes or updates review artifacts here when conditions are met.
 
 ## Related
 

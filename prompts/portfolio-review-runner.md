@@ -19,7 +19,7 @@ Run on a schedule (weekly cron) or on explicit request when portfolio entries ar
 3. Process due BUILD entries: Success Contract check.
 4. Optionally create `reviews/REVIEW-{YYYY}-Q{N}.md`.
 
-Used by Cursor Automation **Control Plane — MONITOR Review** (see [docs/automations.md](../docs/automations.md)).
+Used by Cursor Automation **CP — Review** via [automation-review-v1.md](automation-review-v1.md) (see [docs/automations.md](../docs/automations.md)).
 
 ## Related
 
