@@ -6,15 +6,19 @@ Terms used throughout the AI Startup Studio control plane.
 
 ### Architecture Proposal
 
-High-level system design for an opportunity: components, build-vs-buy choices, integration points, and technical risks. Documentation only—no application code.
+High-level system design for an opportunity: components, build-vs-buy choices, integration points, and technical risks. Documentation only—no application code. BUILD-only section; references Risk Analysis for business risks.
 
 ## B
 
 ### BUILD
 
-Portfolio decision for opportunities scoring **>= 70**. Indicates sufficient evidence and fit to allocate build resources. Recorded in [`portfolio/active.md`](../portfolio/active.md).
+Portfolio decision when `global_score >= 75` AND `opportunity_quality_index >= 70`. Indicates sufficient evidence and fit to allocate build resources. Recorded in [`portfolio/active.md`](../portfolio/active.md).
 
 ## C
+
+### confidence_level
+
+Section-level assessment of decision reliability: `high`, `medium`, or `low`. Required on every decision-path section. Portfolio Manager must not BUILD when Scoring, Distribution, or Risk are `low` without override.
 
 ### Control Plane
 
@@ -22,45 +26,69 @@ This repository. The central system for evaluating, documenting, and managing st
 
 ## D
 
+### Decision Path
+
+The evaluation sequence for all opportunities: Discovery → Validation → Scoring → Distribution Analysis → Unfair Advantage → Maintenance Evaluation → Risk Analysis → Portfolio Intelligence → Scenario Planning → Portfolio Management.
+
 ### Discovery
 
 First pipeline stage. Identifies the problem, market signals, competitors, and initial hypothesis. Driven by [`prompts/discovery.md`](../prompts/discovery.md).
+
+### Distribution Analysis
+
+Evaluates customer acquisition feasibility. Produces `distribution_score` and `distribution_notes`. See [`playbooks/distribution-analysis.md`](../playbooks/distribution-analysis.md).
 
 ## E
 
 ### Evidence
 
-Documented support for a claim: source, date, and metric. Required for scoring and decisions. Format:
+Documented support for a claim with required evidence type. See [`playbooks/evidence-classification.md`](../playbooks/evidence-classification.md).
 
-```markdown
-> **Evidence**: [source, date, metric]
-```
+Allowed types: `verified`, `estimated`, `inferred`, `synthetic`, `unknown`.
+
+### expected_learnings
+
+Structured learning outcomes from MONITOR and KILL decisions. Required for portfolio intelligence feedback loop.
 
 ### Evaluation Pipeline
 
-The sequential process: Discovery → Validation → Scoring → Product Vision → MVP Definition → Roadmap → Architecture → Success Contract → Portfolio Management.
+The full process including decision path and BUILD preparation stages. See [Decision Path](#decision-path).
+
+## G
+
+### global_score
+
+Weighted composite (0–100) from 10 scoring dimensions. Replaces legacy single `score`. See [`playbooks/scoring-rules.md`](../playbooks/scoring-rules.md).
 
 ## K
 
 ### KILL
 
-Portfolio decision for opportunities scoring **< 40**, or meeting automatic kill triggers. Terminates further investment. Recorded in [`portfolio/archived.md`](../portfolio/archived.md).
+Portfolio decision when `global_score < 50`, or when automatic kill triggers are met. Terminates further investment. Recorded in [`portfolio/archived.md`](../portfolio/archived.md).
 
 ## M
 
+### Maintenance Evaluation
+
+Assesses ongoing operational burden. Produces `maintenance_score` (1 = low burden, 10 = high burden). See [`playbooks/maintenance-evaluation.md`](../playbooks/maintenance-evaluation.md).
+
 ### MONITOR
 
-Portfolio decision for opportunities scoring **40–69**. Insufficient evidence to build; worth tracking with periodic re-evaluation. Recorded in [`portfolio/monitoring.md`](../portfolio/monitoring.md).
+Portfolio decision when `global_score` is 50–74, or when score qualifies for BUILD but OQI < 70. Recorded in [`portfolio/monitoring.md`](../portfolio/monitoring.md).
 
 ### MVP Definition
 
-Minimum viable product scope: what is in, what is out, success metrics, and the smallest testable slice. Driven by [`prompts/mvp.md`](../prompts/mvp.md).
+Minimum viable product scope. BUILD-only section. Driven by [`prompts/mvp.md`](../prompts/mvp.md).
 
 ## O
 
 ### Opportunity
 
-A single startup idea under evaluation. One markdown file in [`opportunities/`](../opportunities/) per opportunity, following [`templates/opportunity-template.md`](../templates/opportunity-template.md).
+A single startup idea under evaluation. One markdown file in [`opportunities/`](../opportunities/) per opportunity.
+
+### opportunity_quality_index (OQI)
+
+Decision reliability index (0–100) combining evidence quality, confidence levels, score reliability, and risk profile. BUILD requires OQI >= 70. See [`playbooks/opportunity-quality-index.md`](../playbooks/opportunity-quality-index.md).
 
 ## P
 
@@ -68,31 +96,49 @@ A single startup idea under evaluation. One markdown file in [`opportunities/`](
 
 The set of all evaluated opportunities, split by decision: active (BUILD), monitoring (MONITOR), archived (KILL).
 
+### Portfolio Intelligence
+
+Evaluates portfolio fit: diversification, overlap, synergies. Produces `portfolio_fit_score`. See [`playbooks/portfolio-intelligence.md`](../playbooks/portfolio-intelligence.md).
+
 ### Prompt Version
 
-A numbered revision of a pipeline-stage prompt (e.g. `discovery-v1`, `discovery-v2`). Opportunities record which versions were used for reproducibility.
+A numbered revision of a pipeline-stage prompt (e.g. `discovery-v1`, `scoring-v2`). Opportunities record which versions were used for reproducibility.
 
 ## R
 
+### Risk Analysis
+
+Structured risk register across market, technical, regulatory, competition, and execution risks. Produces `risk_exposure_score`. See [`playbooks/risk-analysis.md`](../playbooks/risk-analysis.md).
+
 ### Roadmap
 
-Phased plan for delivering the opportunity: milestones, dependencies, and resource assumptions. Driven by [`prompts/roadmap.md`](../prompts/roadmap.md).
+Phased plan for delivering the opportunity. BUILD-only section. Driven by [`prompts/roadmap.md`](../prompts/roadmap.md).
 
 ## S
 
+### Scenario Planning
+
+Models optimistic, realistic, and pessimistic outcomes with decision probabilities. See [`playbooks/scenario-planning.md`](../playbooks/scenario-planning.md).
+
 ### Scoring
 
-Quantitative evaluation (0–100) across weighted dimensions. Driven by [`prompts/scoring.md`](../prompts/scoring.md) and [`playbooks/scoring-rules.md`](../playbooks/scoring-rules.md).
+Multi-dimensional evaluation across 10 weighted sub-scores producing `global_score`. Driven by [`prompts/scoring.md`](../prompts/scoring.md) v2 and [`playbooks/scoring-rules.md`](../playbooks/scoring-rules.md).
 
-| Decision | Score |
-|----------|-------|
-| BUILD | >= 70 |
-| MONITOR | 40–69 |
-| KILL | < 40 |
+| Decision | Criteria |
+|----------|----------|
+| BUILD | global_score >= 75 AND OQI >= 70 |
+| MONITOR | global_score 50–74 |
+| KILL | global_score < 50 |
 
 ### Success Contract
 
-Measurable commitments, review dates, and exit triggers for a BUILD opportunity. Defines what success looks like and when to re-evaluate or kill. Driven by [`prompts/success-contract.md`](../prompts/success-contract.md).
+Measurable commitments, review dates, and exit triggers for a BUILD opportunity. BUILD-only section. Driven by [`prompts/success-contract.md`](../prompts/success-contract.md).
+
+## U
+
+### Unfair Advantage Analysis
+
+Evaluates structural moats: audience, expertise, data, partnerships, technical/SEO/community moats. Produces `unfair_advantages` and `moat_score`. See [`playbooks/unfair-advantage-analysis.md`](../playbooks/unfair-advantage-analysis.md).
 
 ## V
 
@@ -109,3 +155,4 @@ A time-boxed test designed to produce evidence for or against a hypothesis (e.g.
 - [Philosophy](philosophy.md)
 - [Principles](principles.md)
 - [Conventions](../CONVENTIONS.md)
+- [Migration v1 to v2](../playbooks/migration-v1-to-v2.md)

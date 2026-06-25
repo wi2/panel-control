@@ -39,7 +39,9 @@ Produce evidence for or against the initial hypothesis. Define clear kill/contin
 ### Results
 [summary with evidence blocks]
 
-> **Evidence**: [source, date, metric]
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| | | verified / estimated / inferred / synthetic / unknown | | |
 
 ### Kill / Continue Signals
 - **Continue if**: ...
@@ -48,9 +50,19 @@ Produce evidence for or against the initial hypothesis. Define clear kill/contin
 
 ## Evidence Requirements
 
-- Every experiment result must include source, date, and metric
+- Every experiment result must include source, date, metric, and evidence type
+- Allowed types: `verified`, `estimated`, `inferred`, `synthetic`, `unknown`
 - Distinguish qualitative signal (interviews) from quantitative (signups, revenue)
 - Note sample size and selection bias where relevant
+- See [evidence-classification.md](../playbooks/evidence-classification.md)
+
+### Confidence
+
+End output with:
+
+```yaml
+confidence_level: high / medium / low
+```
 
 ## Anti-Patterns
 
@@ -63,4 +75,4 @@ Produce evidence for or against the initial hypothesis. Define clear kill/contin
 
 - [Kill rules](../playbooks/kill-rules.md)
 - Previous: [discovery-v1.md](discovery-v1.md)
-- Next: [scoring-v1.md](scoring-v1.md)
+- Next: [scoring-v2.md](scoring-v2.md)

@@ -1,10 +1,10 @@
 ---
 version: 1
 stage: scoring
-status: active
+status: deprecated
 created: 2026-06-25
-supersedes: null
-changelog: "Initial release"
+superseded_by: v2
+changelog: "Initial release — superseded by v2 multi-dimensional scoring"
 ---
 
 # Scoring Prompt v1

@@ -12,9 +12,9 @@
 
 ## Usage
 
-Requires completed **Scoring** section (score >= 40 recommended). Output goes into the **Product Vision** section.
+**BUILD-only.** Requires BUILD decision in **Final Decision** and completed decision path. Output goes into **Product Vision** under BUILD Preparation.
 
 ## Related
 
-- Previous: [scoring.md](scoring.md)
+- Previous: [portfolio-manager.md](portfolio-manager.md)
 - Next stage: [mvp.md](mvp.md)

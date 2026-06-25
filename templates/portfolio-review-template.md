@@ -14,9 +14,9 @@ Brief overview of portfolio health and key changes this quarter.
 
 ## Active (BUILD) Review
 
-| ID | Title | Score | Owner | Success Contract Status | Action |
-|----|-------|-------|-------|-------------------------|--------|
-| | | | | on track / at risk / failing | continue / demote / kill |
+| ID | Title | Global Score | OQI | Owner | Success Contract Status | Action |
+|----|-------|--------------|-----|-------|-------------------------|--------|
+| | | | | | on track / at risk / failing | continue / demote / kill |
 
 ### Active Changes
 
@@ -26,9 +26,9 @@ Brief overview of portfolio health and key changes this quarter.
 
 ## Monitoring (MONITOR) Review
 
-| ID | Title | Score | Owner | Last Review | Re-score | Action |
-|----|-------|-------|-------|-------------|----------|--------|
-| | | | | YYYY-MM-DD | XX | promote / continue / kill |
+| ID | Title | Global Score | OQI | Owner | Last Review | Re-score | Scenario (realistic) | Action |
+|----|-------|--------------|-----|-------|-------------|----------|----------------------|--------|
+| | | | | | YYYY-MM-DD | XX | build / monitor / kill | promote / continue / kill |
 
 ### Monitoring Changes
 
@@ -38,9 +38,20 @@ Brief overview of portfolio health and key changes this quarter.
 
 ## Archived This Quarter
 
-| ID | Title | Kill Reason | Date | Key Learning |
-|----|-------|-------------|------|--------------|
-| | | | | |
+| ID | Title | Global Score | OQI | Kill Reason | Date | Key Learning |
+|----|-------|--------------|-----|-------------|------|--------------|
+| | | | | | | |
+
+## Learnings Aggregation
+
+Cross-opportunity learnings from `expected_learnings` and archived entries:
+
+| Topic | Opportunities | Method | Portfolio implication |
+|-------|---------------|--------|----------------------|
+| pricing_sensitivity | | | |
+| acquisition_channel_efficiency | | | |
+| customer_willingness_to_pay | | | |
+| onboarding_friction | | | |
 
 ## Capacity Assessment
 
@@ -51,9 +62,9 @@ Brief overview of portfolio health and key changes this quarter.
 
 ## Resource Allocation
 
-| Opportunity | Owner | Budget / Allocation | Notes |
-|-------------|-------|---------------------|-------|
-| | | | |
+| Opportunity | Owner | Budget / Allocation | Scenario probabilities | Notes |
+|-------------|-------|---------------------|------------------------|-------|
+| | | | build X% / monitor Y% / kill Z% | |
 
 ## Kill Recommendations
 
@@ -63,9 +74,9 @@ Opportunities recommended for kill with rationale:
 
 ## New Opportunities Evaluated
 
-| ID | Title | Score | Decision |
-|----|-------|-------|----------|
-| | | | |
+| ID | Title | Global Score | OQI | Decision |
+|----|-------|--------------|-----|----------|
+| | | | | |
 
 ## Action Items
 

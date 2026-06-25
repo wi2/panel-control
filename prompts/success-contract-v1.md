@@ -19,9 +19,11 @@ Create a contract that defines what success looks like, when to review, and when
 
 ## Inputs Required
 
+- BUILD decision recorded in **Final Decision**
 - Completed **MVP Definition** (success metrics)
 - Completed **Roadmap** (milestones and timeline)
-- **Scoring** decision mapping (BUILD vs MONITOR affects review cadence)
+
+**BUILD-only stage.** Review cadence is every 30 days.
 
 ## Tasks
 
@@ -38,7 +40,7 @@ Create a contract that defines what success looks like, when to review, and when
 
 ### Review Schedule
 - First review: YYYY-MM-DD
-- Cadence: every 30 days (BUILD) / 90 days (MONITOR)
+- Cadence: every 30 days (BUILD)
 
 ### Exit Triggers
 - Trigger 1: ...
@@ -54,7 +56,7 @@ Create a contract that defines what success looks like, when to review, and when
 ## Anti-Patterns
 
 - Do not use vague commitments ("grow users")
-- Do not set review dates beyond 90 days for MONITOR
+- Do not set review dates beyond 30 days for BUILD
 - Do not omit exit triggers ("we'll evaluate later")
 - Do not commit to metrics not measured in MVP
 
@@ -63,4 +65,4 @@ Create a contract that defines what success looks like, when to review, and when
 - [Kill rules](../playbooks/kill-rules.md)
 - [Portfolio rules](../playbooks/portfolio-rules.md)
 - Previous: [architecture-v1.md](architecture-v1.md)
-- Next: [portfolio-manager-v1.md](portfolio-manager-v1.md)
+- End of BUILD preparation path

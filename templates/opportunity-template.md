@@ -3,7 +3,9 @@ id: OPP-YYYYMMDD-slug
 title: ""
 status: draft
 decision: null
-score: null
+global_score: null
+opportunity_quality_index: null
+scores: {}
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
@@ -11,13 +13,19 @@ tags: []
 prompt_versions:
   discovery: v1
   validation: v1
-  scoring: v1
+  scoring: v2
+  distribution_analysis: v1
+  unfair_advantage: v1
+  maintenance_evaluation: v1
+  risk_analysis: v1
+  portfolio_intelligence: v1
+  scenario_planning: v1
+  portfolio_manager: v2
   vision: v1
   mvp: v1
   roadmap: v1
   architecture: v1
   success_contract: v1
-  portfolio_manager: v1
 ---
 
 # {Title}
@@ -32,9 +40,9 @@ Describe the problem in one paragraph. Who has it? How painful is it?
 
 ### Market Signal
 
-What evidence suggests this problem matters now?
-
-> **Evidence**: [source, date, metric]
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| | | verified / estimated / inferred / synthetic / unknown | | |
 
 ### Competitors and Alternatives
 
@@ -51,6 +59,8 @@ We believe [target user] will [behavior] because [reason].
 - [ ] Question 1
 - [ ] Question 2
 
+**confidence_level**: high / medium / low
+
 ---
 
 ## Validation
@@ -65,14 +75,16 @@ We believe [target user] will [behavior] because [reason].
 
 ### Results
 
-Summarize experiment outcomes with evidence.
-
-> **Evidence**: [source, date, metric]
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| | | | | |
 
 ### Kill / Continue Signals
 
 - **Continue if**: ...
 - **Kill if**: ...
+
+**confidence_level**: high / medium / low
 
 ---
 
@@ -80,140 +92,154 @@ Summarize experiment outcomes with evidence.
 
 <!-- Paste output from prompts/scoring.md. See playbooks/scoring-rules.md -->
 
-| Dimension | Raw (0–10) | Weight | Weighted | Rationale |
-|-----------|------------|--------|----------|-----------|
-| Problem severity | | 20% | | |
-| Market size and timing | | 15% | | |
-| Validation strength | | 25% | | |
-| Competitive moat | | 15% | | |
-| Execution feasibility | | 15% | | |
-| Strategic fit | | 10% | | |
-| **Total** | | **100%** | **XX** | |
+| Dimension | Raw (0–10) | Weight | Weighted | Evidence | Rationale |
+|-----------|------------|--------|----------|----------|-----------|
+| pain_level | | 15% | | | |
+| urgency | | 10% | | | |
+| willingness_to_pay | | 15% | | | |
+| competition | | 8% | | | |
+| distribution_advantage | | 12% | | | |
+| technical_complexity | | 8% | | | |
+| maintenance_complexity | | 7% | | | |
+| founder_fit | | 10% | | | |
+| market_timing | | 8% | | | |
+| defensibility | | 7% | | | |
+| **Total** | | **100%** | **XX** | | |
 
-**Final score**: XX
+**global_score**: XX
 
-**Decision mapping**: BUILD (>= 70) | MONITOR (40–69) | KILL (< 40)
-
----
-
-## Product Vision
-
-<!-- Paste output from prompts/vision.md -->
-
-### Target User
-
-Who is the primary user? Be specific (role, company size, context).
-
-### Value Proposition
-
-One sentence: We help [user] do [outcome] by [approach].
-
-### Differentiation
-
-What makes this different from alternatives?
-
-### North Star Metric
-
-The single metric that best captures value delivered.
+**confidence_level**: high / medium / low
 
 ---
 
-## MVP Definition
+## Distribution Analysis
 
-<!-- Paste output from prompts/mvp.md -->
+<!-- Paste output from prompts/distribution-analysis.md -->
 
-### Scope In
+| Factor | Score / Value | Evidence | Rationale |
+|--------|---------------|----------|-----------|
+| Acquisition difficulty | 0–10 | | |
+| Channel accessibility | 0–10 | | |
+| Estimated CAC | | | |
+| Competition intensity | 0–10 | | |
+| Founder audience advantage | 0–10 | | |
 
-- Item 1
-- Item 2
+**distribution_score**: XX
 
-### Scope Out
+**distribution_notes**:
 
-- Item 1
-- Item 2
-
-### Success Metrics
-
-| Metric | Target | Measurement method |
-|--------|--------|--------------------|
-| | | |
-
-### Smallest Testable Slice
-
-The minimum build or experiment to validate core value.
+**confidence_level**: high / medium / low
 
 ---
 
-## Roadmap
+## Unfair Advantage Analysis
 
-<!-- Paste output from prompts/roadmap.md -->
+<!-- Paste output from prompts/unfair-advantage.md -->
 
-### Phase 1: {Name} (Weeks X–Y)
+| Advantage Type | Strength | Evidence | Notes |
+|----------------|----------|----------|-------|
+| existing_audience | high/medium/low/none | | |
+| existing_expertise | | | |
+| proprietary_data | | | |
+| exclusive_partnerships | | | |
+| technical_moat | | | |
+| seo_moat | | | |
+| community_moat | | | |
 
-- Milestone 1
-- Milestone 2
+**moat_score**: XX
 
-**Dependencies**: ...
-
-### Phase 2: {Name} (Weeks X–Y)
-
-- Milestone 1
-
-### Resource Assumptions
-
-| Role | Allocation | Duration |
-|------|------------|----------|
-| | | |
+**confidence_level**: high / medium / low
 
 ---
 
-## Architecture Proposal
+## Maintenance Evaluation
 
-<!-- Paste output from prompts/architecture.md. Documentation only — no code -->
+<!-- Paste output from prompts/maintenance-evaluation.md -->
 
-### System Overview
+| Factor | Score (1–10) | Evidence | Rationale |
+|--------|--------------|----------|-----------|
+| customer_support | | | |
+| ai_costs | | | |
+| integrations | | | |
+| external_dependencies | | | |
+| regulations | | | |
+| manual_operations | | | |
 
-High-level description of components and data flow.
+**maintenance_score**: XX
 
-### Build vs Buy
-
-| Component | Decision | Rationale |
-|-----------|----------|-----------|
-| | build / buy | |
-
-### Integration Points
-
-External systems, APIs, or data sources required.
-
-### Technical Risks
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| | | | |
+**confidence_level**: high / medium / low
 
 ---
 
-## Success Contract
+## Risk Analysis
 
-<!-- Paste output from prompts/success-contract.md -->
+<!-- Paste output from prompts/risk-analysis.md -->
 
-### Commitments
+| Risk | Probability | Impact | Mitigation | Evidence |
+|------|-------------|--------|------------|----------|
+| market_risk | low/medium/high | | | |
+| technical_risk | | | | |
+| regulatory_risk | | | | |
+| competition_risk | | | | |
+| execution_risk | | | | |
 
-| Commitment | Metric | Target | Review Date |
-|------------|--------|--------|-------------|
-| | | | |
+**risk_exposure_score**: XX
 
-### Review Schedule
+**confidence_level**: high / medium / low
 
-- First review: YYYY-MM-DD
-- Cadence: every 30 days (BUILD) / 90 days (MONITOR)
+---
 
-### Exit Triggers
+## Portfolio Intelligence
 
-Conditions that trigger re-evaluation or kill:
+<!-- Paste output from prompts/portfolio-intelligence.md -->
 
-- Trigger 1: ...
-- Trigger 2: ...
+| Factor | Score (0–10) | Evidence | Rationale |
+|--------|--------------|----------|-----------|
+| diversification_impact | | | |
+| overlap_with_existing | | | |
+| shared_infrastructure | | | |
+| cross_selling | | | |
+| operational_synergies | | | |
+
+**portfolio_fit_score**: XX
+
+**portfolio_fit_notes**:
+
+**confidence_level**: high / medium / low
+
+---
+
+## Scenario Planning
+
+<!-- Paste output from prompts/scenario-planning.md -->
+
+### Optimistic
+
+- **Assumptions**:
+- **global_score**: XX
+- **Decision**: build / monitor / kill
+
+### Realistic
+
+- **Assumptions**:
+- **global_score**: XX
+- **Decision**: build / monitor / kill
+
+### Pessimistic
+
+- **Assumptions**:
+- **global_score**: XX
+- **Decision**: build / monitor / kill
+
+### Probabilities
+
+| Outcome | Probability |
+|---------|-------------|
+| build | XX% |
+| monitor | XX% |
+| kill | XX% |
+
+**confidence_level**: high / medium / low
 
 ---
 
@@ -223,10 +249,25 @@ Conditions that trigger re-evaluation or kill:
 
 | Field | Value |
 |-------|-------|
-| **Decision** | build / monitor / kill |
-| **Score** | XX |
+| **Primary Decision** | build / monitor / kill |
+| **global_score** | XX |
+| **opportunity_quality_index** | XX |
 | **Date** | YYYY-MM-DD |
 | **Rationale** | |
+
+### OQI Breakdown
+
+| Component | Score |
+|-----------|-------|
+| evidence_quality | XX |
+| confidence_aggregate | XX |
+| score_reliability | XX |
+| risk_adjustment | XX |
+| **OQI** | **XX** |
+
+### Expected Learnings
+
+- [ ] Topic: ... — Method: ... — Applies to: monitor / kill
 
 ### Next Actions
 
@@ -240,3 +281,124 @@ Record any disagreement and reasoning.
 ### Portfolio Update
 
 - [ ] Added to [portfolio/active.md](../portfolio/active.md) / [monitoring.md](../portfolio/monitoring.md) / [archived.md](../portfolio/archived.md)
+
+---
+
+## BUILD Preparation
+
+<!-- Complete only if Primary Decision is BUILD -->
+
+### Product Vision
+
+<!-- Paste output from prompts/vision.md -->
+
+#### Target User
+
+Who is the primary user? Be specific (role, company size, context).
+
+#### Value Proposition
+
+One sentence: We help [user] do [outcome] by [approach].
+
+#### Differentiation
+
+What makes this different from alternatives?
+
+#### North Star Metric
+
+The single metric that best captures value delivered.
+
+---
+
+### MVP Definition
+
+<!-- Paste output from prompts/mvp.md -->
+
+#### Scope In
+
+- Item 1
+
+#### Scope Out
+
+- Item 1
+
+#### Success Metrics
+
+| Metric | Target | Measurement method |
+|--------|--------|--------------------|
+| | | |
+
+#### Smallest Testable Slice
+
+The minimum build or experiment to validate core value.
+
+---
+
+### Roadmap
+
+<!-- Paste output from prompts/roadmap.md -->
+
+#### Phase 1: {Name} (Weeks X–Y)
+
+- Milestone 1
+
+**Dependencies**: ...
+
+#### Resource Assumptions
+
+| Role | Allocation | Duration |
+|------|------------|----------|
+| | | |
+
+---
+
+### Architecture Proposal
+
+<!-- Paste output from prompts/architecture.md. Documentation only — no code -->
+
+Reference **Risk Analysis** for business and technical risks.
+
+#### System Overview
+
+High-level description of components and data flow.
+
+#### Build vs Buy
+
+| Component | Decision | Rationale |
+|-----------|----------|-----------|
+| | build / buy | |
+
+#### Integration Points
+
+External systems, APIs, or data sources required.
+
+#### Technical Risks (summary)
+
+See [Risk Analysis](#risk-analysis) for full register. Key technical items:
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| | | | |
+
+---
+
+### Success Contract
+
+<!-- Paste output from prompts/success-contract.md -->
+
+#### Commitments
+
+| Commitment | Metric | Target | Review Date |
+|------------|--------|--------|-------------|
+| | | | |
+
+#### Review Schedule
+
+- First review: YYYY-MM-DD
+- Cadence: every 30 days
+
+#### Exit Triggers
+
+Conditions that trigger re-evaluation or kill:
+
+- Trigger 1: ...

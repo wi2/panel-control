@@ -6,20 +6,20 @@ When and how to terminate an opportunity. Fast termination of weak ideas is a fe
 
 - Kill early when evidence is negative or absent
 - Do not defer kills indefinitely under MONITOR
-- Archived opportunities are learning assets
+- Archived opportunities are learning assets — every kill must produce `expected_learnings`
 - Sunk cost is never a reason to continue
 
 See [philosophy](../docs/philosophy.md).
 
 ## Score-Based Kill
 
-Automatic kill when final score is **< 40**.
+Automatic kill when `global_score` is **< 50**.
 
-| Decision | Score |
-|----------|-------|
-| KILL | < 40 |
+| Decision | Criteria |
+|----------|----------|
+| KILL | `global_score < 50` |
 
-Record in [`portfolio/archived.md`](../portfolio/archived.md) with kill reason: `Score below threshold`.
+Record in [`portfolio/archived.md`](../portfolio/archived.md) with kill reason: `score-below-threshold`.
 
 ## Automatic Kill Triggers
 
@@ -57,16 +57,33 @@ Kill regardless of score when any trigger is met:
 ## Kill Process
 
 1. Document kill reason in opportunity **Final Decision** section
-2. Update frontmatter: `decision: kill`, `status: decided`, `updated`
-3. Move row from active or monitoring to [`portfolio/archived.md`](../portfolio/archived.md)
-4. Record kill reason in the **Kill reason** column
-5. Capture learnings (what was tested, what was learned, what would change next time)
+2. Record `expected_learnings` — required for all kills and recommended for MONITOR
+3. Update frontmatter: `decision: kill`, `status: decided`, `updated`, `global_score`, `opportunity_quality_index`
+4. Move row from active or monitoring to [`portfolio/archived.md`](../portfolio/archived.md)
+5. Record kill reason in the **Kill reason** column
+6. Capture learnings in portfolio review **Key Learning** column
+
+## Expected Learnings (Required)
+
+Every KILL and MONITOR decision must include:
+
+```yaml
+expected_learnings:
+  - topic: pricing_sensitivity
+    method: "A/B price test in validation re-run"
+    applies_to: [monitor, kill]
+  - topic: acquisition_channel_efficiency
+    method: "Test outbound vs content channel with $500 budget"
+    applies_to: [monitor]
+```
+
+Even failed projects must improve portfolio intelligence. Learnings feed quarterly reviews and playbook calibration.
 
 ## MONITOR-Specific Rules
 
 MONITOR opportunities must be re-evaluated every **90 days**.
 
-After **2 review cycles** (6 months total) without score improvement to >= 70:
+After **2 review cycles** (6 months total) without `global_score >= 75` AND `OQI >= 70`:
 
 - Automatic kill unless documented exception with new validation plan
 
@@ -80,7 +97,8 @@ Use consistent labels in portfolio archived entries:
 
 | Reason | When |
 |--------|------|
-| `score-below-threshold` | Score < 40 |
+| `score-below-threshold` | global_score < 50 |
+| `oqi-below-threshold` | OQI < 70 blocking BUILD; reclassified to kill on timeout |
 | `no-customer-signal` | Validation trigger |
 | `negative-validation` | Consistent negative interviews |
 | `market-change` | Incumbent, regulation, contraction |
@@ -93,5 +111,6 @@ Use consistent labels in portfolio archived entries:
 ## Related
 
 - [Scoring rules](scoring-rules.md)
+- [Opportunity quality index](opportunity-quality-index.md)
 - [Portfolio rules](portfolio-rules.md)
 - [Evaluation process](evaluation-process.md)

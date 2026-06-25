@@ -19,8 +19,11 @@ Articulate who the product serves, what value it delivers, how it differs from a
 
 ## Inputs Required
 
+- BUILD decision recorded in **Final Decision**
 - Completed **Discovery**, **Validation**, and **Scoring** sections
-- Score and decision mapping (proceed if score >= 40)
+- All intelligence analyses for context
+
+**BUILD-only stage.** Skip for MONITOR and KILL decisions.
 
 ## Tasks
 
@@ -56,9 +59,9 @@ We help [user] do [outcome] by [approach].
 - Do not define vague users ("businesses", "developers")
 - Do not list features instead of value proposition
 - Do not ignore validation failures when crafting vision
-- Do not skip this stage for KILL-scored opportunities unless documenting for archive
+- Do not run this stage for MONITOR or KILL decisions
 
 ## Related
 
-- Previous: [scoring-v1.md](scoring-v1.md)
+- Previous: [portfolio-manager-v2.md](portfolio-manager-v2.md)
 - Next: [mvp-v1.md](mvp-v1.md)

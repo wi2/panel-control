@@ -1,6 +1,6 @@
 # Archived Portfolio (KILL)
 
-Opportunities with score **< 40** or meeting automatic kill triggers. No further investment.
+Opportunities with `global_score < 50` or meeting automatic kill triggers. No further investment.
 
 ## Instructions
 
@@ -8,17 +8,17 @@ When an opportunity is killed:
 
 1. Add a row to this table with kill reason.
 2. Remove from [active.md](active.md) or [monitoring.md](monitoring.md).
-3. Record learnings in the opportunity **Final Decision** section.
+3. Record `expected_learnings` in the opportunity **Final Decision** section.
 
 Kill reason vocabulary (see [kill rules](../playbooks/kill-rules.md)):
 
-`score-below-threshold`, `no-customer-signal`, `negative-validation`, `market-change`, `execution-infeasible`, `portfolio-capacity`, `success-contract-failure`, `monitor-timeout`, `manual`
+`score-below-threshold`, `oqi-below-threshold`, `no-customer-signal`, `negative-validation`, `market-change`, `execution-infeasible`, `portfolio-capacity`, `success-contract-failure`, `monitor-timeout`, `manual`
 
 ## Entries
 
-| ID | Title | Score | Owner | Decision Date | Kill Reason | Link |
-|----|-------|-------|-------|---------------|-------------|------|
-| _No archived opportunities yet_ | | | | | | |
+| ID | Title | Global Score | OQI | Owner | Decision Date | Kill Reason | Link |
+|----|-------|--------------|-----|-------|---------------|-------------|------|
+| _No archived opportunities yet_ | | | | | | | |
 
 ## Related
 

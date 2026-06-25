@@ -12,23 +12,15 @@ Prompts are versioned artifacts, not living documents. Material changes create a
 
 ## Decision Thresholds
 
-Scores map to decisions by fixed thresholds:
+Decisions map to criteria by fixed thresholds:
 
-| Decision | Score |
-|----------|-------|
-| BUILD | >= 70 |
-| MONITOR | 40–69 |
-| KILL | < 40 |
+| Decision | Criteria |
+|----------|----------|
+| BUILD | `global_score >= 75` AND `opportunity_quality_index >= 70` |
+| MONITOR | `global_score` 50–74, OR score qualifies but OQI < 70 |
+| KILL | `global_score < 50` |
 
 Thresholds are applied consistently. Override requires documented rationale in the Final Decision section.
-
-## Time-Boxing
-
-- **Discovery**: 1–2 weeks maximum before validation begins
-- **Validation experiments**: 2–4 weeks per experiment cycle
-- **Pipeline completion**: 4–8 weeks from draft to decision for most opportunities
-- **Monitoring review**: every 90 days for MONITOR opportunities
-- **Active review**: every 30 days for BUILD opportunities
 
 ## Evidence Quality
 
@@ -41,25 +33,39 @@ Rank evidence from strongest to weakest:
 5. Expert or practitioner opinion (single source)
 6. Unverified hypothesis
 
-Scoring weights reflect this hierarchy (see [scoring rules](../playbooks/scoring-rules.md)).
+Map to evidence types per [evidence-classification.md](../playbooks/evidence-classification.md):
+
+| Tiers 1–4 | `verified` or `estimated` |
+| Tier 5 | `inferred` |
+| Tier 6 | `unknown` or `synthetic` |
+
+Every claim influencing scoring or decisions must include an evidence type. OQI penalizes decisions built on weak evidence.
+
+## Confidence Levels
+
+Every decision-path section must declare `confidence_level`. Portfolio Manager must not BUILD when critical sections (Scoring, Distribution, Risk) are `low` without documented override.
 
 ## Separation of Stages
 
-Each pipeline stage has a distinct purpose. Do not skip stages or merge outputs prematurely:
+Each pipeline stage has a distinct purpose:
 
 - Discovery identifies *what might be worth validating*
 - Validation tests *whether the hypothesis holds*
-- Scoring quantifies *how strong the opportunity is*
-- Vision through Success Contract define *what to build if we build*
+- Scoring and intelligence analyses quantify *how strong and reliable the opportunity is*
+- Scenario Planning models *decision outcomes under uncertainty*
+- Portfolio Management decides *build, monitor, or kill*
+- Vision through Success Contract define *what to build if we build* (BUILD-only)
 
 ## Portfolio Discipline
 
 - Capacity limits apply (see [portfolio rules](../playbooks/portfolio-rules.md))
-- New BUILD decisions require available capacity
+- BUILD requires dual-gate: global_score AND OQI
 - MONITOR opportunities that fail re-validation are killed, not indefinitely deferred
+- Every KILL and MONITOR must record `expected_learnings`
 
 ## Related
 
 - [Philosophy](philosophy.md)
 - [Evaluation process](../playbooks/evaluation-process.md)
+- [Opportunity quality index](../playbooks/opportunity-quality-index.md)
 - [Conventions](../CONVENTIONS.md)

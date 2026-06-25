@@ -3,7 +3,8 @@ id: OPP-20260615-ai-invoice-parser
 title: "AI Invoice Parser for SMB Accountants"
 status: decided
 decision: monitor
-score: 55
+global_score: 59
+opportunity_quality_index: 64
 created: 2026-06-15
 updated: 2026-06-25
 owner: "studio-team"
@@ -11,13 +12,14 @@ tags: [fintech, b2b, ai]
 prompt_versions:
   discovery: v1
   validation: v1
-  scoring: v1
-  vision: v1
-  mvp: v1
-  roadmap: v1
-  architecture: v1
-  success_contract: v1
-  portfolio_manager: v1
+  scoring: v2
+  distribution_analysis: v1
+  unfair_advantage: v1
+  maintenance_evaluation: v1
+  risk_analysis: v1
+  portfolio_intelligence: v1
+  scenario_planning: v1
+  portfolio_manager: v2
 ---
 
 # AI Invoice Parser for SMB Accountants
@@ -32,10 +34,10 @@ Small and mid-size accounting firms spend 4–8 hours per week manually entering
 
 ### Market Signal
 
-- 750K SMB accounting firms in the US (IBISWorld, 2025)
-- 62% report "manual data entry" as top operational pain in AICPA small-firm survey (2025)
-
-> **Evidence**: AICPA Small Firm Technology Survey, 2025-03, 62% cite manual data entry as top-3 pain
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| market_size | 750K SMB accounting firms in US | verified | IBISWorld | 2025 |
+| pain_prevalence | 62% cite manual data entry as top-3 pain | verified | AICPA Small Firm Technology Survey | 2026-03 |
 
 ### Competitors and Alternatives
 
@@ -56,6 +58,8 @@ We believe SMB accountants (5–20 staff) will pay $50–100/month for an AI-pow
 - [x] What accuracy threshold triggers adoption?
 - [ ] Which accounting platforms are must-have integrations?
 
+**confidence_level**: high
+
 ---
 
 ## Validation
@@ -70,187 +74,162 @@ We believe SMB accountants (5–20 staff) will pay $50–100/month for an AI-pow
 
 ### Results
 
-**Experiment 1**: 7/8 confirmed pain. 5/8 expressed WTP at $50+/mo. 3/8 already use Dext and are dissatisfied with price.
-
-> **Evidence**: Interview notes, 2026-06-01 to 2026-06-10, 7/8 pain confirmation
-
-**Experiment 2**: Achieved 87% field accuracy (below 90% target). Time savings averaged 42% (below 50% target). Firms cited "needs QuickBooks integration" as blocker.
-
-> **Evidence**: Concierge MVP log, 2026-06-12, 87% accuracy on 50 invoices
-
-**Experiment 3**: 34 email signups in 2 weeks (below 50 target). CPC was $4.20, suggesting moderate interest but not strong pull.
-
-> **Evidence**: Landing page analytics, 2026-06-10 to 2026-06-24, 34 signups
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| pain_confirmation | 7/8 interviews confirm pain | verified | Interview notes | 2026-06-10 |
+| wtp_signal | 5/8 express WTP at $50+/mo | verified | Interview notes | 2026-06-10 |
+| field_accuracy | 87% on 50 invoices | verified | Concierge MVP log | 2026-06-12 |
+| time_savings | 42% average | verified | Concierge MVP log | 2026-06-12 |
+| landing_signups | 34 signups in 2 weeks | verified | Landing page analytics | 2026-06-24 |
+| cpc | $4.20 | verified | LinkedIn ads dashboard | 2026-06-24 |
 
 ### Kill / Continue Signals
 
 - **Continue if**: Accuracy improves to 90%+ with QuickBooks integration prototype; 2+ firms commit to pilot
 - **Kill if**: No pilot commitment after integration prototype; accuracy stays below 85%
 
+**confidence_level**: medium
+
 ---
 
 ## Scoring
 
-| Dimension | Raw (0–10) | Weight | Weighted | Rationale |
-|-----------|------------|--------|----------|-----------|
-| Problem severity | 8 | 20% | 16.0 | Strong pain signal from interviews |
-| Market size and timing | 7 | 15% | 10.5 | Large market, AI tailwinds |
-| Validation strength | 5 | 25% | 12.5 | Mixed results; accuracy and signups below target |
-| Competitive moat | 4 | 15% | 6.0 | Dext entrenched; differentiation unclear |
-| Execution feasibility | 6 | 15% | 9.0 | AI feasible but integration work needed |
-| Strategic fit | 6 | 10% | 6.0 | Fits B2B SaaS thesis, no unique synergy |
-| **Total** | | **100%** | **55.0** | |
+| Dimension | Raw (0–10) | Weight | Weighted | Evidence | Rationale |
+|-----------|------------|--------|----------|----------|-----------|
+| pain_level | 8 | 15% | 12.0 | verified | 7/8 interviews confirm acute pain |
+| urgency | 6 | 10% | 6.0 | inferred | Pain is chronic, not deadline-driven |
+| willingness_to_pay | 6 | 15% | 9.0 | verified | 5/8 WTP signal but no paid commitments |
+| competition | 4 | 8% | 3.2 | verified | Dext entrenched; 3/8 already use it |
+| distribution_advantage | 5 | 12% | 6.0 | verified | LinkedIn ads yielded 34 signups |
+| technical_complexity | 6 | 8% | 4.8 | estimated | AI feasible; QuickBooks integration needed |
+| maintenance_complexity | 5 | 7% | 3.5 | estimated | AI API costs + integration maintenance |
+| founder_fit | 6 | 10% | 6.0 | inferred | Generalist team with part-time advisor |
+| market_timing | 7 | 8% | 5.6 | verified | Large market, AI tailwinds |
+| defensibility | 4 | 7% | 2.8 | inferred | Differentiation unclear vs. Dext |
+| **Total** | | **100%** | **59.9** | | |
 
-**Final score**: 55
+**global_score**: 59
 
-**Decision mapping**: MONITOR (40–69)
-
----
-
-## Product Vision
-
-### Target User
-
-Owner or office manager at an SMB accounting firm (5–20 staff) who handles client invoice processing daily.
-
-### Value Proposition
-
-We help SMB accountants eliminate manual invoice data entry by automatically extracting and categorizing invoice fields with AI.
-
-### Differentiation
-
-- AI-native parsing (not rules-based OCR)
-- Multi-platform integration (QuickBooks, Xero, FreshBooks)
-- Priced for small firms ($50–79/mo vs. Dext at $30+/client)
-
-### North Star Metric
-
-Invoices processed with zero manual corrections per firm per month.
+**confidence_level**: medium
 
 ---
 
-## MVP Definition
+## Distribution Analysis
 
-### Scope In
+| Factor | Score / Value | Evidence | Rationale |
+|--------|---------------|----------|-----------|
+| Acquisition difficulty | 5 | verified | $4.20 CPC; 34 signups below target |
+| Channel accessibility | 6 | verified | LinkedIn and accounting communities accessible |
+| Estimated CAC | ~$120 | estimated | $4.20 CPC at ~35% landing conversion |
+| Competition intensity | 4 | verified | Dext dominates accounting firm channels |
+| Founder audience advantage | 3 | unknown | No existing audience in accounting segment |
 
-- PDF and image invoice upload
-- AI field extraction (vendor, date, amount, line items)
-- QuickBooks Online integration (one platform)
-- Review and correction UI
+**distribution_score**: 48
 
-### Scope Out
+**distribution_notes**: LinkedIn ads prove channel exists but CAC is high for $50–79/mo price point. No founder audience advantage. Must compete with Dext's established distribution in accounting software marketplaces.
 
-- Multi-platform integrations (Xero, FreshBooks)
-- Automated categorization / GL coding
-- Mobile app
-- Batch processing > 100 invoices/day
-
-### Success Metrics
-
-| Metric | Target | Measurement method |
-|--------|--------|--------------------|
-| Field accuracy | >= 90% | Compare AI output to manual ground truth on 100 invoices |
-| Time savings | >= 50% | Timed comparison: AI-assisted vs. manual entry |
-| Pilot commitment | 2 firms | Signed pilot agreement |
-
-### Smallest Testable Slice
-
-QuickBooks-integrated parser processing PDF invoices for one pilot firm, with manual review UI.
+**confidence_level**: medium
 
 ---
 
-## Roadmap
+## Unfair Advantage Analysis
 
-### Phase 1: Integration Prototype (Weeks 1–4)
+| Advantage Type | Strength | Evidence | Notes |
+|----------------|----------|----------|-------|
+| existing_audience | none | verified | No accounting audience |
+| existing_expertise | low | inferred | Part-time domain advisor only |
+| proprietary_data | none | unknown | No labeled invoice dataset yet |
+| exclusive_partnerships | none | verified | No partnerships |
+| technical_moat | low | inferred | AI extraction is replicable |
+| seo_moat | none | verified | No organic presence |
+| community_moat | none | verified | No community |
 
-- QuickBooks OAuth integration
-- Improved AI model fine-tuned on accounting invoices
-- Single-firm pilot
+**moat_score**: 3
 
-**Dependencies**: QuickBooks developer account, 50+ labeled invoice samples
-
-### Phase 2: Pilot Expansion (Weeks 5–8)
-
-- Onboard 2–3 pilot firms
-- Accuracy and time-savings measurement
-- Pricing validation ($50 vs. $79)
-
-### Phase 3: Launch Decision (Week 9)
-
-- Go/no-go based on pilot metrics
-- If go: self-serve onboarding, landing page v2
-
-### Resource Assumptions
-
-| Role | Allocation | Duration |
-|------|------------|----------|
-| Full-stack engineer | 50% | 8 weeks |
-| AI/ML engineer | 25% | 4 weeks |
-| Domain advisor (accountant) | 5 hrs/week | 8 weeks |
+**confidence_level**: medium
 
 ---
 
-## Architecture Proposal
+## Maintenance Evaluation
 
-### System Overview
+| Factor | Score (1–10) | Evidence | Rationale |
+|--------|--------------|----------|-----------|
+| customer_support | 6 | estimated | Accountants need hand-holding for integrations |
+| ai_costs | 7 | estimated | Per-invoice LLM + OCR costs at scale |
+| integrations | 7 | verified | QuickBooks API maintenance required |
+| external_dependencies | 6 | verified | AWS Textract, OpenAI, QuickBooks |
+| regulations | 3 | verified | Standard SaaS data handling |
+| manual_operations | 5 | inferred | Human review UI for accuracy gaps |
 
-```text
-Upload (PDF/image) → AI Extraction Service → Review UI → QuickBooks API
-```
+**maintenance_score**: 5.7
 
-Components:
-
-1. **Upload service** — accepts PDF/image, stores in object storage
-2. **AI extraction service** — LLM + OCR pipeline, returns structured fields
-3. **Review UI** — web app for accountant to verify/correct fields
-4. **Integration service** — QuickBooks Online API for invoice creation
-
-### Build vs Buy
-
-| Component | Decision | Rationale |
-|-----------|----------|-----------|
-| OCR | Buy (AWS Textract) | Commodity; not differentiating |
-| AI extraction | Build | Core differentiation; fine-tune on invoice data |
-| Review UI | Build | Simple web app; tight integration needed |
-| QuickBooks connector | Build | Must-have integration; use official SDK |
-| Auth / billing | Buy (Stripe, Auth0) | Standard SaaS infra |
-
-### Integration Points
-
-- QuickBooks Online API (OAuth 2.0)
-- AWS Textract for OCR
-- OpenAI or Anthropic API for field extraction
-
-### Technical Risks
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| AI accuracy below 90% | Medium | High | Fine-tune on labeled dataset; human-in-the-loop |
-| QuickBooks API changes | Low | Medium | Use official SDK; abstract integration layer |
-| Invoice format variance | High | Medium | Start with top 5 formats; expand iteratively |
+**confidence_level**: low
 
 ---
 
-## Success Contract
+## Risk Analysis
 
-### Commitments
+| Risk | Probability | Impact | Mitigation | Evidence |
+|------|-------------|--------|------------|----------|
+| market_risk | medium | medium | Focus underserved SMB segment | inferred |
+| technical_risk | medium | high | Fine-tune on labeled dataset; human-in-the-loop | verified |
+| regulatory_risk | low | low | Standard data handling review | verified |
+| competition_risk | high | high | Target firms dissatisfied with Dext pricing | verified |
+| execution_risk | medium | medium | Hire part-time domain advisor | inferred |
 
-| Commitment | Metric | Target | Review Date |
-|------------|--------|--------|-------------|
-| Pilot accuracy | Field accuracy | >= 90% | 2026-08-15 |
-| Pilot adoption | Firms on pilot | 2 signed | 2026-08-01 |
-| Time savings | Processing time reduction | >= 50% | 2026-08-15 |
+**risk_exposure_score**: 52
 
-### Review Schedule
+**confidence_level**: medium
 
-- First review: 2026-08-15
-- Cadence: every 90 days (MONITOR)
+---
 
-### Exit Triggers
+## Portfolio Intelligence
 
-- Accuracy remains below 85% after integration prototype
-- Zero pilot commitments by 2026-08-01
-- Score drops below 40 on re-evaluation
+| Factor | Score (0–10) | Evidence | Rationale |
+|--------|--------------|----------|-----------|
+| diversification_impact | 7 | inferred | Adds fintech vertical to empty active portfolio |
+| overlap_with_existing | 10 | verified | No overlap — portfolio active is empty |
+| shared_infrastructure | 4 | inferred | Standard SaaS stack; no shared assets yet |
+| cross_selling | 3 | synthetic | No existing products to cross-sell |
+| operational_synergies | 4 | inferred | Limited synergies with current portfolio |
+
+**portfolio_fit_score**: 56
+
+**portfolio_fit_notes**: Neutral fit. No conflicts with existing portfolio but no meaningful synergies either. Acceptable as monitoring candidate while portfolio capacity is available.
+
+**confidence_level**: medium
+
+---
+
+## Scenario Planning
+
+### Optimistic
+
+- **Assumptions**: QuickBooks integration achieves 92% accuracy; 2 pilot firms commit; CAC drops to $80
+- **global_score**: 76
+- **Decision**: build
+
+### Realistic
+
+- **Assumptions**: Accuracy reaches 90%; 1 pilot commitment; CAC remains ~$120
+- **global_score**: 59
+- **Decision**: monitor
+
+### Pessimistic
+
+- **Assumptions**: Accuracy stays at 87%; Dext launches AI feature; zero pilot commitments
+- **global_score**: 42
+- **Decision**: kill
+
+### Probabilities
+
+| Outcome | Probability |
+|---------|-------------|
+| build | 10% |
+| monitor | 55% |
+| kill | 35% |
+
+**confidence_level**: medium
 
 ---
 
@@ -258,17 +237,35 @@ Components:
 
 | Field | Value |
 |-------|-------|
-| **Decision** | monitor |
-| **Score** | 55 |
+| **Primary Decision** | monitor |
+| **global_score** | 59 |
+| **opportunity_quality_index** | 64 |
 | **Date** | 2026-06-25 |
-| **Rationale** | Problem is real and market is large, but validation was mixed. Accuracy (87%) and landing page signups (34) fell below targets. Competitive moat is weak against Dext. Worth monitoring while QuickBooks integration prototype is built. Kill if no pilot commitment by 2026-08-01. |
+| **Rationale** | Problem verified and market large, but global_score 59 and OQI 64 fail BUILD dual-gate (75/70). Validation mixed: 87% accuracy and 34 signups below targets. Weak moat vs. Dext. Realistic scenario supports MONITOR while QuickBooks prototype is built. Kill if no pilot by 2026-08-01. |
+
+### OQI Breakdown
+
+| Component | Score |
+|-----------|-------|
+| evidence_quality | 72 |
+| confidence_aggregate | 57 |
+| score_reliability | 68 |
+| risk_adjustment | 48 |
+| **OQI** | **64** |
+
+### Expected Learnings
+
+- [ ] Topic: pricing_sensitivity — Method: A/B test $49 vs $79 on landing page — Applies to: monitor
+- [ ] Topic: acquisition_channel_efficiency — Method: Compare LinkedIn vs accounting forum outreach — Applies to: monitor
+- [ ] Topic: customer_willingness_to_pay — Method: Pilot LOI at two price points — Applies to: monitor, kill
+- [ ] Topic: onboarding_friction — Method: Measure time-to-first-invoice in concierge MVP — Applies to: monitor
 
 ### Next Actions
 
 - [ ] Build QuickBooks integration prototype (4 weeks)
 - [ ] Re-run accuracy test with integration on 100 invoices
 - [ ] Outreach to 3 interview firms for pilot commitment
-- [ ] Re-score after prototype results (target: 2026-08-15)
+- [ ] Re-score and recalculate OQI after prototype (target: 2026-08-15)
 
 ### Dissent (if any)
 
@@ -277,3 +274,9 @@ None.
 ### Portfolio Update
 
 - [x] Added to [portfolio/monitoring.md](../portfolio/monitoring.md)
+
+---
+
+## BUILD Preparation
+
+> **Not applicable** — Primary decision is MONITOR. Complete this section only if promoted to BUILD.

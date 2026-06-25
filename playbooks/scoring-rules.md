@@ -1,140 +1,207 @@
 # Scoring Rules
 
-Default scoring framework for evaluating startup opportunities. Scores range from 0 to 100.
+Multi-dimensional scoring framework for evaluating startup opportunities. Produces `global_score` (0–100) from 10 weighted sub-scores.
 
 ## Decision Thresholds
 
-| Decision | Score |
-|----------|-------|
-| **BUILD** | >= 70 |
-| **MONITOR** | 40–69 |
-| **KILL** | < 40 |
+| Decision | Criteria |
+|----------|----------|
+| **BUILD** | `global_score >= 75` AND `opportunity_quality_index >= 70` |
+| **MONITOR** | `global_score` 50–74, OR score qualifies but OQI < 70 |
+| **KILL** | `global_score < 50` |
 
 These thresholds are fixed. Override requires documented rationale in the Final Decision section.
 
+See [opportunity-quality-index.md](opportunity-quality-index.md) for OQI calculation.
+
 ## Dimensions and Weights
 
-| Dimension | Weight | Measures |
-|-----------|--------|----------|
-| Problem severity | 20% | Pain intensity, urgency, willingness to pay |
-| Market size and timing | 15% | TAM/SAM, growth rate, trend tailwinds |
-| Validation strength | 25% | Evidence quality, experiment results |
-| Competitive moat | 15% | Differentiation, defensibility, switching costs |
-| Execution feasibility | 15% | Team fit, technical complexity, time-to-test |
-| Strategic fit | 10% | Portfolio synergy, studio thesis alignment |
+Default weights are configured in [scoring-weights.md](scoring-weights.md).
+
+| Dimension | Default weight | Measures |
+|-----------|----------------|----------|
+| pain_level | 15% | Severity and frequency of problem |
+| urgency | 10% | Time pressure to solve |
+| willingness_to_pay | 15% | Payment and commitment signals |
+| competition | 8% | Competitive intensity (10 = weak competition) |
+| distribution_advantage | 12% | Reach to target customers |
+| technical_complexity | 8% | Ease of build (10 = low complexity) |
+| maintenance_complexity | 7% | Ongoing burden (10 = low burden) |
+| founder_fit | 10% | Domain expertise and execution capability |
+| market_timing | 8% | Tailwinds and market window |
+| defensibility | 7% | Long-term moat potential |
 
 **Total: 100%**
 
 ## Scoring Rubric
 
-Rate each dimension **0–10**, then multiply by weight to get the weighted contribution.
+Rate each dimension **0–10**, then multiply by weight to get the weighted contribution. Every score must cite evidence type per [evidence-classification.md](evidence-classification.md).
 
-### Problem Severity (20%)
+### pain_level (15%)
 
 | Score | Criteria |
 |-------|----------|
-| 9–10 | Acute, frequent pain; customers actively seeking and paying for solutions |
-| 7–8 | Clear pain; demonstrated willingness to pay or strong commitment signals |
-| 5–6 | Moderate pain; interest expressed but no payment evidence |
+| 9–10 | Acute, frequent pain; customers actively seeking solutions |
+| 7–8 | Clear pain; strong qualitative signal from 5+ interviews |
+| 5–6 | Moderate pain; interest expressed but inconsistent signal |
 | 3–4 | Mild inconvenience; nice-to-have positioning |
 | 0–2 | No validated pain; hypothetical problem |
 
-### Market Size and Timing (15%)
+### urgency (10%)
 
 | Score | Criteria |
 |-------|----------|
-| 9–10 | Large addressable market ($1B+); strong tailwinds; timing is now |
-| 7–8 | Meaningful market ($100M+); favorable trends |
-| 5–6 | Niche but viable ($10M+); neutral timing |
-| 3–4 | Small market; uncertain growth |
-| 0–2 | No credible market sizing; adverse timing |
+| 9–10 | Immediate need; regulatory deadline or acute cost of inaction |
+| 7–8 | Strong time pressure; customers prioritizing solution now |
+| 5–6 | Moderate urgency; problem worsening over months |
+| 3–4 | Low urgency; deferrable problem |
+| 0–2 | No time pressure; status quo acceptable |
 
-### Validation Strength (25%)
+### willingness_to_pay (15%)
 
 | Score | Criteria |
 |-------|----------|
 | 9–10 | Paid customers or binding commitments; repeatable signal |
-| 7–8 | Strong qualitative signal (5+ consistent interviews); pilot interest |
-| 5–6 | Mixed signal; some positive, some negative evidence |
-| 3–4 | Weak signal; mostly hypothetical or single-source |
-| 0–2 | No validation attempted or all experiments failed |
+| 7–8 | Strong WTP signal from interviews; pilot or LOI interest |
+| 5–6 | Mixed signal; interest but no payment evidence |
+| 3–4 | Price sensitivity high; free-tier expectation |
+| 0–2 | No WTP evidence; hypothetical demand |
 
-### Competitive Moat (15%)
-
-| Score | Criteria |
-|-------|----------|
-| 9–10 | Clear, durable differentiation; network effects or data moat |
-| 7–8 | Meaningful differentiation; moderate switching costs |
-| 5–6 | Some differentiation; competitive but not commoditized |
-| 3–4 | Weak differentiation; easily replicated |
-| 0–2 | No moat; dominated by incumbents |
-
-### Execution Feasibility (15%)
+### competition (8%)
 
 | Score | Criteria |
 |-------|----------|
-| 9–10 | Team has domain expertise; MVP testable in weeks |
-| 7–8 | Team capable with minor gaps; MVP testable in 1–2 months |
-| 5–6 | Significant skill or resource gaps; MVP in 2–3 months |
-| 3–4 | Major gaps; high technical or regulatory risk |
+| 9–10 | Fragmented market; no dominant incumbent; clear gap |
+| 7–8 | Competitors exist but differentiation is credible |
+| 5–6 | Moderate competition; crowded but not commoditized |
+| 3–4 | Strong incumbents; difficult differentiation |
+| 0–2 | Dominated by entrenched players; no viable wedge |
+
+### distribution_advantage (12%)
+
+| Score | Criteria |
+|-------|----------|
+| 9–10 | Direct access to target customers; proven channel |
+| 7–8 | Accessible channels; founder has relevant audience |
+| 5–6 | Standard channels available; no unique advantage |
+| 3–4 | Expensive or difficult acquisition; long sales cycles |
+| 0–2 | No viable distribution path identified |
+
+Cross-reference [distribution-analysis.md](distribution-analysis.md).
+
+### technical_complexity (8%)
+
+| Score | Criteria |
+|-------|----------|
+| 9–10 | Simple build; MVP testable in weeks |
+| 7–8 | Moderate complexity; MVP in 1–2 months |
+| 5–6 | Significant engineering; 2–3 months to testable slice |
+| 3–4 | High complexity; major technical unknowns |
 | 0–2 | Infeasible with current team and resources |
 
-### Strategic Fit (10%)
+### maintenance_complexity (7%)
 
 | Score | Criteria |
 |-------|----------|
-| 9–10 | Core to studio thesis; strong portfolio synergy |
-| 7–8 | Good fit; leverages existing assets or relationships |
-| 5–6 | Neutral fit; no conflict but no synergy |
-| 3–4 | Partial misalignment with studio focus |
-| 0–2 | Conflicts with studio thesis or portfolio |
+| 9–10 | Almost no ongoing maintenance; self-serve product |
+| 7–8 | Low operational burden; minimal support |
+| 5–6 | Moderate support and integration maintenance |
+| 3–4 | High support burden or costly AI/API dependencies |
+| 0–2 | Heavy manual operations or regulatory overhead |
+
+Cross-reference [maintenance-evaluation.md](maintenance-evaluation.md).
+
+### founder_fit (10%)
+
+| Score | Criteria |
+|-------|----------|
+| 9–10 | Deep domain expertise; prior success in adjacent space |
+| 7–8 | Strong relevant skills; minor gaps fillable |
+| 5–6 | Generalist team; learning curve required |
+| 3–4 | Significant skill gaps; key capability missing |
+| 0–2 | No relevant expertise; wrong team for opportunity |
+
+### market_timing (8%)
+
+| Score | Criteria |
+|-------|----------|
+| 9–10 | Strong tailwinds; window is now; category growing fast |
+| 7–8 | Favorable trends; timing supports entry |
+| 5–6 | Neutral timing; market stable |
+| 3–4 | Uncertain timing; early or late to market |
+| 0–2 | Adverse timing; market contracting or technology immature |
+
+### defensibility (7%)
+
+| Score | Criteria |
+|-------|----------|
+| 9–10 | Durable moat; network effects, data, or exclusive assets |
+| 7–8 | Meaningful differentiation; moderate switching costs |
+| 5–6 | Some defensibility; not easily replicated in short term |
+| 3–4 | Weak moat; features copyable by incumbents |
+| 0–2 | No defensibility; commodity positioning |
+
+Cross-reference [unfair-advantage-analysis.md](unfair-advantage-analysis.md).
 
 ## Calculation
 
 ```text
-Weighted score = sum(dimension_score / 10 * weight * 100)
+global_score = sum(dimension_score / 10 * weight * 100)
 ```
 
 Example:
 
 | Dimension | Raw (0–10) | Weight | Weighted |
 |-----------|------------|--------|----------|
-| Problem severity | 8 | 20% | 16.0 |
-| Market size and timing | 6 | 15% | 9.0 |
-| Validation strength | 5 | 25% | 12.5 |
-| Competitive moat | 4 | 15% | 6.0 |
-| Execution feasibility | 7 | 15% | 10.5 |
-| Strategic fit | 6 | 10% | 6.0 |
-| **Total** | | | **60.0** |
+| pain_level | 8 | 15% | 12.0 |
+| urgency | 7 | 10% | 7.0 |
+| willingness_to_pay | 6 | 15% | 9.0 |
+| competition | 4 | 8% | 3.2 |
+| distribution_advantage | 5 | 12% | 6.0 |
+| technical_complexity | 7 | 8% | 5.6 |
+| maintenance_complexity | 6 | 7% | 4.2 |
+| founder_fit | 6 | 10% | 6.0 |
+| market_timing | 7 | 8% | 5.6 |
+| defensibility | 4 | 7% | 2.8 |
+| **Total** | | **100%** | **61.4** |
 
-Result: **60 → MONITOR**
+Result: **global_score 61 → MONITOR**
 
 ## Score Table Template
 
 Use this table in the opportunity **Scoring** section:
 
 ```markdown
-| Dimension | Raw (0–10) | Weight | Weighted | Rationale |
-|-----------|------------|--------|----------|-----------|
-| Problem severity | | 20% | | |
-| Market size and timing | | 15% | | |
-| Validation strength | | 25% | | |
-| Competitive moat | | 15% | | |
-| Execution feasibility | | 15% | | |
-| Strategic fit | | 10% | | |
-| **Total** | | **100%** | **XX** | |
+| Dimension | Raw (0–10) | Weight | Weighted | Evidence | Rationale |
+|-----------|------------|--------|----------|----------|-----------|
+| pain_level | | 15% | | | |
+| urgency | | 10% | | | |
+| willingness_to_pay | | 15% | | | |
+| competition | | 8% | | | |
+| distribution_advantage | | 12% | | | |
+| technical_complexity | | 8% | | | |
+| maintenance_complexity | | 7% | | | |
+| founder_fit | | 10% | | | |
+| market_timing | | 8% | | | |
+| defensibility | | 7% | | | |
+| **Total** | | **100%** | **XX** | | |
+
+**global_score**: XX
+**confidence_level**: high / medium / low
 ```
 
 ## Evidence Requirements
 
-Every dimension score must cite evidence. See [principles](../docs/principles.md) for evidence quality hierarchy.
+Every dimension score must cite evidence type. See [evidence-classification.md](evidence-classification.md) and [principles](../docs/principles.md).
 
 ## Customization
 
-Studios may adjust dimension weights if changes are documented in this file with effective date. Thresholds (70/40) should remain stable for portfolio comparability.
+Studios may adjust dimension weights in [scoring-weights.md](scoring-weights.md). Thresholds (75/50, OQI 70) should remain stable for portfolio comparability.
 
 ## Related
 
+- [Scoring weights](scoring-weights.md)
+- [Opportunity quality index](opportunity-quality-index.md)
 - [Evaluation process](evaluation-process.md)
-- [Kill rules](kill-rules.md)
 - [Scoring prompt](../prompts/scoring.md)
+- [Migration v1 to v2](migration-v1-to-v2.md)

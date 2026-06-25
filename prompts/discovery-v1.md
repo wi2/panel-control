@@ -24,7 +24,7 @@ Identify whether a problem is real, who has it, what alternatives exist, and whe
 
 ## Tasks
 
-Answer each question with evidence where possible. Label unsupported claims as **hypothesis**.
+Answer each question with evidence where possible. Label unsupported claims with evidence type `unknown` or `synthetic` — never as verified.
 
 1. **Problem statement**: Who experiences this problem? How painful is it (frequency, cost, urgency)?
 2. **Market signal**: What data suggests this problem matters now? (market size, trends, regulatory changes)
@@ -43,7 +43,9 @@ Produce markdown matching these sections (paste into opportunity **Discovery**):
 ### Market Signal
 [evidence with citations]
 
-> **Evidence**: [source, date, metric]
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| | | verified / estimated / inferred / synthetic / unknown | | |
 
 ### Competitors and Alternatives
 | Competitor / Alternative | Approach | Strengths | Weaknesses |
@@ -59,8 +61,17 @@ We believe ...
 ## Evidence Requirements
 
 - Cite sources for market size, pain intensity, and competitor claims
-- Use `> **Evidence**: [source, date, metric]` format
-- If no evidence exists, state "No evidence — hypothesis only"
+- Every claim must include evidence type: `verified`, `estimated`, `inferred`, `synthetic`, or `unknown`
+- Use claim table format or `> **Evidence** (type): [source, date, metric]`
+- See [evidence-classification.md](../playbooks/evidence-classification.md)
+
+### Confidence
+
+End output with:
+
+```yaml
+confidence_level: high / medium / low
+```
 
 ## Anti-Patterns
 

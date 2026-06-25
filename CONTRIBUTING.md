@@ -9,7 +9,7 @@ How to evaluate opportunities and maintain this control plane.
 3. Fill in frontmatter: `id`, `title`, `owner`, `created`.
 4. Set `status: draft`.
 
-## Run the Pipeline
+## Run the Decision Path
 
 Execute prompts in order. Paste outputs into the corresponding opportunity sections.
 
@@ -18,32 +18,48 @@ Execute prompts in order. Paste outputs into the corresponding opportunity secti
 | 1 | [Discovery](prompts/discovery.md) | Discovery |
 | 2 | [Validation](prompts/validation.md) | Validation |
 | 3 | [Scoring](prompts/scoring.md) | Scoring |
-| 4 | [Vision](prompts/vision.md) | Product Vision |
-| 5 | [MVP](prompts/mvp.md) | MVP Definition |
-| 6 | [Roadmap](prompts/roadmap.md) | Roadmap |
-| 7 | [Architecture](prompts/architecture.md) | Architecture Proposal |
-| 8 | [Success Contract](prompts/success-contract.md) | Success Contract |
-| 9 | [Portfolio Manager](prompts/portfolio-manager.md) | Final Decision |
+| 4 | [Distribution Analysis](prompts/distribution-analysis.md) | Distribution Analysis |
+| 5 | [Unfair Advantage](prompts/unfair-advantage.md) | Unfair Advantage Analysis |
+| 6 | [Maintenance Evaluation](prompts/maintenance-evaluation.md) | Maintenance Evaluation |
+| 7 | [Risk Analysis](prompts/risk-analysis.md) | Risk Analysis |
+| 8 | [Portfolio Intelligence](prompts/portfolio-intelligence.md) | Portfolio Intelligence |
+| 9 | [Scenario Planning](prompts/scenario-planning.md) | Scenario Planning |
+| 10 | [Portfolio Manager](prompts/portfolio-manager.md) | Final Decision |
 
 Set `status: evaluating` when the pipeline starts. Record `prompt_versions` used in frontmatter.
 
 See [`playbooks/evaluation-process.md`](playbooks/evaluation-process.md) for the full workflow.
 
-## Score and Decide
+## BUILD Preparation (BUILD only)
 
-1. Apply [`playbooks/scoring-rules.md`](playbooks/scoring-rules.md).
-2. Map score to decision:
+If primary decision is BUILD, complete:
 
-| Decision | Score |
-|----------|-------|
-| BUILD | >= 70 |
-| MONITOR | 40–69 |
-| KILL | < 40 |
+| Step | Prompt | Opportunity section |
+|------|--------|---------------------|
+| 11 | [Vision](prompts/vision.md) | Product Vision |
+| 12 | [MVP](prompts/mvp.md) | MVP Definition |
+| 13 | [Roadmap](prompts/roadmap.md) | Roadmap |
+| 14 | [Architecture](prompts/architecture.md) | Architecture Proposal |
+| 15 | [Success Contract](prompts/success-contract.md) | Success Contract |
 
-3. Record the decision in the **Final Decision** section.
-4. Update frontmatter: `decision`, `score`, `status: decided`, `updated`.
+## Score, OQI, and Decide
+
+1. Apply [`playbooks/scoring-rules.md`](playbooks/scoring-rules.md) for `global_score`.
+2. Calculate OQI per [`playbooks/opportunity-quality-index.md`](playbooks/opportunity-quality-index.md).
+3. Map to decision:
+
+| Decision | Criteria |
+|----------|----------|
+| BUILD | `global_score >= 75` AND `OQI >= 70` |
+| MONITOR | `global_score` 50–74 |
+| KILL | `global_score < 50` |
+
+4. Record primary decision, OQI breakdown, scenarios, and `expected_learnings` in **Final Decision**.
+5. Update frontmatter: `decision`, `global_score`, `opportunity_quality_index`, `status: decided`, `updated`.
 
 For standalone decision records, use [`templates/decision-template.md`](templates/decision-template.md).
+
+Every claim must include evidence type per [`playbooks/evidence-classification.md`](playbooks/evidence-classification.md).
 
 ## Update Portfolio
 
@@ -69,17 +85,19 @@ See [`prompts/README.md`](prompts/README.md) for versioning details.
 
 Run quarterly reviews using [`templates/portfolio-review-template.md`](templates/portfolio-review-template.md).
 
-Review all entries in [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md). Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
+Review all entries in [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md). Aggregate `expected_learnings` from archived opportunities. Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
 
 ## Pull Request Checklist
 
 When submitting changes via git:
 
 - [ ] Opportunity ID is unique
-- [ ] Score matches decision threshold
+- [ ] global_score and OQI match decision thresholds
+- [ ] Evidence types on all scoring claims
+- [ ] confidence_level on all decision-path sections
+- [ ] expected_learnings recorded for MONITOR and KILL
 - [ ] Portfolio file updated (if decision changed)
 - [ ] `prompt_versions` recorded in opportunity frontmatter
-- [ ] Evidence cited for scoring claims
 - [ ] Prompt version bumps follow conventions (no in-place edits to used versions)
 - [ ] Internal links use relative paths
 
@@ -89,12 +107,9 @@ Recommended extensions (not yet implemented):
 
 | Extension | Purpose |
 |-----------|---------|
-| `reviews/` folder | Quarterly portfolio review artifacts |
+| `reviews/` folder | Quarterly portfolio review artifacts with learnings aggregation |
 | `experiments/` per opportunity | Raw experiment logs linked from Validation |
-| `metrics/` | Aggregated studio KPIs (kill rate, time-to-decision) |
-| Markdown lint CI | `markdownlint-cli2` on pull requests |
-| `prompts/CHANGELOG.md` | Track output-shaping prompt changes |
-| MCP / agent integration | Wire prompts to Cursor automations |
+| `metrics/` | Aggregated studio KPIs (kill rate, time-to-decision, OQI calibration) |
 | Frontmatter `tags` | Portfolio filtering by theme (e.g. `fintech`, `b2b`) |
 
 Scoring calculators and application code are explicitly out of scope for this repository.

@@ -1,6 +1,6 @@
 # Active Portfolio (BUILD)
 
-Opportunities with score **>= 70** that have been approved for build.
+Opportunities with `global_score >= 75` AND `OQI >= 70` approved for build.
 
 ## Instructions
 
@@ -10,6 +10,7 @@ When an opportunity receives a BUILD decision:
 2. Remove from [monitoring.md](monitoring.md) if promoted.
 3. Set **Next Review** to 30 days from decision date.
 4. Link to the opportunity file in `opportunities/`.
+5. Confirm BUILD preparation sections are complete.
 
 When killing or demoting an active opportunity:
 
@@ -20,9 +21,9 @@ Capacity limit: **3 active opportunities** (see [portfolio rules](../playbooks/p
 
 ## Entries
 
-| ID | Title | Score | Owner | Decision Date | Next Review | Link |
-|----|-------|-------|-------|---------------|-------------|------|
-| _No active opportunities yet_ | | | | | | |
+| ID | Title | Global Score | OQI | Decision | Owner | Decision Date | Next Review | Link |
+|----|-------|--------------|-----|----------|-------|---------------|-------------|------|
+| _No active opportunities yet_ | | | | | | | | |
 
 ## Related
 

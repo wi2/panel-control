@@ -9,12 +9,6 @@ Standards for all markdown assets in this repository.
 - Use relative links only (e.g. `../opportunities/OPP-20260625-example.md`).
 - Use tables for scores, portfolio entries, and comparisons.
 - Use checklists (`- [ ]`) for action items and experiment tracking.
-- Format evidence using blockquote + bold label:
-
-```markdown
-> **Evidence**: [source, date, metric]
-```
-
 - Dates in ISO 8601 format (`YYYY-MM-DD`).
 - No HTML. No embedded application code blocks.
 
@@ -48,11 +42,11 @@ Standards for all markdown assets in this repository.
 
 ### Decisions
 
-| Decision | Score threshold |
-|----------|-----------------|
-| `build` | >= 70 |
-| `monitor` | 40–69 |
-| `kill` | < 40 |
+| Decision | Criteria |
+|----------|----------|
+| `build` | `global_score >= 75` AND `opportunity_quality_index >= 70` |
+| `monitor` | `global_score` 50–74, OR score qualifies but OQI < 70 |
+| `kill` | `global_score < 50`, or automatic kill trigger |
 
 ## Prompt Versioning
 
@@ -84,29 +78,84 @@ id: OPP-YYYYMMDD-slug
 title: ""
 status: draft
 decision: null
-score: null
+global_score: null
+opportunity_quality_index: null
+scores: {}
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
+tags: []
 prompt_versions:
   discovery: v1
   validation: v1
-  scoring: v1
+  scoring: v2
+  distribution_analysis: v1
+  unfair_advantage: v1
+  maintenance_evaluation: v1
+  risk_analysis: v1
+  portfolio_intelligence: v1
+  scenario_planning: v1
+  portfolio_manager: v2
   vision: v1
   mvp: v1
   roadmap: v1
   architecture: v1
   success_contract: v1
-  portfolio_manager: v1
 ---
 ```
 
 ## Evidence Standards
 
-Every claim that influences scoring or decisions must include evidence:
+Every claim that influences scoring or decisions must include evidence type. See [evidence-classification.md](playbooks/evidence-classification.md).
 
-1. **Source** — where the information came from (interview, data, experiment, publication).
-2. **Date** — when the evidence was collected.
-3. **Metric** — quantifiable result where possible.
+### Allowed evidence types
 
-Opinions without evidence are noted as hypotheses, not facts.
+`verified` | `estimated` | `inferred` | `synthetic` | `unknown`
+
+### YAML claim format (preferred)
+
+```yaml
+market_size:
+  value: "1.3M companies"
+  evidence: verified
+  source: "INSEE 2024"
+  date: 2026-03-01
+```
+
+### Markdown table format
+
+```markdown
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| market_size | 1.3M companies | verified | INSEE 2024 | 2026-03-01 |
+```
+
+### Blockquote format (legacy, extended)
+
+```markdown
+> **Evidence** (verified): INSEE 2024 — 1.3M companies, 2026-03-01
+```
+
+Opinions without evidence are labeled `unknown` or `synthetic`, not `verified`.
+
+## Confidence Levels
+
+Every decision-path section must end with a confidence level:
+
+```yaml
+confidence_level: high | medium | low
+```
+
+| Level | When to use |
+|-------|-------------|
+| `high` | Multiple verified claims; consistent validation signal |
+| `medium` | Mix of verified and estimated; partial validation |
+| `low` | Mostly inferred/synthetic/unknown; early-stage |
+
+Portfolio Manager must not BUILD when Scoring, Distribution, or Risk sections have `confidence_level: low` without documented override.
+
+## Related
+
+- [Evidence classification](playbooks/evidence-classification.md)
+- [Opportunity quality index](playbooks/opportunity-quality-index.md)
+- [Principles](docs/principles.md)

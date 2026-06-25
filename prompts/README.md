@@ -8,13 +8,19 @@ Versioned AI prompts for each stage of the evaluation pipeline.
 |-------|-------|----------------|
 | Discovery | [discovery.md](discovery.md) | v1 |
 | Validation | [validation.md](validation.md) | v1 |
-| Scoring | [scoring.md](scoring.md) | v1 |
+| Scoring | [scoring.md](scoring.md) | v2 |
+| Distribution Analysis | [distribution-analysis.md](distribution-analysis.md) | v1 |
+| Unfair Advantage | [unfair-advantage.md](unfair-advantage.md) | v1 |
+| Maintenance Evaluation | [maintenance-evaluation.md](maintenance-evaluation.md) | v1 |
+| Risk Analysis | [risk-analysis.md](risk-analysis.md) | v1 |
+| Portfolio Intelligence | [portfolio-intelligence.md](portfolio-intelligence.md) | v1 |
+| Scenario Planning | [scenario-planning.md](scenario-planning.md) | v1 |
+| Portfolio Manager | [portfolio-manager.md](portfolio-manager.md) | v2 |
 | Product Vision | [vision.md](vision.md) | v1 |
 | MVP Definition | [mvp.md](mvp.md) | v1 |
 | Roadmap | [roadmap.md](roadmap.md) | v1 |
 | Architecture | [architecture.md](architecture.md) | v1 |
 | Success Contract | [success-contract.md](success-contract.md) | v1 |
-| Portfolio Manager | [portfolio-manager.md](portfolio-manager.md) | v1 |
 
 ## Versioning
 
@@ -55,8 +61,18 @@ changelog: "Initial release"
 
 ## Pipeline Order
 
+### Decision path (all opportunities)
+
 ```text
-discovery → validation → scoring → vision → mvp → roadmap → architecture → success-contract → portfolio-manager
+discovery → validation → scoring → distribution-analysis → unfair-advantage
+  → maintenance-evaluation → risk-analysis → portfolio-intelligence
+  → scenario-planning → portfolio-manager
+```
+
+### BUILD preparation (BUILD only)
+
+```text
+vision → mvp → roadmap → architecture → success-contract
 ```
 
 See [evaluation process](../playbooks/evaluation-process.md).
@@ -65,3 +81,4 @@ See [evaluation process](../playbooks/evaluation-process.md).
 
 - [Conventions](../CONVENTIONS.md)
 - [Contributing](../CONTRIBUTING.md)
+- [Migration v1 to v2](../playbooks/migration-v1-to-v2.md)

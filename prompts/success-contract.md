@@ -12,9 +12,8 @@
 
 ## Usage
 
-Requires completed **Architecture Proposal** section. Output goes into the **Success Contract** section.
+**BUILD-only.** Requires completed **Architecture Proposal** section. Output goes into **Success Contract** under BUILD Preparation. End of BUILD preparation path.
 
 ## Related
 
 - Previous: [architecture.md](architecture.md)
-- Next stage: [portfolio-manager.md](portfolio-manager.md)

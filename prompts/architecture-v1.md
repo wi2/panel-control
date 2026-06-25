@@ -19,15 +19,19 @@ Describe system components, build-vs-buy decisions, integration points, and tech
 
 ## Inputs Required
 
+- BUILD decision recorded in **Final Decision**
 - Completed **MVP Definition** and **Roadmap** sections
+- **Risk Analysis** section from decision path (reference, do not duplicate business risks)
 - Validation learnings about technical constraints (integrations, accuracy requirements)
+
+**BUILD-only stage.**
 
 ## Tasks
 
 1. **System overview**: Components and data flow (text or ASCII diagram).
 2. **Build vs buy**: For each major component, recommend build or buy with rationale.
 3. **Integration points**: External APIs, services, or data sources required.
-4. **Technical risks**: Likelihood, impact, and mitigation for top 3–5 risks.
+4. **Technical risks (summary)**: Top 3–5 technical items referencing full register in **Risk Analysis**.
 
 ## Output Format
 
@@ -42,7 +46,10 @@ Describe system components, build-vs-buy decisions, integration points, and tech
 ### Integration Points
 - ...
 
-### Technical Risks
+### Technical Risks (summary)
+
+See **Risk Analysis** for full register. Key technical items:
+
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
 ```
@@ -50,7 +57,7 @@ Describe system components, build-vs-buy decisions, integration points, and tech
 ## Evidence Requirements
 
 - Build vs buy must reference validation learnings (e.g. "QuickBooks integration required per interviews")
-- Risks must include accuracy/integration risks identified in validation
+- Reference **Risk Analysis** for business and technical risks; summarize technical items only here
 - Architecture must support MVP scope in, not scope out
 
 ## Anti-Patterns
