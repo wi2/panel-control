@@ -101,6 +101,8 @@ When submitting changes via git:
 - [ ] Prompt version bumps follow conventions (no in-place edits to used versions)
 - [ ] Internal links use relative paths
 
+Automated review: run [prompts/opportunity-qa.md](prompts/opportunity-qa.md) on the PR diff, or enable the Cursor Automation described in [docs/automations.md](docs/automations.md).
+
 ## Future Extensibility
 
 Recommended extensions (not yet implemented):

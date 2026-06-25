@@ -78,3 +78,14 @@ Before writing `global_score` or `opportunity_quality_index` to frontmatter, app
 - [playbooks/evidence-classification.md](playbooks/evidence-classification.md)
 - [playbooks/kill-rules.md](playbooks/kill-rules.md)
 - [playbooks/portfolio-rules.md](playbooks/portfolio-rules.md)
+
+## Pull request QA
+
+When a pull request modifies `opportunities/` or `portfolio/`:
+
+1. Read [prompts/opportunity-qa.md](prompts/opportunity-qa.md) and execute the active version.
+2. Apply [prompts/score-calculator.md](prompts/score-calculator.md) logic for score and decision checks.
+3. Post a structured PR comment with verdict **pass**, **warn**, or **fail**.
+4. Do **not** merge when verdict is **fail**.
+
+Automated setup: [docs/automations.md](docs/automations.md).
