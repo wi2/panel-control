@@ -87,7 +87,7 @@ Run quarterly reviews using [`templates/portfolio-review-template.md`](templates
 
 Review all entries in [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md). Aggregate `expected_learnings` from archived opportunities. Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
 
-Scheduled reviews: use [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or the Cursor Automation in [docs/automations.md](docs/automations.md).
+Scheduled reviews: use [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or Cursor Automation **CP — Review** ([docs/automations.md](docs/automations.md)).
 
 ## Pull Request Checklist
 
@@ -103,7 +103,33 @@ When submitting changes via git:
 - [ ] Prompt version bumps follow conventions (no in-place edits to used versions)
 - [ ] Internal links use relative paths
 
-Automated review: run [prompts/opportunity-qa.md](prompts/opportunity-qa.md) on the PR diff, or enable the Cursor Automation described in [docs/automations.md](docs/automations.md).
+Automated review: **CP — QA** runs [prompts/automation-qa-v1.md](prompts/automation-qa-v1.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
+
+## GitHub labels and branch conventions
+
+Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
+
+| Label | Branch prefix | Action |
+|-------|---------------|--------|
+| `cp:intake` | `intake/**` | Create OPP + Discovery from PR `## Intake` body |
+| `cp:eval` | `eval/OPP-YYYYMMDD-slug` | Advance pipeline by one stage |
+| `cp:review` | `review/**` | Run portfolio review on demand |
+
+QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required.
+
+### Intake PR template
+
+```markdown
+## Intake
+
+**Title:** Short opportunity title
+**Owner:** studio-team
+**Tags:** b2b, saas
+
+### Description
+
+1–3 paragraphs describing the problem and proposed angle.
+```
 
 ## Future Extensibility
 

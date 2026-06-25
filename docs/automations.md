@@ -1,153 +1,269 @@
 # Cursor Automations
 
-Operational setup for automating the AI Startup Studio Brain control plane with [Cursor Automations](https://cursor.com/docs).
+Operational setup for the AI Startup Studio Brain control plane with [Cursor Automations](https://cursor.com/docs).
 
 See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automations below.
+
+## Architecture
+
+Four small automations — one job each, thin wrapper → versioned prompt:
+
+```text
+CP — QA      (read-only)  → prompts/automation-qa-v1.md      → opportunity-qa-v1
+CP — Intake  (write)      → prompts/automation-intake-v1.md  → intake-v1
+CP — Eval    (write)      → prompts/automation-eval-v1.md    → pipeline-orchestrator-v1
+CP — Review  (write)      → prompts/automation-review-v1.md  → portfolio-review-runner-v1
+```
+
+Replace the legacy single-purpose automations (**Control Plane — PR QA**, **Intake**, **MONITOR Review**) with these four. Disable legacy automations after enabling the new set to avoid duplicate runs.
 
 ## Prerequisites
 
 Before enabling automations:
 
-1. Push this repository to GitHub or GitLab and connect it in Cursor.
-2. Configure `gitConfig` in each automation with the target repo and default branch.
-3. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
+1. Push this repository to GitHub and connect it in Cursor.
+2. Configure `gitConfig` in each automation: repo `wi2/panel-control`, branch `master`.
+3. Create GitHub labels (see [GitHub labels](#github-labels)).
+4. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
+5. Enable **ignore draft PRs** on Git triggers where available.
+
+**Remote**: `git@github.com:wi2/panel-control.git`
 
 ---
 
-## Control Plane — PR QA
+## GitHub labels
 
-Validates pull requests that touch opportunity or portfolio files.
+Create these labels in the GitHub repository settings:
+
+| Label | Color (suggested) | Automation | Purpose |
+|-------|-------------------|------------|---------|
+| `cp:intake` | `#0E8A16` | CP — Intake | Create OPP + Discovery from PR body |
+| `cp:eval` | `#1D76DB` | CP — Eval | Advance pipeline by one stage |
+| `cp:review` | `#D93F0B` | CP — Review | Run portfolio review on demand |
+
+**Rules**
+
+- One action label per PR — do not combine `cp:intake` and `cp:eval` on the same PR.
+- Write automations require **both** the label and the matching branch prefix (see each section below).
+- QA does not use a label — it runs automatically on PR open/push when paths match.
+
+---
+
+## CP — QA
+
+Read-only validation. **Never commits.**
 
 | Setting | Value |
 |---------|-------|
-| **Name** | Control Plane — PR QA |
-| **Description** | Run control-plane QA checklist on PRs changing opportunities or portfolio entries |
-| **Trigger** | Git — pull request opened |
+| **Name** | CP — QA |
+| **Description** | Validate PRs changing opportunities or portfolio entries |
+| **Trigger** | Git — pull request **opened** |
+| **Trigger** | Git — code **pushed to pull request** |
 | **Path scope** | Changes under `opportunities/` or `portfolio/` |
-| **Tools** | Comment on PRs |
-| **Repo checkout** | This repository, default branch |
+| **Tools** | Comment on PRs **only** |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
+| **ignoreDraftPrs** | `true` |
 
 ### Agent instructions
 
 ```text
-You are reviewing a pull request for the AI Startup Studio Brain control plane.
+You are running CP — QA for the AI Startup Studio Brain control plane.
 
-1. Read AGENTS.md.
-2. If the PR does not modify opportunities/ or portfolio/, stop with NOOP.
-3. Execute prompts/opportunity-qa-v1.md against all changed files in those paths.
-4. Apply score-calculator-v1 logic for every changed opportunity with a Scoring section.
-5. Post the structured QA comment from opportunity-qa-v1 (verdict: pass, warn, or fail).
-6. Do not modify files. Do not approve merge when verdict is fail.
+Execute prompts/automation-qa-v1.md against this pull request.
+Do not modify any files.
 ```
 
 ### Expected output
 
-A PR comment titled **Control Plane QA — pass | warn | fail** with check-group table, score audit summary, blocking issues, warnings, and suggested fixes.
+PR comment titled **Control Plane QA — pass | warn | fail**.
 
 ### Related prompts
 
+- [prompts/automation-qa.md](../prompts/automation-qa.md)
 - [prompts/opportunity-qa.md](../prompts/opportunity-qa.md)
-- [prompts/score-calculator.md](../prompts/score-calculator.md)
 
 ---
 
-## Control Plane — Intake
+## CP — Intake
 
-Creates a new opportunity file and runs Discovery from a raw idea.
+Creates a new opportunity file and runs Discovery from a PR description.
 
 | Setting | Value |
 |---------|-------|
-| **Name** | Control Plane — Intake |
-| **Description** | Convert incoming startup idea into OPP file with Discovery complete |
-| **Trigger** | Webhook (copy URL and auth after saving in Automations editor) |
-| **Tools** | None (agent commits via PR) |
-| **Repo checkout** | This repository, default branch |
+| **Name** | CP — Intake |
+| **Description** | Create OPP file with Discovery from PR intake template |
+| **Trigger** | Git — **label change** (label `cp:intake`) |
+| **Tools** | None (agent commits via PR branch) |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
+| **ignoreDraftPrs** | `true` |
 
-### Webhook payload (suggested JSON)
+**Branch gate**: PR head branch must match `intake/**`.
 
-```json
-{
-  "title": "Short opportunity title",
-  "description": "1–3 paragraphs describing the problem and proposed angle.",
-  "owner": "studio-team",
-  "tags": ["b2b", "saas"]
-}
+### PR body template
+
+```markdown
+## Intake
+
+**Title:** Short opportunity title
+**Owner:** studio-team
+**Tags:** b2b, saas
+
+### Description
+
+1–3 paragraphs describing the problem and proposed angle.
 ```
 
 ### Agent instructions
 
 ```text
-You are running intake for the AI Startup Studio Brain control plane.
+You are running CP — Intake for the AI Startup Studio Brain control plane.
 
-1. Read AGENTS.md.
-2. Parse title, description, owner, and tags from the webhook payload (or chat message).
-3. Execute prompts/intake-v1.md: create opportunities/OPP-YYYYMMDD-slug.md from template, run Discovery, set status evaluating.
-4. Do not run validation, scoring, or portfolio decisions.
-5. Create branch intake/OPP-... and open a pull request with the Intake Complete summary.
-6. Do not push directly to the default branch.
+Execute prompts/automation-intake-v1.md against this pull request.
+Commit to the PR branch. Do not push to master.
 ```
 
 ### Expected output
 
-New file under `opportunities/`, Discovery section filled, PR opened for review.
+New file under `opportunities/`, Discovery section filled, **Intake Complete** summary comment.
+
+### Workflow
+
+1. Create branch `intake/{slug}`.
+2. Open PR with the intake template in the description.
+3. Add label `cp:intake`.
+4. Merge after **CP — QA** passes.
 
 ### Related prompts
 
+- [prompts/automation-intake.md](../prompts/automation-intake.md)
 - [prompts/intake.md](../prompts/intake.md)
-- [prompts/discovery.md](../prompts/discovery.md)
 
 ---
 
-## Control Plane — MONITOR Review
+## CP — Eval
 
-Weekly scheduled review of due MONITOR (and BUILD) portfolio entries.
+Advances one opportunity by exactly one pipeline stage.
 
 | Setting | Value |
 |---------|-------|
-| **Name** | Control Plane — MONITOR Review |
-| **Description** | Re-evaluate overdue monitoring entries and sync portfolio |
-| **Trigger** | Cron — `0 9 * * 1` (every Monday at 09:00) |
-| **Tools** | None initially; open PR if files change |
-| **Repo checkout** | This repository, default branch |
+| **Name** | CP — Eval |
+| **Description** | Pipeline +1 for one opportunity on eval branch |
+| **Trigger** | Git — **label change** (label `cp:eval`) |
+| **Tools** | None (agent commits via PR branch) |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
+| **ignoreDraftPrs** | `true` |
+
+**Branch gate**: PR head branch must match `eval/OPP-YYYYMMDD-slug`.
+
+The opportunity file `opportunities/OPP-YYYYMMDD-slug.md` must already exist on the branch.
 
 ### Agent instructions
 
 ```text
-You are running a scheduled portfolio review for the AI Startup Studio Brain control plane.
+You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-1. Read AGENTS.md.
-2. Execute prompts/portfolio-review-runner-v1.md using today's date.
-3. Process due entries from portfolio/monitoring.md and portfolio/active.md (Next Review <= today).
-4. Process at most 3 MONITOR opportunities per run; queue the remainder.
-5. Re-run validation, scoring, and portfolio_manager for each processed MONITOR entry.
-6. Apply kill-rules and score-calculator logic before updating frontmatter.
-7. Sync portfolio files if decisions change.
-8. Create or update reviews/REVIEW-YYYY-QN.md when quarter start or material actions occurred.
-9. If no entries due, output NOOP and stop.
-10. Open a pull request for any file changes. Do not push directly to the default branch.
+Execute prompts/automation-eval-v1.md against this pull request.
+Commit to the PR branch. One pipeline stage per run. Do not push to master.
 ```
 
 ### Expected output
 
-**Portfolio Review Run** summary; optional `reviews/REVIEW-*.md`; PR with opportunity and portfolio updates.
+Updated opportunity section, **Pipeline Run Summary** comment. **CP — QA** runs on the subsequent push.
+
+### Workflow
+
+1. Create branch `eval/OPP-YYYYMMDD-slug` from `master`.
+2. Open PR (opportunity file must exist).
+3. Add label `cp:eval` → one stage executes.
+4. Re-add label `cp:eval` to advance the next stage, or merge and open a new eval PR.
+5. Merge after **CP — QA** passes.
 
 ### Related prompts
 
-- [prompts/portfolio-review-runner.md](../prompts/portfolio-review-runner.md)
+- [prompts/automation-eval.md](../prompts/automation-eval.md)
 - [prompts/pipeline-orchestrator.md](../prompts/pipeline-orchestrator.md)
-- [reviews/README.md](../reviews/README.md)
 
 ---
 
-## Optional — Pipeline +1 (manual)
+## CP — Review
 
-Advance one opportunity by a single pipeline stage without a dedicated automation:
+Scheduled and on-demand portfolio review of due MONITOR and BUILD entries.
 
-1. Create branch `eval/OPP-YYYYMMDD-slug`.
-2. Run [prompts/pipeline-orchestrator.md](../prompts/pipeline-orchestrator.md) against the target opportunity.
-3. Open PR; merge after [opportunity-qa](prompts/opportunity-qa.md) passes.
+| Setting | Value |
+|---------|-------|
+| **Name** | CP — Review |
+| **Description** | Re-evaluate overdue monitoring and active portfolio entries |
+| **Trigger** | Cron — `0 9 * * 1` (every Monday at 09:00) |
+| **Trigger** | Git — **label change** (label `cp:review`) |
+| **Tools** | None (agent commits via PR) |
+| **Repo checkout** | `wi2/panel-control`, branch `master` |
 
-Can be wired later to a Git push trigger on `eval/**` branches if needed.
+**Label gate**: when triggered by label, PR head branch must match `review/**`.
+
+### Agent instructions
+
+```text
+You are running CP — Review for the AI Startup Studio Brain control plane.
+
+Execute prompts/automation-review-v1.md.
+Process at most 3 MONITOR opportunities per run.
+Open a pull request for any file changes. Do not push to master.
+```
+
+### Expected output
+
+**Portfolio Review Run** summary; optional `reviews/REVIEW-*.md`; PR with opportunity and portfolio updates. **CP — QA** runs on the subsequent push.
+
+### Manual trigger
+
+1. Create branch `review/YYYY-MM-DD`.
+2. Open PR, add label `cp:review`.
+
+### Related prompts
+
+- [prompts/automation-review.md](../prompts/automation-review.md)
+- [prompts/portfolio-review-runner.md](../prompts/portfolio-review-runner.md)
+
+---
+
+## End-to-end flows
+
+### New idea
+
+```text
+intake/mon-idee → PR + ## Intake body → label cp:intake
+  → CP — Intake commits OPP → CP — QA comments → merge
+```
+
+### Pipeline advancement
+
+```text
+eval/OPP-20260625-slug → PR → label cp:eval (repeat per stage)
+  → CP — Eval (+1 stage) → CP — QA → merge when decided
+```
+
+### Weekly review
+
+```text
+Cron Monday 09:00 → CP — Review → PR review/YYYY-MM-DD → CP — QA
+```
+
+Or manually: `review/YYYY-MM-DD` + label `cp:review`.
+
+---
+
+## Security notes
+
+| Automation | Writes files | Tools |
+|------------|--------------|-------|
+| CP — QA | **No** | Comment on PRs only |
+| CP — Intake | Yes | Agent commit on PR branch |
+| CP — Eval | Yes | Agent commit on PR branch |
+| CP — Review | Yes | Agent commit + open PR |
+
+- Write automations never push to `master` directly.
+- Branch prefix + label double-gate prevents accidental pipeline runs.
+- Do not merge when **CP — QA** verdict is **fail**.
 
 ---
 

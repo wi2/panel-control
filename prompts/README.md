@@ -32,6 +32,17 @@ Versioned AI prompts for each stage of the evaluation pipeline.
 | Intake | [intake.md](intake.md) | v1 |
 | Portfolio Review Runner | [portfolio-review-runner.md](portfolio-review-runner.md) | v1 |
 
+### Automation wrappers (Cursor Automations)
+
+Thin preconditions + delegation to orchestration prompts above. See [docs/automations.md](../docs/automations.md).
+
+| Automation | Index | Active Version |
+|------------|-------|----------------|
+| CP — QA | [automation-qa.md](automation-qa.md) | v1 |
+| CP — Intake | [automation-intake.md](automation-intake.md) | v1 |
+| CP — Eval | [automation-eval.md](automation-eval.md) | v1 |
+| CP — Review | [automation-review.md](automation-review.md) | v1 |
+
 See [AGENTS.md](../AGENTS.md) for agent operating rules.
 
 ## Versioning
