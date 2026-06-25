@@ -89,3 +89,21 @@ When a pull request modifies `opportunities/` or `portfolio/`:
 4. Do **not** merge when verdict is **fail**.
 
 Automated setup: [docs/automations.md](docs/automations.md).
+
+## Intake
+
+When a new startup idea enters the studio (webhook, chat, or manual request):
+
+1. Read [prompts/intake.md](prompts/intake.md) and execute the active version.
+2. Create `opportunities/OPP-YYYYMMDD-{slug}.md` and fill Discovery only.
+3. Open a pull request on branch `intake/OPP-...` — do not push directly to the default branch.
+
+## Portfolio review
+
+When portfolio entries are due (`Next Review <= today`) or on scheduled cron:
+
+1. Read [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) and execute the active version.
+2. Process at most **3 MONITOR opportunities** per run; queue the rest.
+3. Update portfolio files and optionally create `reviews/REVIEW-{YYYY}-Q{N}.md`.
+
+Automated setup: [docs/automations.md](docs/automations.md).

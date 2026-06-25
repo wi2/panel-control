@@ -29,6 +29,8 @@ Versioned AI prompts for each stage of the evaluation pipeline.
 | Pipeline Orchestrator | [pipeline-orchestrator.md](pipeline-orchestrator.md) | v1 |
 | Score Calculator | [score-calculator.md](score-calculator.md) | v1 |
 | Opportunity QA | [opportunity-qa.md](opportunity-qa.md) | v1 |
+| Intake | [intake.md](intake.md) | v1 |
+| Portfolio Review Runner | [portfolio-review-runner.md](portfolio-review-runner.md) | v1 |
 
 See [AGENTS.md](../AGENTS.md) for agent operating rules.
 

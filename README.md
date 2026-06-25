@@ -94,7 +94,8 @@ See [`opportunities/_example-opportunity.md`](opportunities/_example-opportunity
 | [`opportunities/`](opportunities/) | One markdown file per evaluated opportunity |
 | [`portfolio/`](portfolio/) | Living registry split by decision outcome |
 | [`playbooks/`](playbooks/) | Evaluation flow, scoring, intelligence analyses, portfolio governance |
-| [`docs/`](docs/) | Foundational reference: philosophy, principles, glossary |
+| [`reviews/`](reviews/) | Quarterly portfolio review artifacts |
+| [`docs/`](docs/) | Foundational reference: philosophy, principles, glossary, automations |
 
 ## Standards
 
@@ -108,7 +109,6 @@ See [`opportunities/_example-opportunity.md`](opportunities/_example-opportunity
 
 | Extension | Purpose |
 |-----------|---------|
-| `reviews/` | Quarterly portfolio review artifacts with learnings aggregation |
 | `experiments/` | Raw experiment logs per opportunity |
 | `metrics/` | Studio KPIs (kill rate, time-to-decision, OQI calibration) |
 | Frontmatter `tags` | Portfolio filtering by theme |

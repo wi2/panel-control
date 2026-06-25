@@ -83,9 +83,11 @@ See [`prompts/README.md`](prompts/README.md) for versioning details.
 
 ## Portfolio Reviews
 
-Run quarterly reviews using [`templates/portfolio-review-template.md`](templates/portfolio-review-template.md).
+Run quarterly reviews using [`templates/portfolio-review-template.md`](templates/portfolio-review-template.md). Save artifacts in [`reviews/`](reviews/) as `REVIEW-{YYYY}-Q{N}.md` (see [reviews/README.md](reviews/README.md)).
 
 Review all entries in [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md). Aggregate `expected_learnings` from archived opportunities. Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
+
+Scheduled reviews: use [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or the Cursor Automation in [docs/automations.md](docs/automations.md).
 
 ## Pull Request Checklist
 
@@ -109,7 +111,6 @@ Recommended extensions (not yet implemented):
 
 | Extension | Purpose |
 |-----------|---------|
-| `reviews/` folder | Quarterly portfolio review artifacts with learnings aggregation |
 | `experiments/` per opportunity | Raw experiment logs linked from Validation |
 | `metrics/` | Aggregated studio KPIs (kill rate, time-to-decision, OQI calibration) |
 | Frontmatter `tags` | Portfolio filtering by theme (e.g. `fintech`, `b2b`) |
