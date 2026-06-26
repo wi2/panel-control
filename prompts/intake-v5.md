@@ -1,13 +1,16 @@
 ---
 version: 5
 stage: intake
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: intake-v4
+superseded_by: intake-v6
 changelog: "Default portfolio_strategy solo_micro_saas; slim prompt_versions for fast path"
 ---
 
 # Intake Prompt v5
+
+**Superseded by [intake-v6.md](intake-v6.md)** — `intake_complete` marker and `cp:eval` handoff.
 
 ## Role
 

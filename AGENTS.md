@@ -60,7 +60,7 @@ prompts/{stage_key with _ replaced by -}-v{N}.md
 
 Examples: `micro_saas_evaluation: v2` → `prompts/micro-saas-evaluation-v2.md`; `portfolio_manager_micro: v1` → `prompts/portfolio-manager-micro-v1.md`.
 
-Automated advancement: **CP — Eval** on branch **`opp/pipeline`** ([docs/automations.md](docs/automations.md)) via [prompts/pipeline-orchestrator-v4.md](prompts/pipeline-orchestrator-v4.md).
+Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v5.md](prompts/pipeline-orchestrator-v5.md). Full pipeline in one run after Intake sets `intake_complete: true`.
 
 ## Decision rules
 
@@ -112,10 +112,10 @@ When a PR modifies `opportunities/` or `portfolio/`:
 
 ## Intake
 
-1. Read [prompts/intake.md](prompts/intake.md) (v5).
+1. Read [prompts/intake.md](prompts/intake.md) (v6).
 2. Branch **`opp/pipeline`**; one active OPP at a time.
 3. Default `portfolio_strategy: solo_micro_saas`.
-4. Label `cp:intake` once; **CP — Eval** on subsequent pushes.
+4. Label `cp:intake` once; then label **`cp:eval`** after Intake Complete for full pipeline run.
 
 ## Portfolio review
 

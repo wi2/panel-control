@@ -61,8 +61,9 @@ def check_links(content: str, source: Path) -> list[str]:
     return errors
 
 
-def validate_opportunity(path: Path) -> list[str]:
+def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
     errors: list[str] = []
+    warnings: list[str] = []
     text = path.read_text(encoding="utf-8")
     rel = path.relative_to(ROOT)
 
@@ -127,8 +128,17 @@ def validate_opportunity(path: Path) -> list[str]:
     if status == "decided" and "confidence_level" not in body.split("## Final Decision")[-1]:
         errors.append(f"{rel}: Final Decision section missing confidence_level")
 
+    intake_complete = fm.get("intake_complete", "").strip().lower()
+    if status == "evaluating":
+        if intake_complete == "true":
+            discovery_part = body.split("## Discovery", 1)
+            if len(discovery_part) < 2 or "<!-- Paste output -->" in discovery_part[1].split("## ", 1)[0]:
+                warnings.append(f"{rel}: intake_complete but Discovery section empty or has template placeholder")
+        elif intake_complete != "false" and not intake_complete:
+            warnings.append(f"{rel}: evaluating without intake_complete — CP — Eval will NOOP until intake finishes")
+
     errors.extend(check_links(text, path))
-    return errors
+    return errors, warnings
 
 
 def validate_portfolio(path: Path) -> list[str]:
@@ -155,14 +165,23 @@ def validate_portfolio(path: Path) -> list[str]:
 
 def main() -> int:
     errors: list[str] = []
+    warnings: list[str] = []
 
     for path in sorted(OPPORTUNITIES.glob("*.md")):
         if path.name == "README.md":
             continue
-        errors.extend(validate_opportunity(path))
+        opp_errors, opp_warnings = validate_opportunity(path)
+        errors.extend(opp_errors)
+        warnings.extend(opp_warnings)
 
     for path in sorted(PORTFOLIO.glob("*.md")):
         errors.extend(validate_portfolio(path))
+
+    if warnings:
+        print("Validation warnings:\n")
+        for warn in warnings:
+            print(f"  - {warn}")
+        print()
 
     if errors:
         print("Validation FAILED:\n")

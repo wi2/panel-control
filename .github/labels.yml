@@ -5,6 +5,10 @@
   color: "0E8A16"
   description: "Trigger CP — Intake (create OPP + Discovery on opp/pipeline)"
 
+- name: "cp:eval"
+  color: "1D76DB"
+  description: "Trigger CP — Eval (full pipeline run on opp/pipeline)"
+
 - name: "cp:review"
   color: "D93F0B"
   description: "Trigger CP — Review (portfolio review on review/** branch)"

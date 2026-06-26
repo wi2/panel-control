@@ -104,7 +104,7 @@ When submitting changes via git:
 - [ ] Internal links use relative paths
 - [ ] `python scripts/validate_opportunities.py` passes locally (CI runs on PR)
 
-Automated review: **CP — QA** runs [prompts/automation-qa-v2.md](prompts/automation-qa-v2.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
+Automated review: **CP — QA** runs [prompts/automation-qa-v3.md](prompts/automation-qa-v3.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
 
 ## GitHub labels and branch conventions
 
@@ -113,12 +113,12 @@ Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 | Label | Branch | Action |
 |-------|--------|--------|
 | `cp:intake` | **`opp/pipeline`** (exact) | Create OPP + Discovery from PR `## Intake` body (once) |
-| _(none)_ | **`opp/pipeline`** | **CP — Eval** on each push — up to 5 pipeline stages until `decided` |
+| `cp:eval` | **`opp/pipeline`** (exact) | Full pipeline evaluation — all remaining stages → `decided` (once, after Intake Complete) |
 | `cp:review` | `review/**` | Run portfolio review on demand |
 
 **Studio rule**: one **active** opportunity (`draft` / `evaluating`) on `opp/pipeline` at a time. Catalogue of `decided` OPP files inherited from `master` is normal. Recreate the branch from `master` after each merge.
 
-Legacy (deprecated): `intake/**`, `eval/OPP-*`, `opp/{slug}`, label `cp:eval`.
+Workflow: `cp:intake` → wait for Intake Complete → `cp:eval` → merge when QA passes. Do not add both labels at once.
 
 QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required.
 

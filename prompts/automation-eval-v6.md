@@ -1,13 +1,16 @@
 ---
 version: 6
 stage: automation_eval
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-eval-v5
+superseded_by: automation-eval-v7
 changelog: "Delegates to pipeline-orchestrator-v4 (strategy router, solo fast path)"
 ---
 
 # Automation Eval Wrapper v6
+
+**Superseded by [automation-eval-v7.md](automation-eval-v7.md)** — label `cp:eval` trigger, full pipeline run.
 
 ## Role
 

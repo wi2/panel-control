@@ -1,13 +1,16 @@
 ---
 version: 4
 stage: pipeline_orchestrator
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: pipeline-orchestrator-v3
+superseded_by: pipeline-orchestrator-v5
 changelog: "Strategy router — solo_micro_saas fast path (4 stages) vs startup_studio legacy (10 stages)"
 ---
 
 # Pipeline Orchestrator Prompt v4
+
+**Superseded by [pipeline-orchestrator-v5.md](pipeline-orchestrator-v5.md)** — full pipeline in one run.
 
 ## Role
 

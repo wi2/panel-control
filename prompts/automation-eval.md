@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [automation-eval-v6.md](automation-eval-v6.md)
+**Active**: [automation-eval-v7.md](automation-eval-v7.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v6 | 2026-06-26 | active | Delegates to pipeline-orchestrator-v4 |
+| v7 | 2026-06-26 | active | Label `cp:eval`; full pipeline run; intake_complete gate |
+| v6 | 2026-06-26 | deprecated | Push-triggered; delegates to pipeline-orchestrator-v4 (5-stage batch) |
 | v5 | 2026-06-26 | deprecated | Delegates to pipeline-orchestrator-v3 |
 | v4 | 2026-06-26 | deprecated | Active OPP resolution; catalogue `decided` from `master` OK on `opp/pipeline` |
 | v3 | 2026-06-26 | deprecated | Fixed branch `opp/pipeline`; counted all OPP files (broken with master catalogue) |
@@ -21,8 +22,9 @@ Used exclusively by Cursor Automation **CP — Eval** (see [docs/automations.md]
 
 1. Use branch **`opp/pipeline`** (fixed studio branch; one active OPP at a time).
 2. Branch may contain catalogue of `decided` OPP files from `master`.
-3. **Push** to `opp/pipeline` — no label. Cursor trigger: **new push to branch** `opp/pipeline`.
-4. Agent resolves the single **active** OPP (`draft` or `evaluating`) and delegates to [pipeline-orchestrator-v3.md](pipeline-orchestrator-v3.md) — up to 5 stages per push until `decided`.
+3. After **CP — Intake** completes, add label **`cp:eval`** once on the PR.
+4. Agent resolves the single **active** OPP (`draft` or `evaluating`) and delegates to [pipeline-orchestrator-v5.md](pipeline-orchestrator-v5.md) — **all remaining stages** in one run until `decided`.
+5. Remove `cp:eval` after success to avoid re-trigger.
 
 ## Related
 

@@ -3,6 +3,7 @@ id: OPP-YYYYMMDD-slug
 title: ""
 portfolio_strategy: solo_micro_saas
 status: draft
+intake_complete: false
 decision: null
 capacity_blocked: false
 global_score: null
