@@ -19,6 +19,8 @@ On review:
 
 Capacity limit: **10 monitoring opportunities** (see [portfolio rules](../playbooks/portfolio-rules.md)).
 
+<!-- CP — QA smoke test: remove after automation verified -->
+
 ## Entries
 
 | ID | Title | Global Score | OQI | Decision | Owner | Decision Date | Next Review | Link |
