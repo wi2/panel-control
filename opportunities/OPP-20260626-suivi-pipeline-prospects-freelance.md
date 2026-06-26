@@ -8,15 +8,15 @@ decision: null
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
+time_to_first_revenue_days: 75
+monthly_revenue_potential: 750
+distribution_channel: communities
+distribution_cost: 3
 scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: validation
+pipeline_stage: micro_saas_evaluation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -24,11 +24,11 @@ owner: studio-team
 tags: [freelance, b2b, micro-saas, crm]
 automation_intake_at: 2026-06-26
 micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: "144-228 EUR"
+  decision: MONITOR_MICRO
+  msfi: 58.7
+  build_hours_estimate: 80
+  maintenance_hours_estimate: 5
+  mrr_target_12m: "500-1200 EUR"
   wedge: "Kanban/liste à étapes fixes (contact → qualifié → brief → devis envoyé → gagné/perdu), rappels email/Slack si carte stagne >X jours, stats conversion par étape — solo freelance FR/EU 3–15 prospects actifs ; pas CRM lourd, pas compta au MVP"
 prompt_versions:
   discovery: v1
@@ -316,9 +316,56 @@ We believe **solo FR/EU freelancers** (dev, design, conseil, rédaction) with **
 
 ## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
+**Wedge scope**: Kanban/liste à étapes fixes (contact → qualifié → brief → devis envoyé → gagné/perdu), rappels email/Slack si carte stagne >X jours, stats conversion par étape — pour **solo freelance FR/EU** avec 3–15 prospects actifs (~€12–19/mo). **Hors scope** : génération de devis/PDF, facturation, intégration compta, CRM multi-utilisateur agence, intégrations calendrier bidirectionnelles au MVP.
 
-**confidence_level**: high / medium / low
+### Hard Gates
+
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | 80 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 5 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 750 €/mo (50×€15) | PASS |
+| distribution_cost | ≤ 7 | 3 (channel: communities) | PASS |
+| platform / ToS | see playbook | tos low ; user-owned data | PASS |
+
+**Gate evidence**
+
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| build_hours_mvp | 80 h (kanban étapes fixes, moteur stagnation, rappels email/Slack, stats conversion, auth, billing Stripe, deploy) | estimated | Scope wedge Discovery ; comparable relance-devis 78 h | 2026-06-26 |
+| maintenance_m6 | 5 h/mo (support solo, monitoring envoi email/Slack, bugfixes) | estimated | Pas d'intégration compta ; données user-owned ; pas de refresh données tierces | 2026-06-26 |
+| mrr_ceiling_wedge | 750 €/mo = 50 clients × €15/mo | estimated | ICP 4,8 M TI Urssaf ; wedge étroit pipeline seul ; ARPU €12–19 hyp. Discovery | 2026-06-26 |
+| distribution_primary | Groupes Facebook/Malt freelance FR + contenu SEO « pipeline freelance » / « CRM minimal freelance » | inferred | Validation exp. 2–3 canaux ; coût map communities=3 | 2026-06-26 |
+| pipeline_only_gap | Aucun tier FR-first ≤€15/mo « pipeline seul » sans proposals/billing/AI bundle identifié | estimated | Validation desk audit #1 ; SoloPipeline/Workdeck incluent proposals AI | 2026-06-26 |
+
+### Platform Risk
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| tos_risk | low | Données prospects saisies par l'utilisateur ou forward email ; pas de scrape réseaux sociaux |
+| regulatory_risk | low | Suivi commercial pré-contrat ; pas de données réglementées |
+| platform_dependency | low | Email (Brevo/Resend) + Slack API optionnelle ; pas de dépendance plateforme tierce pour données core |
+| alternative_data_source | true | Métadonnées prospects entièrement user-owned ; export CSV |
+
+### MSFI v2
+
+| Component | Score | Rationale |
+|-----------|-------|-----------|
+| time_to_revenue_score | 50 | 75 j (landing + outreach communities freelance + 1er payant) — bande 61–120 j |
+| automation_score | 86 | Rappels stagnation + stats conversion automatisés ; saisie self-serve kanban |
+| maintenance_sustainability_score | 80 | 5 h/mo estimé ; pas d'intégration compta ; support solo léger |
+| acquisition_score | 52 | Communities/SEO freelance faisable solo mais lent ; pas d'audience studio ; concurrence contenu CRM freelance |
+| wedge_local_score | 66 | Wedge FR-first pipeline solo pré-devis ; niche métier claire mais pas hyper-local géo |
+| competition_score | 52 | SoloPipeline/Workdeck $10–12, freelanceOS gratuit, Notion 47 % ICP — pression plus forte que tracker post-devis seul |
+| pricing_power_score | 32 | WTP unknown ; Notion gratuit + SoloPipeline $9.99 ancrent le bas ; all-in-one €19–49 couvre pipeline natif |
+| **MSFI** | **58.7** | |
+
+MSFI calc: `0.15×50 + 0.15×86 + 0.10×80 + 0.15×52 + 0.15×66 + 0.15×52 + 0.15×32 = 58.7`
+
+**Provisional decision**: MONITOR_MICRO — all hard gates PASS ; MSFI 58.7 in 50–69 band ; desk-only Validation (`desk-only: true`, confidence low) blocks BUILD_MICRO until live sprint (entretiens + landing + concierge). Chevauchement partiel avec [OPP-20260626-relance-devis-freelance](../opportunities/OPP-20260626-relance-devis-freelance.md) — bundling « funnel commercial freelance » à trancher en sprint.
+
+**confidence_level**: medium
 
 ---
 
