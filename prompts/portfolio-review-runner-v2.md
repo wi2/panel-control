@@ -1,7 +1,7 @@
 ---
 version: 2
 stage: portfolio_review_runner
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: portfolio-review-runner-v1
 changelog: "solo_micro_saas review loop — micro-saas.md registry, MSFI, 30-day cadence"

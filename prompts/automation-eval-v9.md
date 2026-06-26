@@ -1,7 +1,7 @@
 ---
 version: 9
 stage: automation_eval
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-eval-v8
 changelog: "Staged eval via orchestrator v7; one stage per cp:eval; re-add until decided"

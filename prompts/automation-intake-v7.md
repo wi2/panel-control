@@ -1,7 +1,7 @@
 ---
 version: 7
 stage: automation_intake
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-intake-v6
 changelog: "PR opened trigger + cp:intake label; same preconditions; anti double-run"

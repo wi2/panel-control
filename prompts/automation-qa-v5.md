@@ -1,7 +1,7 @@
 ---
 version: 5
 stage: automation_qa
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-qa-v4
 changelog: "Push-to-PR trigger only; no PR opened; delegates to opportunity-qa-v4"

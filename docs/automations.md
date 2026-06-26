@@ -209,16 +209,16 @@ Commit and push to opp/pipeline. Full-run — one cp:eval to decided. Do not pus
 5. Paste agent instructions above.
 6. Save.
 
-### Cursor reconfig (v7/v9)
+### Cursor reconfig (v3-lite)
 
-After merging prompt updates, reconfigure Cursor automations:
+After merging v3-lite to `master`, reconfigure Cursor automations:
 
 | Automation | Trigger | Instructions file |
 |------------|---------|-------------------|
-| **CP — Intake** | PR **opened** + label `cp:intake` (optional) | `prompts/automation-intake-v7.md` |
-| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v9.md` |
-| **CP — QA** | Push to PR only (**remove** PR opened) | `prompts/automation-qa-v5.md` |
-| **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v2.md` |
+| **CP — Intake** | PR **opened** + label `cp:intake` (optional) | `prompts/automation-intake-v8.md` |
+| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v10.md` |
+| **CP — QA** | Push to PR only (**remove** PR opened) | `prompts/automation-qa-v6.md` |
+| **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v3.md` |
 
 Verify **CP — Eval** has **no** push trigger on `opp/pipeline`.
 Verify **CP — QA** has **no** PR opened trigger.
@@ -245,7 +245,7 @@ Scheduled and on-demand portfolio review of due MONITOR and BUILD entries.
 ```text
 You are running CP — Review for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-review-v2.md.
+Execute prompts/automation-review-v3.md.
 Process at most 3 MONITOR_MICRO opportunities per run (solo_micro_saas registry).
 Open a pull request for any file changes. Do not push to master.
 ```
@@ -257,8 +257,8 @@ Open a pull request for any file changes. Do not push to master.
 ```text
 opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
   → Intake Complete → push → QA (push)
-  → cp:eval (staged) → validation → re-add → micro_saas → re-add → manager → decided
-  → QA on each push; merge gate on decided push only
+  → cp:eval (once, full-run) → validation + fit_and_decide → decided
+  → QA on eval push; merge gate on decided push
   → merge → delete opp/pipeline → next idea
 ```
 
@@ -268,12 +268,10 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 
 | Legacy | Action |
 |--------|--------|
-| `intake/**`, `eval/OPP-*`, `opp/{slug}` | Use `opp/pipeline` only |
-| CP — Eval push trigger on `opp/pipeline` | **Remove** — use label `cp:eval` only |
-| `automation-eval-v8`, `pipeline-orchestrator-v6` | Upgrade to v9 / v7 (staged eval) |
-| `automation-intake-v6`, `automation-qa-v4` | Upgrade to v7 / v5 |
-| Eval full-run v6/v8 partial confusion | Use v7/v9 staged contract; re-add `cp:eval` until `decided` |
-| `automation-review-v1`, `portfolio-review-runner-v1` | Upgrade to v2 — micro-saas registry, MSFI, 30-day cadence |
+| Staged eval (orchestrator v7, eval v9) | Upgrade to v8 / v10 — **one** `cp:eval` full-run |
+| `micro_saas_evaluation` + `portfolio_manager_micro` | Replaced by `fit_and_decide` |
+| Studio 10-stage path | Frozen — [legacy-studio.md](legacy-studio.md) |
+| MSFI v2 (7 components) | MSFI-lite (3 components) — [msfi_calculator.py](../scripts/msfi_calculator.py) |
 | Open smoke/test PRs on old branches | Close without merge |
 
 ---
@@ -289,7 +287,7 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 | Eval NOOP: ambiguous OPP | Multiple **active** OPPs (`draft`/`evaluating`) on branch | One active OPP per run; catalogue `decided` is OK |
 | Intake NOOP: active OPP exists | Pipeline already in progress | Add `cp:eval` or wait until `decided` |
 | Eval re-runs on decided OPP | `cp:eval` label still present | Remove label; Eval NOOPs on `decided` |
-| Eval partial run (`Remaining stages` ≠ none) while `status: evaluating` | Expected under **staged v7/v9** — re-add `cp:eval` | Do not merge until `Remaining stages: none` |
+| Eval partial run while `status: evaluating` | Stale staged eval docs or agent used v7 | Upgrade to v10; one cp:eval should reach `decided` |
 | Merged mid-pipeline | Ignored QA warn | Wait for `decided`; never merge on mid-pipeline warn |
 | QA on empty PR open | PR opened trigger on CP — QA | Remove PR opened; push-only on CP — QA |
 | QA success, no PR comment | Comment on PRs disabled | Enable on CP — QA |
@@ -313,14 +311,14 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 
 ## Smoke test (`opp/pipeline`)
 
-Run after merging v7/v9 prompts to `master` and reconfiguring Cursor automations.
+Run after merging v3-lite to `master` and reconfiguring Cursor automations.
 
 ### Prerequisites
 
-1. Merge docs PR to `master`.
-2. **CP — Eval**: label `cp:eval` only; instructions → `automation-eval-v9.md`.
-3. **CP — Intake**: PR opened + optional `cp:intake`; instructions → `automation-intake-v7.md`.
-4. **CP — QA**: push to PR only (**no** PR opened); instructions → `automation-qa-v5.md`.
+1. Merge v3-lite PR to `master`.
+2. **CP — Eval**: label `cp:eval` only; instructions → `automation-eval-v10.md`.
+3. **CP — Intake**: PR opened + optional `cp:intake`; instructions → `automation-intake-v8.md`.
+4. **CP — QA**: push to PR only; instructions → `automation-qa-v6.md`.
 5. Sync labels: `gh label list | grep cp:` shows `cp:intake`, `cp:eval`, `cp:review`.
 
 ### Steps (new smoke)
@@ -339,21 +337,19 @@ git push -u origin opp/pipeline
 ```markdown
 ## Intake
 
-**Title:** Pipeline smoke test v7 staged
+**Title:** Pipeline smoke test v3-lite full-run
 **Owner:** studio-team
 **Tags:** smoke-test
 
 ### Description
 
-Minimal smoke test — Intake on PR open, staged cp:eval (3× solo) → decided. Safe to kill after verification.
+Minimal smoke — Intake on PR open, single cp:eval → decided. Safe to kill after verification.
 ```
 
-3. Wait for **Intake Complete** (PR opened trigger) — no `cp:intake` required.
-4. **No QA** on PR open alone (empty commit only).
-5. Add label `cp:eval` — re-add after each staged summary until `decided` (solo: 3×).
-6. Wait for final **Pipeline Run Summary**: `Mode: staged`, `Remaining stages: none`, `decided`.
-7. **CP — QA** on Intake push and Eval push (pass or warn).
-8. After verification: merge or close, then:
+3. Wait for **Intake Complete**.
+4. Add label `cp:eval` **once**.
+5. Wait for **Pipeline Run Summary**: `Mode: full-run`, `Remaining stages: none`, `decided`.
+6. **CP — QA** pass or warn on Eval push.
 
 ```bash
 git push origin --delete opp/pipeline
@@ -365,7 +361,7 @@ git push origin --delete opp/pipeline
 |------|--------|----------|
 | 1 | Open PR with ## Intake | Intake runs; OPP + Discovery |
 | 2 | No cp:eval before Intake done | Eval not started |
-| 3 | cp:eval staged after Intake | 3× solo (or N studio) → `decided`; mid-pipeline QA warn OK |
+| 3 | cp:eval once after Intake | full-run → `decided` |
 | 4 | `python3 scripts/validate_opportunities.py` | pass |
 | 5 | CP — QA | pass or warn on Eval push only |
 
@@ -376,12 +372,12 @@ git push origin --delete opp/pipeline
 After configuring all four Cursor Automations, verify each item:
 
 - [ ] `gh label list` shows `cp:intake`, `cp:eval`, and `cp:review` (or run **Sync GitHub labels** workflow)
-- [ ] **CP — QA** uses `prompts/automation-qa-v5.md`; trigger **push to PR only** (no PR opened)
-- [ ] **CP — Intake** uses `prompts/automation-intake-v7.md`; triggers PR **opened** + optional label `cp:intake`
-- [ ] **CP — Eval** uses `prompts/automation-eval-v9.md`; trigger label `cp:eval` only (**no push trigger**)
-- [ ] **CP — Review** uses `prompts/automation-review-v1.md`; cron + `cp:review` on `review/**`
+- [ ] **CP — QA** uses `prompts/automation-qa-v6.md`; trigger **push to PR only**
+- [ ] **CP — Intake** uses `prompts/automation-intake-v8.md`; triggers PR **opened** + optional `cp:intake`
+- [ ] **CP — Eval** uses `prompts/automation-eval-v10.md`; trigger label `cp:eval` only
+- [ ] **CP — Review** uses `prompts/automation-review-v3.md`; cron + `cp:review` on `review/**`
 - [ ] GitHub Action **Validate opportunities and portfolio** passes on PR
-- [ ] Smoke test: staged cp:eval → `decided`; QA merge gate only on decided push
+- [ ] Smoke test: single cp:eval → `decided`; QA merge gate on decided push
 
 ### Post-setup verification commands
 
