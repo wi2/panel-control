@@ -10,12 +10,12 @@ Four automations — one job each, thin wrapper → versioned prompt:
 
 ```text
 CP — QA      (read-only)  → prompts/automation-qa-v1.md       → opportunity-qa-v1
-CP — Intake  (write)      → prompts/automation-intake-v3.md   → intake-v3
-CP — Eval    (write)      → prompts/automation-eval-v3.md     → pipeline-orchestrator-v2
+CP — Intake  (write)      → prompts/automation-intake-v4.md   → intake-v4
+CP — Eval    (write)      → prompts/automation-eval-v4.md     → pipeline-orchestrator-v2
 CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
 ```
 
-**Studio branch**: fixed name **`opp/pipeline`** — one opportunity at a time. One PR, one label (`cp:intake`). Eval advances on each **push** to `opp/pipeline` (up to 5 stages per run) until `decided`.
+**Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. One PR, one label (`cp:intake`). Eval advances on each **push** to `opp/pipeline` (up to 5 stages per run) until `decided`.
 
 ## Cursor UI constraints
 
@@ -72,7 +72,7 @@ Before enabling automations:
 8. Next idea: repeat from step 1
 ```
 
-Only **one active OPP** on `opp/pipeline` at a time.
+Only **one active OPP** (`draft` or `evaluating`) on `opp/pipeline` at a time. Catalogue `decided` files inherited from `master` are normal.
 
 ---
 
@@ -125,7 +125,7 @@ Creates a new opportunity file and runs Discovery from a PR description.
 
 **Branch gate**: PR head branch must be **exactly** `opp/pipeline`.
 
-**Precondition**: no `opportunities/OPP-*.md` on the branch yet.
+**Precondition**: no **active** OPP on the branch — no `opportunities/OPP-*.md` with `status: draft` or `status: evaluating`. Catalogue of `decided` OPP files from `master` is allowed.
 
 ### PR body template
 
@@ -146,7 +146,7 @@ Creates a new opportunity file and runs Discovery from a PR description.
 ```text
 You are running CP — Intake for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-intake-v3.md against this pull request.
+Execute prompts/automation-intake-v4.md against this pull request.
 Commit and push to opp/pipeline. Do not push to master.
 ```
 
@@ -174,14 +174,14 @@ Advances the pipeline in **batches of up to 5 stages** per push. **No label.**
 
 **Branch gate**: push target / PR head branch must be **`opp/pipeline`**.
 
-**OPP resolution**: exactly **one** `opportunities/OPP-*.md` on the branch.
+**OPP resolution**: exactly **one active** OPP among `opportunities/OPP-*.md` — frontmatter `status: draft` or `status: evaluating`. Ignore catalogue files with `status: decided`.
 
 ### Agent instructions
 
 ```text
 You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-eval-v3.md against this pull request.
+Execute prompts/automation-eval-v4.md against this pull request.
 Commit and push to opp/pipeline. Up to 5 pipeline stages per run. Do not push to master.
 ```
 
@@ -199,7 +199,16 @@ Commit and push to opp/pipeline. Up to 5 pipeline stages per run. Do not push to
 6. Paste agent instructions above.
 7. Save.
 
-Also update **CP — Intake** instructions to `automation-intake-v3.md`.
+Also update **CP — Intake** instructions to `automation-intake-v4.md`.
+
+### Cursor reconfig (v4)
+
+After merging v4 docs, update automation instructions only (triggers unchanged):
+
+| Automation | Instructions file |
+|------------|-------------------|
+| **CP — Intake** | `prompts/automation-intake-v4.md` |
+| **CP — Eval** | `prompts/automation-eval-v4.md` |
 
 ---
 
@@ -257,8 +266,10 @@ opp/pipeline → PR + ## Intake → cp:intake (once)
 |---------|--------------|-----|
 | Eval never starts after Intake | Trigger branch is `master` or wrong name | Set CP — Eval to **push** → `opp/pipeline` |
 | Eval NOOP: wrong branch | PR not on `opp/pipeline` | Recreate branch with exact name |
-| Eval NOOP: ambiguous OPP | Multiple OPP files on branch | One OPP per pipeline run only |
-| Intake NOOP: OPP exists | Reused branch without cleanup | Delete branch, recreate from `master` |
+| Eval NOOP: ambiguous OPP | Multiple **active** OPPs (`draft`/`evaluating`) on branch | One active OPP per run; catalogue `decided` is OK |
+| Eval NOOP: ambiguous (v3) | Total OPP count includes `decided` catalogue | Upgrade to v4 prompts; reconfigure Cursor |
+| Intake NOOP: active OPP exists | Pipeline already in progress | Use **CP — Eval** (push); wait until `decided` |
+| Intake NOOP: OPP exists (v3) | v3 blocked on any OPP file | Upgrade to v4 prompts |
 | QA success, no PR comment | Comment on PRs disabled | Enable on CP — QA |
 | Automation failed to start | Billing / spend limit | Cursor dashboard → Settings |
 
@@ -280,16 +291,26 @@ opp/pipeline → PR + ## Intake → cp:intake (once)
 
 ## Smoke test (`opp/pipeline`)
 
-Run after merging v3 docs to `master` and reconfiguring Cursor automations.
+Run after merging v4 docs to `master` and reconfiguring Cursor automations to v4.
 
 ### Prerequisites
 
-1. Merge docs PR (v3 prompts + this file) to `master`.
-2. **CP — Eval**: trigger **New push to branch** → `opp/pipeline`; instructions → `automation-eval-v3.md`; remove `cp:eval` label trigger.
-3. **CP — Intake**: instructions → `automation-intake-v3.md`.
+1. Merge docs PR (v4 prompts + this file) to `master`.
+2. **CP — Eval**: trigger **New push to branch** → `opp/pipeline`; instructions → `automation-eval-v4.md`.
+3. **CP — Intake**: instructions → `automation-intake-v4.md`.
 4. Close without merge (if still open): PRs on `opp/automation-v2-smoke`, `intake/automation-smoke-test`, `test/qa-smoke`.
 
-### Steps
+### Retry on existing smoke PR
+
+If intake already ran on an open `opp/pipeline` PR (e.g. `OPP-20260626-pipeline-smoke-test.md` with `status: evaluating`):
+
+1. Merge v4 docs → `master`.
+2. Reconfigure Cursor → v4 prompts (see [Cursor reconfig (v4)](#cursor-reconfig-v4)).
+3. Merge `master` into `opp/pipeline` (or empty commit + push).
+4. **CP — Eval** should resolve the single active OPP and post **Pipeline Run Summary** (not NOOP ambiguous).
+5. **CP — QA** comments on each push.
+
+### Steps (new smoke)
 
 ```bash
 git checkout master && git pull
@@ -309,11 +330,11 @@ git push -u origin opp/pipeline
 
 ### Description
 
-Minimal smoke test for opp/pipeline v3 flow. Safe to kill after verification.
+Minimal smoke test for opp/pipeline v4 flow. Safe to kill after verification.
 ```
 
 3. Add label `cp:intake` once.
-4. Wait for **Intake Complete** → verify one `opportunities/OPP-*.md` on branch.
+4. Wait for **Intake Complete** → verify one new active `opportunities/OPP-*.md` on branch (catalogue `decided` may coexist).
 5. Each agent push should trigger **CP — Eval** (batch ≤5 stages) until `decided` or manual stop.
 6. **CP — QA** should comment on each push.
 7. After verification: close PR without merge (or merge if you want to keep the OPP), then:
@@ -326,7 +347,7 @@ git push origin --delete opp/pipeline
 
 | Branch | Action |
 |--------|--------|
-| `opp/automation-v2-smoke` | Delete remote + local after v3 smoke passes |
+| `opp/automation-v2-smoke` | Delete remote + local after smoke passes |
 | `intake/automation-smoke-test` | Close PR; delete branch |
 | `test/qa-smoke`, `test/qa-pr-automation` | Close if obsolete |
 

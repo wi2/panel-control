@@ -1,14 +1,13 @@
 ---
-version: 3
+version: 4
 stage: intake
-status: deprecated
+status: active
 created: 2026-06-26
-supersedes: intake-v2
-superseded_by: intake-v4
-changelog: "Fixed branch opp/pipeline; one active OPP at a time"
+supersedes: intake-v3
+changelog: "Catalogue decided from master coexists; one active OPP per pipeline run"
 ---
 
-# Intake Prompt v3
+# Intake Prompt v4
 
 ## Role
 
@@ -22,7 +21,8 @@ Create a uniquely named opportunity document with Discovery complete and `status
 
 All automated intake and eval use the **fixed branch** `opp/pipeline`:
 
-- **One active opportunity** on this branch at a time.
+- The branch may contain a **catalogue** of `decided` OPP files inherited from `master`.
+- **One active opportunity** (`status: draft` or `status: evaluating`) per pipeline run at a time.
 - After merge to `master`, delete and recreate `opp/pipeline` for the next idea (see [docs/automations.md](../docs/automations.md)).
 
 ## Inputs Required
@@ -66,12 +66,12 @@ All automated intake and eval use the **fixed branch** `opp/pipeline`:
 
 ### PR note
 
-Branch must be `opp/pipeline`. After intake commit+push, **CP — Eval** advances the pipeline without labels. Merge when `status: decided` and **CP — QA** passes. Recreate `opp/pipeline` from `master` for the next idea.
+Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coexist on this branch. After intake commit+push, **CP — Eval** targets the single active OPP without labels. Merge when `status: decided` and **CP — QA** passes. Recreate `opp/pipeline` from `master` for the next idea.
 ```
 
 ## Constraints
 
-- One idea → one file per run on `opp/pipeline`.
+- One idea → one new file per run on `opp/pipeline`.
 - Do not score, calculate OQI, or record a portfolio decision in intake.
 - Tag uncertain market claims as `unknown` or `inferred`, never `verified` without source.
 - Use relative links only per CONVENTIONS.

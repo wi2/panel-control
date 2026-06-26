@@ -115,7 +115,7 @@ Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 | _(none)_ | **`opp/pipeline`** | **CP — Eval** on each push — up to 5 pipeline stages until `decided` |
 | `cp:review` | `review/**` | Run portfolio review on demand |
 
-**Studio rule**: one active opportunity on `opp/pipeline` at a time. Recreate the branch from `master` after each merge.
+**Studio rule**: one **active** opportunity (`draft` / `evaluating`) on `opp/pipeline` at a time. Catalogue of `decided` OPP files inherited from `master` is normal. Recreate the branch from `master` after each merge.
 
 Legacy (deprecated): `intake/**`, `eval/OPP-*`, `opp/{slug}`, label `cp:eval`.
 

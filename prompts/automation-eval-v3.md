@@ -1,9 +1,10 @@
 ---
 version: 3
 stage: automation_eval
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-eval-v2
+superseded_by: automation-eval-v4
 changelog: "Fixed branch opp/pipeline — push-to-branch trigger (Cursor UI exact name)"
 ---
 

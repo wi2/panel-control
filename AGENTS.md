@@ -95,7 +95,7 @@ Automated setup: [docs/automations.md](docs/automations.md) (**CP — QA**).
 When a new startup idea enters the studio (PR + label, chat, or manual request):
 
 1. Read [prompts/intake.md](prompts/intake.md) and execute the active version (or **CP — Intake** via [docs/automations.md](docs/automations.md)).
-2. Create branch **`opp/pipeline`** from `master` (recreate after each merged idea; one OPP at a time).
+2. Create branch **`opp/pipeline`** from `master` (recreate after each merged idea; one active OPP at a time; catalogue `decided` from `master` may coexist).
 3. Create `opportunities/OPP-YYYYMMDD-{slug}.md` and fill Discovery only (via automation or manual).
 4. Open a pull request on **`opp/pipeline`** — add label `cp:intake` once. **CP — Eval** runs on subsequent pushes (no eval label). Do not push directly to the default branch.
 
