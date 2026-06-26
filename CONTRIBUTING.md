@@ -120,7 +120,72 @@ Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 
 Workflow: `cp:intake` → wait for Intake Complete → `cp:eval` → merge when QA passes. Do not add both labels at once.
 
-QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required.
+QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required. The first QA run on PR open may be a NOOP or incomplete; **use the latest QA comment after the Eval push** as the merge gate.
+
+### Pipeline workflows: local vs automation
+
+Same prompts and sections — different **who runs them** and **when labels apply**.
+
+#### When to use which
+
+| Goal | Use |
+|------|-----|
+| Fast iteration, full control, debug prompts | **Local / Cursor Agent** |
+| Hands-off ops, test Background Agents end-to-end | **GitHub labels** (`cp:intake` → `cp:eval`) |
+| Merge gate | **CP — QA** on every push (both flows) |
+
+Default strategy for new opportunities: **`solo_micro_saas`** (4 stages after intake). See [evaluation-process.md](playbooks/evaluation-process.md).
+
+#### Flow A — Local / Agent (no labels required)
+
+Use when you execute prompts in Cursor chat or IDE Agent and commit yourself.
+
+```text
+1. git checkout master && git pull
+2. git checkout -b opp/pipeline master
+3. (Optional) Open PR early with ## Intake body for traceability — no pipeline commits yet
+4. In Cursor: run prompts in order (solo_micro_saas fast path):
+   intake-v6 / discovery-v1 → validation-v1 → micro-saas-evaluation-v2 → portfolio-manager-micro-v1
+5. Fill opportunity sections; sync portfolio/micro-saas.md; update frontmatter → status: decided
+6. python3 scripts/validate_opportunities.py
+7. git commit && git push origin opp/pipeline
+8. Merge when latest CP — QA = pass or warn
+9. git push origin --delete opp/pipeline  # after merge; recreate for next idea
+```
+
+- Do **not** add `cp:intake` / `cp:eval` if the pipeline is already complete — both NOOP.
+- Labels are optional in this flow; QA still runs on push.
+
+#### Flow B — GitHub automation (labels required)
+
+Use when Background Agents must create and evaluate the OPP from the PR alone.
+
+```text
+1. git checkout master && git pull
+2. git push origin --delete opp/pipeline   # if branch exists from prior run
+3. git checkout -b opp/pipeline master && git push -u origin opp/pipeline
+4. Open PR opp/pipeline → master with ## Intake body (Title + Description)
+5. Add label cp:intake once — wait for Intake Complete (intake_complete: true)
+6. Add label cp:eval once — wait for Pipeline Run Summary (status: decided)
+7. Merge when latest CP — QA = pass or warn
+8. Remove cp:eval label after success; delete opp/pipeline after merge
+```
+
+**Critical:** no manual commits to `opportunities/` or `portfolio/` on the branch **before** step 5. Pre-filled pipeline commits make `cp:intake` / `cp:eval` NOOP.
+
+#### CP — QA timing (both flows)
+
+| Event | QA behaviour |
+|-------|----------------|
+| PR opened | May run early; diff often empty → ignore unless final |
+| Push after Intake | Validates Discovery + intake markers |
+| Push after Eval | **Authoritative merge gate** (full decided OPP) |
+
+Do not merge on **fail**. **warn** is acceptable for MONITOR_MICRO desk-only runs.
+
+#### Cron (online only)
+
+**CP — Review** runs on cron `0 9 * * 1` (Mondays 09:00) in Cursor cloud — not local. On-demand: label `cp:review` on a PR whose head branch matches `review/**`.
 
 ### Intake PR template
 
