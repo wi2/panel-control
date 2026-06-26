@@ -8,15 +8,15 @@ decision: null
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
+time_to_first_revenue_days: 75
+monthly_revenue_potential: 750
+distribution_channel: communities
+distribution_cost: 3
 scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: validation
+pipeline_stage: micro_saas_evaluation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -24,11 +24,11 @@ owner: studio-team
 tags: [b2b, saas, france, btp, electricien, micro-saas]
 automation_intake_at: 2026-06-26
 micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: 100
-  maintenance_hours_estimate: 10
-  mrr_target_12m: ""
+  decision: MONITOR_MICRO
+  msfi: 64.3
+  build_hours_estimate: 92
+  maintenance_hours_estimate: 8
+  mrr_target_12m: "500-900 EUR"
   wedge: "Catalogue consommables + seuils + alertes réappro — 1 département, TPE sans magasinier"
 prompt_versions:
   discovery: v1
@@ -306,9 +306,55 @@ Desk evaluation only. **desk-only**: true — live customer experiments below ar
 
 ## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
+**Wedge scope**: Catalogue perso de consommables électricien (dominos, goulottes, câbles courants), seuils mini/maxi par SKU, alertes email/SMS réappro, historique consommation par chantier — **1 département**, TPE **1–5 salariés sans magasinier**. **Hors scope** : ERP/devis/factures, multi-dépôt enterprise, intégration négoce temps réel, multi-département self-serve.
 
-**confidence_level**: high / medium / low
+### Hard Gates
+
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | 92 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 8 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 750 €/mo (50×€15) | PASS |
+| distribution_cost | ≤ 7 | 3 (channel: communities) | PASS |
+| platform / ToS | see playbook | tos low ; user data | PASS |
+
+**Gate evidence**
+
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| build_hours_mvp | 92 h (catalogue CRUD, seuils, alertes SMS/email, log/chantier, auth, billing, deploy) | estimated | Scope wedge Discovery + stack SaaS standard | 2026-06-26 |
+| maintenance_m6 | 8 h/mo (support TPE, SMS monitoring, bugfixes) | estimated | Comparable MONITOR wedges ; pas d'intégration négoce | 2026-06-26 |
+| mrr_ceiling_dept | 750 €/mo = 50 clients × €15/mo | estimated | ICP ~1k TPE/dept × 5% conv. ; ARPU €9–19 hyp. Discovery | 2026-06-26 |
+| distribution_primary | CMA + groupes Facebook métier locaux | inferred | Discovery canal ; coût map communities=3 | 2026-06-26 |
+
+### Platform Risk
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| tos_risk | low | Données inventaire saisies par l'utilisateur ; pas de scrape |
+| regulatory_risk | low | Suivi stock consommables ; pas de données réglementées |
+| platform_dependency | low | Email/SMS via API (Twilio/Brevo) ; pas de dépendance réseau social |
+| alternative_data_source | true | Catalogue et seuils entièrement user-owned |
+
+### MSFI v2
+
+| Component | Score | Rationale |
+|-----------|-------|-----------|
+| time_to_revenue_score | 50 | 75 j (landing + CMA outreach + 1er payant) — bande 61–120 j |
+| automation_score | 85 | Alertes seuil + SMS/email automatisés ; saisie self-serve |
+| maintenance_sustainability_score | 75 | 8 h/mo estimé ; support TPE terrain modéré |
+| acquisition_score | 58 | CMA/Facebook locaux faisable solo mais lent ; pas d'audience studio |
+| wedge_local_score | 82 | Wedge hyper-local dept + catalogue perso consommables |
+| competition_score | 62 | Gap wedge documenté (Validation #4) ; Excel/Tolteck pression entry-tier |
+| pricing_power_score | 42 | WTP unknown ; Tolteck ~€19/mo et Excel gratuit ancrent le bas |
+| **MSFI** | **64.3** | |
+
+MSFI calc: `0.15×50 + 0.15×85 + 0.10×75 + 0.15×58 + 0.15×82 + 0.15×62 + 0.15×42 = 64.3`
+
+**Provisional decision**: MONITOR_MICRO — all hard gates PASS ; MSFI 64.3 in 50–69 band ; desk-only Validation blocks BUILD_MICRO until live sprint (entretiens + landing + concierge).
+
+**confidence_level**: medium
 
 ---
 
