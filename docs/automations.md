@@ -9,13 +9,13 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automation
 Four automations — one job each, thin wrapper → versioned prompt:
 
 ```text
-CP — QA      (read-only)  → prompts/automation-qa-v4.md       → opportunity-qa-v4
-CP — Intake  (write)      → prompts/automation-intake-v6.md   → intake-v6
-CP — Eval    (write)      → prompts/automation-eval-v7.md     → pipeline-orchestrator-v5
+CP — QA      (read-only)  → prompts/automation-qa-v5.md       → opportunity-qa-v4
+CP — Intake  (write)      → prompts/automation-intake-v7.md   → intake-v6
+CP — Eval    (write)      → prompts/automation-eval-v8.md     → pipeline-orchestrator-v6
 CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
 ```
 
-**Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. Labels: **`cp:intake`** (once) then **`cp:eval`** (once) for full pipeline in a single Eval run.
+**Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. **Intake** on PR opened (or label `cp:intake`); **`cp:eval` once** for full pipeline → `decided`.
 
 ## Cursor UI constraints
 
@@ -23,7 +23,7 @@ CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-
 |------------|------------|
 | No branch wildcards (`opp/**`) | Use exact branch name `opp/pipeline` |
 | Branch field cannot be empty (defaults to `master`) | Set PR head branch to `opp/pipeline` explicitly |
-| Label vs push triggers | Intake = label `cp:intake`; Eval = label `cp:eval` (not push) |
+| Label vs push triggers | Intake = PR opened + optional `cp:intake`; Eval = `cp:eval` only; QA = push to PR only |
 
 After each merged idea: delete `opp/pipeline`, recreate from `master` for the next intake.
 
@@ -46,7 +46,7 @@ Before enabling automations:
 
 | Label | Color (suggested) | Automation | Purpose |
 |-------|-------------------|------------|---------|
-| `cp:intake` | `#0E8A16` | CP — Intake | Create OPP + Discovery (once per pipeline run) |
+| `cp:intake` | `#0E8A16` | CP — Intake | Optional fallback if PR-open Intake did not run |
 | `cp:eval` | `#1D76DB` | CP — Eval | Full pipeline evaluation (all remaining stages → `decided`) |
 | `cp:review` | `#D93F0B` | CP — Review | Portfolio review on demand |
 
@@ -54,10 +54,11 @@ Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync vi
 
 **Rules**
 
-- Add `cp:intake` **once** when starting a new idea on `opp/pipeline`.
-- After **Intake Complete**, add `cp:eval` **once** to run the full pipeline.
+- Open PR with `## Intake` on `opp/pipeline` → **CP — Intake** runs on PR opened.
+- Label `cp:intake` is **optional** (fallback only).
+- After **Intake Complete**, add `cp:eval` **once** — must reach `decided` in one run (or `failed_incomplete`).
 - Remove `cp:eval` after successful `decided` to avoid re-trigger.
-- QA runs automatically on PR open/push when paths match — no label.
+- **CP — QA** runs on **push to PR** only (after Intake or Eval commits) — no label.
 - Review uses `cp:review` on `review/**` branches only.
 - Do **not** add `cp:intake` and `cp:eval` simultaneously — wait for Intake Complete.
 
@@ -67,14 +68,16 @@ Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync vi
 
 ```text
 1. git checkout master && git pull
-2. git checkout -b opp/pipeline master
-3. git push -u origin opp/pipeline          # does NOT trigger Eval
-4. Open PR + ## Intake body → label cp:intake (once)
-5. CP — Intake → push (QA only)
-6. label cp:eval → CP — Eval (full run → decided) → push
-7. CP — QA on each push → merge when pass
-8. git push origin --delete opp/pipeline   # optional cleanup
-9. Next idea: repeat from step 1
+2. git push origin --delete opp/pipeline   # if exists
+3. git checkout -b opp/pipeline master
+4. git commit --allow-empty -m "chore: open pipeline PR for automation run"
+5. git push -u origin opp/pipeline
+6. Open PR + ## Intake body → CP — Intake (PR opened)
+7. Push after Intake → CP — QA
+8. label cp:eval (once) → CP — Eval (full run → decided) → push → CP — QA
+9. Merge when latest QA = pass or warn
+10. git push origin --delete opp/pipeline
+11. Next idea: repeat from step 1
 ```
 
 Only **one active OPP** (`draft` or `evaluating`) on `opp/pipeline` at a time. Catalogue `decided` files inherited from `master` are normal.
@@ -89,8 +92,8 @@ Read-only validation. **Never commits.**
 |---------|-------|
 | **Name** | CP — QA |
 | **Description** | Validate PRs changing opportunities or portfolio entries |
-| **Trigger** | Git — pull request **opened** |
 | **Trigger** | Git — code **pushed to pull request** |
+| **Do not** | Git — pull request **opened** |
 | **Path scope** | Changes under `opportunities/` or `portfolio/` |
 | **Tools** | Comment on PRs **only** |
 | **Repo checkout** | `wi2/panel-control`, branch `master` |
@@ -101,7 +104,7 @@ Read-only validation. **Never commits.**
 ```text
 You are running CP — QA for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-qa-v4.md against this pull request.
+Execute prompts/automation-qa-v5.md against this pull request.
 Do not modify any files.
 
 You MUST post the QA verdict on this pull request using the Comment on PRs tool.
@@ -123,7 +126,8 @@ Creates a new opportunity file and runs Discovery from a PR description.
 |---------|-------|
 | **Name** | CP — Intake |
 | **Description** | Create OPP file with Discovery from PR intake template |
-| **Trigger** | Git — **label change** (label `cp:intake`) |
+| **Trigger** | Git — pull request **opened** |
+| **Trigger** | Git — **label change** (label `cp:intake`, optional) |
 | **Tools** | None (agent commits via PR branch) |
 | **Repo checkout** | `wi2/panel-control`, branch `master` |
 | **ignoreDraftPrs** | `true` |
@@ -151,13 +155,13 @@ Creates a new opportunity file and runs Discovery from a PR description.
 ```text
 You are running CP — Intake for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-intake-v6.md against this pull request.
+Execute prompts/automation-intake-v7.md against this pull request.
 Commit and push to opp/pipeline. Do not push to master.
 ```
 
 ### Expected output
 
-New file under `opportunities/`, Discovery section filled, `intake_complete: true`, **Intake Complete** summary. Push triggers **CP — QA** only — add label **`cp:eval`** to start evaluation.
+New file under `opportunities/`, Discovery section filled, `intake_complete: true`, **Intake Complete** summary. Push triggers **CP — QA** (push only) — add label **`cp:eval`** once to start evaluation.
 
 ---
 
@@ -187,13 +191,13 @@ Runs the **full remaining pipeline** in one invocation when label **`cp:eval`** 
 ```text
 You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-eval-v7.md against this pull request.
-Commit and push to opp/pipeline. Full pipeline run (all remaining stages). Do not push to master.
+Execute prompts/automation-eval-v8.md against this pull request.
+Commit and push to opp/pipeline. Full pipeline run (all remaining stages → decided in one invocation). Do not push to master.
 ```
 
 ### Expected output
 
-**Pipeline Run Summary** with all stages executed and `Remaining stages: none` when `decided`. **CP — QA** runs on push. Recommend removing `cp:eval` label after success.
+**Pipeline Run Summary** with `Mode: full run`, `Remaining stages: none`, `status: decided`. On `Gate status: failed_incomplete` — do not merge. **CP — QA** runs on push. Remove `cp:eval` after success.
 
 ### Cursor setup (required)
 
@@ -204,20 +208,19 @@ Commit and push to opp/pipeline. Full pipeline run (all remaining stages). Do no
 5. Paste agent instructions above.
 6. Save.
 
-Also update **CP — Intake** instructions to `automation-intake-v6.md`.
+### Cursor reconfig (v6/v7/v8)
 
-### Cursor reconfig (v5 pipeline)
-
-After merging v5 docs, reconfigure Cursor automations:
+After merging prompt updates, reconfigure Cursor automations:
 
 | Automation | Trigger | Instructions file |
 |------------|---------|-------------------|
-| **CP — Intake** | Label `cp:intake` | `prompts/automation-intake-v6.md` |
-| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v7.md` |
-| **CP — QA** | PR open/push | `prompts/automation-qa-v4.md` |
+| **CP — Intake** | PR **opened** + label `cp:intake` (optional) | `prompts/automation-intake-v7.md` |
+| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v8.md` |
+| **CP — QA** | Push to PR only (**remove** PR opened) | `prompts/automation-qa-v5.md` |
 | **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v1.md` (unchanged) |
 
 Verify **CP — Eval** has **no** push trigger on `opp/pipeline`.
+Verify **CP — QA** has **no** PR opened trigger.
 
 ---
 
@@ -251,9 +254,9 @@ Open a pull request for any file changes. Do not push to master.
 ## End-to-end flow
 
 ```text
-opp/pipeline → PR + ## Intake → cp:intake (once)
-  → Intake Complete (intake_complete: true) → push → QA
-  → cp:eval (once) → full Eval run → decided → push → QA
+opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
+  → Intake Complete → push → QA (push)
+  → cp:eval (once) → full Eval → decided → push → QA (merge gate)
   → merge → delete opp/pipeline → next idea
 ```
 
@@ -265,8 +268,9 @@ opp/pipeline → PR + ## Intake → cp:intake (once)
 |--------|--------|
 | `intake/**`, `eval/OPP-*`, `opp/{slug}` | Use `opp/pipeline` only |
 | CP — Eval push trigger on `opp/pipeline` | **Remove** — use label `cp:eval` only |
-| `automation-eval-v6.md`, `pipeline-orchestrator-v4.md` | Upgrade to v7 / v5 |
-| `automation-intake-v5.md`, `intake-v5.md` | Upgrade to v6 |
+| `automation-eval-v7`, `pipeline-orchestrator-v5` | Upgrade to v8 / v6 |
+| `automation-intake-v6`, `automation-qa-v4` | Upgrade to v7 / v5 |
+| Eval « single stage » partial runs | Upgrade to orchestrator v6; one `cp:eval` → `decided` or fail |
 | Open smoke/test PRs on old branches | Close without merge |
 
 ---
@@ -282,6 +286,8 @@ opp/pipeline → PR + ## Intake → cp:intake (once)
 | Eval NOOP: ambiguous OPP | Multiple **active** OPPs (`draft`/`evaluating`) on branch | One active OPP per run; catalogue `decided` is OK |
 | Intake NOOP: active OPP exists | Pipeline already in progress | Add `cp:eval` or wait until `decided` |
 | Eval re-runs on decided OPP | `cp:eval` label still present | Remove label; Eval NOOPs on `decided` |
+| Eval partial run (`Remaining stages` ≠ none) | Agent stopped mid-pipeline | Do not merge; upgrade to v8/v6; re-run manually if needed |
+| QA on empty PR open | PR opened trigger on CP — QA | Remove PR opened; push-only on CP — QA |
 | QA success, no PR comment | Comment on PRs disabled | Enable on CP — QA |
 | Automation failed to start | Billing / spend limit | Cursor dashboard → Settings |
 
@@ -303,20 +309,23 @@ opp/pipeline → PR + ## Intake → cp:intake (once)
 
 ## Smoke test (`opp/pipeline`)
 
-Run after merging v5 pipeline docs to `master` and reconfiguring Cursor automations.
+Run after merging v6/v7/v8 prompts to `master` and reconfiguring Cursor automations.
 
 ### Prerequisites
 
-1. Merge docs PR (v5/v6/v7 prompts + this file) to `master`.
-2. **CP — Eval**: trigger **Label change** → `cp:eval` only; **remove** push trigger; instructions → `automation-eval-v7.md`.
-3. **CP — Intake**: instructions → `automation-intake-v6.md`.
-4. Sync labels: `gh label list | grep cp:` shows `cp:intake`, `cp:eval`, `cp:review`.
+1. Merge docs PR to `master`.
+2. **CP — Eval**: label `cp:eval` only; instructions → `automation-eval-v8.md`.
+3. **CP — Intake**: PR opened + optional `cp:intake`; instructions → `automation-intake-v7.md`.
+4. **CP — QA**: push to PR only (**no** PR opened); instructions → `automation-qa-v5.md`.
+5. Sync labels: `gh label list | grep cp:` shows `cp:intake`, `cp:eval`, `cp:review`.
 
 ### Steps (new smoke)
 
 ```bash
 git checkout master && git pull
+git push origin --delete opp/pipeline 2>/dev/null || true
 git checkout -b opp/pipeline master
+git commit --allow-empty -m "chore: open pipeline PR for automation run"
 git push -u origin opp/pipeline
 ```
 
@@ -326,22 +335,21 @@ git push -u origin opp/pipeline
 ```markdown
 ## Intake
 
-**Title:** Pipeline smoke test v5
+**Title:** Pipeline smoke test v6
 **Owner:** studio-team
 **Tags:** smoke-test
 
 ### Description
 
-Minimal smoke test for opp/pipeline v5 flow (cp:eval, full run). Safe to kill after verification.
+Minimal smoke test — Intake on PR open, one cp:eval → decided. Safe to kill after verification.
 ```
 
-3. Add label `cp:intake` once.
-4. Wait for **Intake Complete** → verify `intake_complete: true`, Discovery OK, **no** Validation section yet.
-5. Push to branch alone must **not** trigger Eval.
-6. Add label `cp:eval` once.
-7. Wait for **Pipeline Run Summary** with `decided` in one run (solo path: 3 stages post-intake).
-8. **CP — QA** should comment on each push (after intake and after eval).
-9. After verification: close PR without merge (or merge if you want to keep the OPP), then:
+3. Wait for **Intake Complete** (PR opened trigger) — no `cp:intake` required.
+4. **No QA** on PR open alone (empty commit only).
+5. Add label `cp:eval` **once**.
+6. Wait for **Pipeline Run Summary**: `Mode: full run`, `Remaining stages: none`, `decided`.
+7. **CP — QA** on Intake push and Eval push (pass or warn).
+8. After verification: merge or close, then:
 
 ```bash
 git push origin --delete opp/pipeline
@@ -351,12 +359,11 @@ git push origin --delete opp/pipeline
 
 | Step | Action | Expected |
 |------|--------|----------|
-| 1 | Push `opp/pipeline` without labels | No Eval run |
-| 2 | `cp:intake` | OPP + Discovery + `intake_complete: true` |
-| 3 | `cp:eval` before Intake done (optional race test) | NOOP: intake not complete |
-| 4 | `cp:eval` after Intake Complete | Full run → `decided` |
-| 5 | `python3 scripts/validate_opportunities.py` | pass |
-| 6 | CP — QA | pass or warn |
+| 1 | Open PR with ## Intake | Intake runs; OPP + Discovery |
+| 2 | No cp:eval before Intake done | Eval not started |
+| 3 | cp:eval once after Intake | Full run → `decided` (not single stage) |
+| 4 | `python3 scripts/validate_opportunities.py` | pass |
+| 5 | CP — QA | pass or warn on Eval push only |
 
 ---
 
@@ -365,12 +372,12 @@ git push origin --delete opp/pipeline
 After configuring all four Cursor Automations, verify each item:
 
 - [ ] `gh label list` shows `cp:intake`, `cp:eval`, and `cp:review` (or run **Sync GitHub labels** workflow)
-- [ ] **CP — QA** uses `prompts/automation-qa-v4.md`; test with a PR touching `opportunities/`
-- [ ] **CP — Intake** uses `prompts/automation-intake-v6.md`; trigger label `cp:intake`
-- [ ] **CP — Eval** uses `prompts/automation-eval-v7.md`; trigger label `cp:eval` only (**no push trigger**)
+- [ ] **CP — QA** uses `prompts/automation-qa-v5.md`; trigger **push to PR only** (no PR opened)
+- [ ] **CP — Intake** uses `prompts/automation-intake-v7.md`; triggers PR **opened** + optional label `cp:intake`
+- [ ] **CP — Eval** uses `prompts/automation-eval-v8.md`; trigger label `cp:eval` only (**no push trigger**)
 - [ ] **CP — Review** uses `prompts/automation-review-v1.md`; cron + `cp:review` on `review/**`
 - [ ] GitHub Action **Validate opportunities and portfolio** passes on PR
-- [ ] Smoke test procedure completes with `decided` on a test OPP
+- [ ] Smoke test: one `cp:eval` → `decided`; QA only on pushes after Intake/Eval
 
 ### Post-setup verification commands
 

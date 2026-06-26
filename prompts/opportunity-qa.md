@@ -23,7 +23,7 @@ Typical invocation:
 2. Execute [opportunity-qa-v4.md](opportunity-qa-v4.md) against the PR diff
 3. Post the structured comment; block merge on **fail** for `status: decided` opportunities
 
-Also used by Cursor Automation **CP — QA** via [automation-qa-v4.md](automation-qa-v4.md) (see [docs/automations.md](../docs/automations.md)).
+Also used by Cursor Automation **CP — QA** via [automation-qa-v5.md](automation-qa-v5.md) (see [docs/automations.md](../docs/automations.md)).
 
 ## Related
 

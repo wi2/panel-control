@@ -104,7 +104,7 @@ When submitting changes via git:
 - [ ] Internal links use relative paths
 - [ ] `python scripts/validate_opportunities.py` passes locally (CI runs on PR)
 
-Automated review: **CP — QA** runs [prompts/automation-qa-v4.md](prompts/automation-qa-v4.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail** on a `status: decided` opportunity.
+Automated review: **CP — QA** runs [prompts/automation-qa-v5.md](prompts/automation-qa-v5.md) on **push to PR** only (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail** on a `status: decided` opportunity.
 
 ## GitHub labels and branch conventions
 
@@ -166,23 +166,23 @@ Use when Background Agents must create and evaluate the OPP from the PR alone.
 3. git checkout -b opp/pipeline master
 4. git commit --allow-empty -m "chore: open pipeline PR for automation run"
 5. git push -u origin opp/pipeline
-6. Open PR opp/pipeline → master with ## Intake body (Title + Description)
-7. Add label cp:intake once — wait for Intake Complete (intake_complete: true)
-8. Add label cp:eval once — wait for Pipeline Run Summary (status: decided)
-9. If Eval stops mid-pipeline (status still evaluating), add cp:eval once more
-10. Merge when latest CP — QA = pass or warn on decided OPP
-11. Remove cp:eval label after success; delete opp/pipeline after merge
+6. Open PR opp/pipeline → master with ## Intake body (Title + Description) → **CP — Intake runs on PR opened**
+7. Optional: label `cp:intake` if PR-open Intake did not run
+8. Wait for Intake Complete (`intake_complete: true`)
+9. Add label `cp:eval` **once** — must reach `status: decided` in one run (`Remaining stages: none`)
+10. Merge when latest CP — QA = pass or warn on **Eval push** (not on PR open)
+11. Remove `cp:eval` label after success; delete opp/pipeline after merge
 ```
 
 **GitHub PR requirement:** base and head must differ by at least one commit — use the **empty commit** in step 4 (touches no `opportunities/` or `portfolio/` files).
 
-**Critical:** no manual commits to `opportunities/` or `portfolio/` on the branch **before** step 7. Pre-filled pipeline commits make `cp:intake` / `cp:eval` NOOP.
+**Critical:** no manual commits to `opportunities/` or `portfolio/` on the branch **before** Intake runs. Pre-filled pipeline commits make `cp:intake` / `cp:eval` NOOP.
 
 #### CP — QA timing (both flows)
 
 | Event | QA behaviour |
 |-------|----------------|
-| PR opened | May run early; diff often empty → ignore unless final |
+| PR opened (empty commit only) | **No QA** (push does not touch opportunities/portfolio) |
 | Push after Intake | Validates Discovery + intake markers |
 | Push after Eval | **Authoritative merge gate** (full decided OPP) |
 

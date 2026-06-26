@@ -161,7 +161,7 @@ For solo_micro_saas: MSFI + hard gates only (global_score/OQI = N/A).
 ### Suggested fixes
 
 ---
-*CP — QA (automation-qa-v4 / opportunity-qa-v4) · read-only*
+*CP — QA (automation-qa-v5 / opportunity-qa-v4) · read-only*
 ```
 
 ## Constraints

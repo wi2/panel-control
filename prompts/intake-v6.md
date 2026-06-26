@@ -90,6 +90,6 @@ Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coe
 ## Related
 
 - [Discovery](discovery-v1.md)
-- [Pipeline orchestrator v5](pipeline-orchestrator-v5.md)
-- [Automation intake v6](automation-intake-v6.md)
+- [Pipeline orchestrator v6](pipeline-orchestrator-v6.md)
+- [Automation intake v7](automation-intake-v7.md)
 - Previous: [intake-v5.md](intake-v5.md)

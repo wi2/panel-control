@@ -60,7 +60,7 @@ prompts/{stage_key with _ replaced by -}-v{N}.md
 
 Examples: `micro_saas_evaluation: v2` → `prompts/micro-saas-evaluation-v2.md`; `portfolio_manager_micro: v1` → `prompts/portfolio-manager-micro-v1.md`.
 
-Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v5.md](prompts/pipeline-orchestrator-v5.md). Full pipeline in one run after Intake sets `intake_complete: true`.
+Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v6.md](prompts/pipeline-orchestrator-v6.md). One `cp:eval` must complete all remaining stages → `decided` or report `failed_incomplete`. **CP — Intake** runs on PR opened (optional label `cp:intake`). **CP — QA** runs on push to PR only.
 
 ## Decision rules
 

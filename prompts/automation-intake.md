@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [automation-intake-v6.md](automation-intake-v6.md)
+**Active**: [automation-intake-v7.md](automation-intake-v7.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v6 | 2026-06-26 | active | intake_complete marker; cp:eval handoff; no eval on push |
+| v7 | 2026-06-26 | active | PR opened + cp:intake label; anti double-run |
+| v6 | 2026-06-26 | deprecated | intake_complete marker; cp:eval handoff; no eval on push |
 | v5 | 2026-06-26 | deprecated | Delegates to intake-v5 (solo_micro_saas default) |
 | v4 | 2026-06-26 | deprecated | Allow `decided` catalogue; block only when active OPP exists |
 | v3 | 2026-06-26 | deprecated | Required zero OPP files total |
@@ -19,11 +20,11 @@
 
 Used exclusively by Cursor Automation **CP — Intake** (see [docs/automations.md](../docs/automations.md)).
 
-1. Create branch **`opp/pipeline`** from `master` (recreate after each merged idea).
-2. Open PR with `## Intake` section in the PR body.
-3. Add label `cp:intake` once (allowed when no active OPP on branch; catalogue `decided` OK).
-4. Agent delegates to [intake-v6.md](intake-v6.md). Push triggers **CP — QA** only.
-5. Add label **`cp:eval`** to start **CP — Eval** (full pipeline run).
+1. Create branch **`opp/pipeline`** from `master` (empty commit + push).
+2. Open PR with `## Intake` section in the PR body → **Intake runs on PR opened**.
+3. Optional fallback: add label `cp:intake` once if PR-open trigger did not run.
+4. Agent delegates to [intake-v6.md](intake-v6.md). Push triggers **CP — QA** (push only).
+5. Add label **`cp:eval`** once to start **CP — Eval** (full pipeline run → `decided`).
 
 ## Related
 

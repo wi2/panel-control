@@ -1,9 +1,10 @@
 ---
 version: 6
 stage: automation_intake
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-intake-v5
+superseded_by: automation-intake-v7
 changelog: "intake_complete marker; cp:eval handoff; inlined preconditions; no eval on push"
 ---
 

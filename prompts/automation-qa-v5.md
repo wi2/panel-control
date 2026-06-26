@@ -1,14 +1,13 @@
 ---
-version: 4
+version: 5
 stage: automation_qa
-status: deprecated
+status: active
 created: 2026-06-26
-supersedes: automation-qa-v3
-superseded_by: automation-qa-v5
-changelog: "Mandatory opportunity-qa-v4; explicit ban on v1/v2 studio Scoring rules for solo path"
+supersedes: automation-qa-v4
+changelog: "Push-to-PR trigger only; no PR opened; delegates to opportunity-qa-v4"
 ---
 
-# Automation QA Wrapper v4
+# Automation QA Wrapper v5
 
 ## Role
 
@@ -22,13 +21,19 @@ Execute **[opportunity-qa-v4.md](opportunity-qa-v4.md)** only. Post structured c
 
 - **Do not** use `opportunity-qa-v1.md`, `opportunity-qa-v2.md`, or `opportunity-qa-v3.md`.
 - For `portfolio_strategy: solo_micro_saas`, **never** fail on empty Scoring / studio sections or missing `global_score` / OQI.
-- Footer must cite: `automation-qa-v4 / opportunity-qa-v4`.
+- Footer must cite: `automation-qa-v5 / opportunity-qa-v4`.
 
-## Trigger
+## Trigger (Cursor UI)
 
-Git — pull request **opened** or **pushed** when diff touches `opportunities/` or `portfolio/`.
+**Git — code pushed to pull request** only.
 
-If outside scope → PR comment `NOOP: outside QA scope`.
+**Do not** configure **pull request opened** on CP — QA.
+
+Path scope: changes under `opportunities/` or `portfolio/`.
+
+If the push diff is outside scope → PR comment `NOOP: outside QA scope`.
+
+Empty commits or pushes that do not touch `opportunities/` or `portfolio/` → NOOP.
 
 ## Tasks
 
@@ -40,4 +45,4 @@ If outside scope → PR comment `NOOP: outside QA scope`.
 ## Related
 
 - [Automations setup](../docs/automations.md)
-- Previous: [automation-qa-v3.md](automation-qa-v3.md)
+- Previous: [automation-qa-v4.md](automation-qa-v4.md)
