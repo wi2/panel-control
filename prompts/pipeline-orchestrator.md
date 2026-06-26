@@ -2,17 +2,18 @@
 
 ## Current Version
 
-**Active**: [pipeline-orchestrator-v1.md](pipeline-orchestrator-v1.md)
+**Active**: [pipeline-orchestrator-v2.md](pipeline-orchestrator-v2.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v1 | 2026-06-25 | active | Single-agent pipeline driver for Cursor Automations |
+| v2 | 2026-06-26 | active | Batch mode — up to 5 stages per run, push-triggered auto-continue |
+| v1 | 2026-06-25 | deprecated | Single stage per run; superseded by v2 |
 
 ## Usage
 
-Use when advancing an opportunity by one pipeline stage in a single agent run (manual or automated).
+Use when advancing an opportunity through the decision path (manual or **CP — Eval** automation).
 
 Requires:
 
@@ -20,12 +21,11 @@ Requires:
 - [AGENTS.md](../AGENTS.md) conventions
 - Active stage prompts from opportunity `prompt_versions`
 
-Output: updated opportunity section, frontmatter, and optional portfolio sync after `portfolio_manager`.
+Output: updated opportunity sections, frontmatter, optional portfolio sync after `portfolio_manager`. v2 executes up to **5 stages** per invocation with a single commit.
 
 ## Related
 
 - [AGENTS.md](../AGENTS.md)
 - [Score calculator](score-calculator.md)
 - [Evaluation process](../playbooks/evaluation-process.md)
-- First stage: [discovery.md](discovery.md)
-- Final stage: [portfolio-manager.md](portfolio-manager.md)
+- [Automation eval](automation-eval.md)

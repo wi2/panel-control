@@ -1,9 +1,10 @@
 ---
 version: 1
 stage: automation_intake
-status: active
+status: deprecated
 created: 2026-06-25
 supersedes: null
+superseded_by: automation-intake-v2
 changelog: "Intake wrapper — PR branch + label gate for Cursor Automation CP — Intake"
 ---
 

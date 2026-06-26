@@ -111,9 +111,11 @@ Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 
 | Label | Branch prefix | Action |
 |-------|---------------|--------|
-| `cp:intake` | `intake/**` | Create OPP + Discovery from PR `## Intake` body |
-| `cp:eval` | `eval/OPP-YYYYMMDD-slug` | Advance pipeline by one stage |
+| `cp:intake` | `opp/**` | Create OPP + Discovery from PR `## Intake` body (once) |
+| _(none)_ | `opp/**` | **CP — Eval** on each push — up to 5 pipeline stages until `decided` |
 | `cp:review` | `review/**` | Run portfolio review on demand |
+
+Legacy (deprecated): `intake/**`, `eval/OPP-*`, label `cp:eval`.
 
 QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required.
 

@@ -1,9 +1,10 @@
 ---
 version: 1
 stage: automation_eval
-status: active
+status: deprecated
 created: 2026-06-25
 supersedes: null
+superseded_by: automation-eval-v2
 changelog: "Pipeline +1 wrapper — branch + label gate for Cursor Automation CP — Eval"
 ---
 

@@ -35,7 +35,7 @@ vision → mvp → roadmap → architecture → success_contract
 
 Use `prompt_versions` in frontmatter — never silently switch prompt versions.
 
-For automated single-step advancement, use Cursor Automation **CP — Eval** ([docs/automations.md](docs/automations.md)) or [prompts/pipeline-orchestrator.md](prompts/pipeline-orchestrator.md) manually.
+For automated pipeline advancement, use Cursor Automation **CP — Eval** (push on `opp/**`, batches of up to 5 stages — [docs/automations.md](docs/automations.md)) or [prompts/pipeline-orchestrator.md](prompts/pipeline-orchestrator.md) manually.
 
 ## Decision rules (strict)
 
@@ -96,7 +96,7 @@ When a new startup idea enters the studio (PR + label, chat, or manual request):
 
 1. Read [prompts/intake.md](prompts/intake.md) and execute the active version (or **CP — Intake** via [docs/automations.md](docs/automations.md)).
 2. Create `opportunities/OPP-YYYYMMDD-{slug}.md` and fill Discovery only.
-3. Open a pull request on branch `intake/{slug}` — add label `cp:intake` for automation. Do not push directly to the default branch.
+3. Open a pull request on branch `opp/{slug}` — add label `cp:intake` once for automation. **CP — Eval** runs automatically on subsequent pushes (no eval label). Do not push directly to the default branch.
 
 ## Portfolio review
 

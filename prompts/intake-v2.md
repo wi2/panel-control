@@ -1,14 +1,13 @@
 ---
-version: 1
+version: 2
 stage: intake
-status: deprecated
-created: 2026-06-25
-supersedes: null
-superseded_by: intake-v2
-changelog: "Create new opportunity from raw idea and run Discovery"
+status: active
+created: 2026-06-26
+supersedes: intake-v1
+changelog: "Branch opp/**; eval auto-starts on push after intake"
 ---
 
-# Intake Prompt v1
+# Intake Prompt v2
 
 ## Role
 
@@ -55,11 +54,11 @@ Create a uniquely named opportunity document with Discovery complete and `status
 | Title | ... |
 | Discovery confidence | high / medium / low |
 | Open questions count | N |
-| Recommended next step | validation (after stage gate check) |
+| Recommended next step | CP — Eval runs automatically on this push (batch of up to 5 stages) |
 
-### PR suggestion
+### PR note
 
-Create branch `intake/{slug}` and open a pull request. Add label `cp:intake` for Cursor Automation **CP — Intake** (see [docs/automations.md](../docs/automations.md)).
+This PR uses branch `opp/{slug}`. After intake commit+push, **CP — Eval** advances the pipeline without labels. Merge when `status: decided` and **CP — QA** passes.
 ```
 
 ## Constraints
@@ -68,10 +67,10 @@ Create branch `intake/{slug}` and open a pull request. Add label `cp:intake` for
 - Do not score, calculate OQI, or record a portfolio decision in intake.
 - Tag uncertain market claims as `unknown` or `inferred`, never `verified` without source.
 - Use relative links only per CONVENTIONS.
-- Open changes via pull request — do not push directly to the default branch.
+- Open changes via pull request on `opp/**` — do not push directly to the default branch.
 
 ## Related
 
 - [Discovery](discovery-v1.md)
-- [Pipeline orchestrator](pipeline-orchestrator-v1.md)
+- [Pipeline orchestrator v2](pipeline-orchestrator-v2.md)
 - [Automations setup](../docs/automations.md)
