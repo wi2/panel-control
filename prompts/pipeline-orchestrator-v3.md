@@ -1,13 +1,16 @@
 ---
 version: 3
 stage: pipeline_orchestrator
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: pipeline-orchestrator-v2
+superseded_by: pipeline-orchestrator-v4
 changelog: "Prompt path resolution (underscore→hyphen); desk-only fast path; BUILD path documented as manual"
 ---
 
 # Pipeline Orchestrator Prompt v3
+
+**Superseded by [pipeline-orchestrator-v4.md](pipeline-orchestrator-v4.md)** for automated runs. Retained for `startup_studio` reference and reproducibility of historical OPPs.
 
 ## Role
 

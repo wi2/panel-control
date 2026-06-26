@@ -1,9 +1,10 @@
 ---
 version: 2
 stage: automation_qa
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-qa-v1
+superseded_by: automation-qa-v3
 changelog: "Delegates to opportunity-qa-v2 (prompt path resolution, Final Decision confidence)"
 ---
 

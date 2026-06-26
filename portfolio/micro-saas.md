@@ -1,8 +1,19 @@
 # Micro SaaS Portfolio
 
-Opportunities evaluated under the [Micro SaaS Portfolio](../playbooks/micro-saas-portfolio.md) lens — solo-operated wedges targeting €1–10 k MRR in 12 months with ≤100 h build and ≤10 h/mo maintenance.
+**Canonical registry** for `portfolio_strategy: solo_micro_saas`. Studio files ([active.md](active.md), [monitoring.md](monitoring.md), [archived.md](archived.md)) are legacy mirrors only.
 
-This registry is **independent** of the studio Control Plane decisions in [active.md](active.md), [monitoring.md](monitoring.md), and [archived.md](archived.md).
+## Capacity (solo_micro_saas)
+
+| Parameter | Limit |
+|-----------|-------|
+| Concurrent BUILD_MICRO | 3 |
+| MONITOR_MICRO active | 5 |
+| Total maintenance (Active BUILD) | ≤ 40 h/mo |
+| Portfolio target (cumulative) | 20 products |
+
+When capacity blocked: `decision: MONITOR_MICRO`, `capacity_blocked: true`.
+
+Opportunities evaluated under the [Micro SaaS Portfolio](../playbooks/micro-saas-portfolio.md) lens — solo-operated wedges targeting €500–10 k MRR/mo with ≤100 h build and ≤10 h/mo maintenance.
 
 ## Instructions
 
@@ -23,29 +34,30 @@ On review:
 
 | Decision | Criteria |
 |----------|----------|
-| **BUILD_MICRO** | 3/3 hard-gates PASS AND MSFI ≥ 70 |
-| **MONITOR_MICRO** | Hard-gates PASS AND MSFI 50–69 |
-| **KILL_MICRO** | ≥1 hard-gate FAIL OR MSFI < 50 |
+| **BUILD_MICRO** | All hard gates PASS + MSFI ≥ 70 + live validation |
+| **MONITOR_MICRO** | Hard gates PASS + MSFI 50–69, borderline gate, or capacity_blocked |
+| **KILL_MICRO** | Hard gate FAIL OR MSFI < 50 |
 
 ## Active (BUILD_MICRO)
 
-| ID | Wedge | MSFI | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Link |
-|----|-------|------|---------|------------|----------------|-------|---------------|-------------|------|
+| ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Notes | Link |
+|----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
 
 _No entries._
 
 ## Monitoring (MONITOR_MICRO)
 
-| ID | Wedge | MSFI | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Link |
-|----|-------|------|---------|------------|----------------|-------|---------------|-------------|------|
-| OPP-20260625-local-pricing-intelligence-artisans | FR dept 69 × climatisation (PrixMétier) | 67 | 87 | 8 | 500–1000 EUR | studio-team | 2026-06-25 | 2026-07-25 | [opportunity](../opportunities/OPP-20260625-local-pricing-intelligence-artisans.md) |
+| ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Notes | Link |
+|----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
+| OPP-20260625-local-pricing-intelligence-artisans | FR dept 69 × climatisation | 67 | MONITOR_MICRO | 87 | 8 | 500–1000 EUR | studio-team | 2026-06-25 | 2026-07-25 | | [opportunity](../opportunities/OPP-20260625-local-pricing-intelligence-artisans.md) |
+| OPP-20260625-veille-ao-pme-locales | Veille AO PME locales wedge | — | MONITOR_MICRO | — | — | 500+ EUR | studio-team | 2026-06-25 | 2026-07-25 | pending micro re-eval | [opportunity](../opportunities/OPP-20260625-veille-ao-pme-locales.md) |
 
 ## Archived (KILL_MICRO)
 
-| ID | Wedge | MSFI | Kill reason | Decision Date | Link |
-|----|-------|------|-------------|---------------|------|
-
-_No entries._
+| ID | Wedge | MSFI | Decision | Kill reason | Decision Date | Link |
+|----|-------|------|----------|-------------|---------------|------|
+| OPP-20260625-detection-opportunites-linkedin | LinkedIn signal wedge | — | KILL_MICRO | platform-tos-block | 2026-06-25 | [opportunity](../opportunities/OPP-20260625-detection-opportunites-linkedin.md) |
+| OPP-20260625-relance-factures-freelance | WhatsApp relance wedge | — | KILL_MICRO | mrr-below-minimum | 2026-06-25 | [opportunity](../opportunities/OPP-20260625-relance-factures-freelance.md) |
 
 ## Related
 

@@ -14,6 +14,8 @@ PROMPTS = ROOT / "prompts"
 
 REQUIRED_FRONTMATTER = {"id", "title", "status", "prompt_versions"}
 VALID_STATUS = {"draft", "evaluating", "decided"}
+VALID_MICRO_DECISIONS = {"BUILD_MICRO", "MONITOR_MICRO", "KILL_MICRO"}
+VALID_PORTFOLIO_STRATEGY = {"solo_micro_saas", "startup_studio", "vc_moonshot", "cashflow_business"}
 OPP_FILENAME = re.compile(r"^OPP-\d{8}-[a-z0-9-]+\.md$")
 LINK_PATTERN = re.compile(r"\]\(([^)]+)\)")
 
@@ -107,6 +109,17 @@ def validate_opportunity(path: Path) -> list[str]:
                         )
                 elif line.startswith("---") or (line and not line.startswith(" ")):
                     break
+
+
+    ps = fm.get("portfolio_strategy", "").strip()
+    if ps and ps not in VALID_PORTFOLIO_STRATEGY:
+        errors.append(f"{rel}: invalid portfolio_strategy '{ps}'")
+    if ps == "solo_micro_saas" and status == "decided":
+        dec = fm.get("decision", "").strip()
+        if dec and dec not in VALID_MICRO_DECISIONS:
+            errors.append(f"{rel}: solo_micro_saas decision must be BUILD_MICRO/MONITOR_MICRO/KILL_MICRO, got '{dec}'")
+        if fm.get("decision_override", "").strip() == "true":
+            errors.append(f"{rel}: decision_override not allowed for solo_micro_saas")
 
     if status == "decided" and "<!-- Paste output -->" in body:
         errors.append(f"{rel}: decided file contains unresolved template placeholder")

@@ -1,8 +1,10 @@
 ---
 id: OPP-20260625-veille-ao-pme-locales
+portfolio_strategy: solo_micro_saas
 title: "Veille appels d'offres ultra ciblée pour PME locales"
 status: decided
-decision: monitor
+capacity_blocked: false
+decision: MONITOR_MICRO
 global_score: 50
 opportunity_quality_index: 53
 scores:
@@ -33,6 +35,8 @@ tags: [b2b, saas, france, marches-publics, ai, pme]
 prompt_versions:
   discovery: v1
   validation: v1
+  micro_saas_evaluation: v2
+  portfolio_manager_micro: v1
   scoring: v2
   distribution_analysis: v1
   unfair_advantage: v1

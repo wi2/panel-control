@@ -1,9 +1,10 @@
 ---
 version: 5
 stage: automation_eval
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-eval-v4
+superseded_by: automation-eval-v6
 changelog: "Delegates to pipeline-orchestrator-v3 (prompt path resolution, BUILD scope)"
 ---
 

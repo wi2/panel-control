@@ -37,6 +37,16 @@ Requirements — all must be true:
 
 The orchestrator and [evaluation-process.md](evaluation-process.md) allow Scoring after desk-only when the above are met. Portfolio Manager must default to **MONITOR** or **KILL**, not BUILD, unless live validation is completed later.
 
+## solo_micro_saas validation gates
+
+For `portfolio_strategy: solo_micro_saas`, gate is **Validation → micro_saas_evaluation** (not Scoring).
+
+| Target | Desk-only | Live validation |
+|--------|-----------|-----------------|
+| MONITOR_MICRO | Allowed | Not required |
+| BUILD_MICRO | **Not allowed** | Required — interviews, concierge, waitlist, LOI, or revenue |
+| KILL_MICRO | Allowed | Not required |
+
 ## Kill / continue signals
 
 Every Validation section must state:

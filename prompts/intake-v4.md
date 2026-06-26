@@ -1,9 +1,10 @@
 ---
 version: 4
 stage: intake
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: intake-v3
+superseded_by: intake-v5
 changelog: "Catalogue decided from master coexists; one active OPP per pipeline run"
 ---
 

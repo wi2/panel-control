@@ -1,8 +1,10 @@
 ---
 id: OPP-20260625-detection-opportunites-linkedin
+portfolio_strategy: solo_micro_saas
 title: "Agent de détection d'opportunités commerciales sur LinkedIn"
 status: decided
-decision: monitor
+capacity_blocked: false
+decision: KILL_MICRO
 global_score: 51
 opportunity_quality_index: 53
 scores:
@@ -33,6 +35,8 @@ tags: [b2b, saas, france, linkedin, ai, sales-intelligence, pme, freelances]
 prompt_versions:
   discovery: v1
   validation: v1
+  micro_saas_evaluation: v2
+  portfolio_manager_micro: v1
   scoring: v2
   distribution_analysis: v1
   unfair_advantage: v1

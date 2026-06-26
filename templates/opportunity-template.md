@@ -1,10 +1,16 @@
 ---
 id: OPP-YYYYMMDD-slug
 title: ""
+portfolio_strategy: solo_micro_saas
 status: draft
 decision: null
+capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
+time_to_first_revenue_days: null
+monthly_revenue_potential: null
+distribution_channel: null
+distribution_cost: null
 scores: {}
 decision_override: false
 override_rationale: null
@@ -15,9 +21,18 @@ created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
 tags: []
+micro_saas:
+  decision: null
+  msfi: null
+  build_hours_estimate: null
+  maintenance_hours_estimate: null
+  mrr_target_12m: ""
+  wedge: ""
 prompt_versions:
   discovery: v1
   validation: v1
+  micro_saas_evaluation: v2
+  portfolio_manager_micro: v1
   scoring: v2
   distribution_analysis: v1
   unfair_advantage: v1
@@ -248,9 +263,33 @@ We believe [target user] will [behavior] because [reason].
 
 ---
 
-## Final Decision
+## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/portfolio-manager.md -->
+<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
+
+**confidence_level**: high / medium / low
+
+---
+
+## Final Decision (Micro SaaS)
+
+<!-- Paste output from prompts/portfolio-manager-micro.md — primary for solo_micro_saas -->
+
+| Field | Value |
+|-------|-------|
+| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
+| **MSFI** | XX |
+| **capacity_blocked** | true / false |
+| **Date** | YYYY-MM-DD |
+| **Rationale** | |
+
+**confidence_level**: high / medium / low
+
+---
+
+## Final Decision (Studio — startup_studio only)
+
+<!-- Paste output from prompts/portfolio-manager.md — skip for solo_micro_saas -->
 
 | Field | Value |
 |-------|-------|

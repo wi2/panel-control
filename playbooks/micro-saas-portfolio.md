@@ -1,94 +1,182 @@
 # Micro SaaS Portfolio
 
-Secondary evaluation lens for opportunities scoped as **solo-operated, low-maintenance SaaS wedges**. Complements the standard Control Plane decision path (`global_score`, OQI) without replacing it.
+**Primary decision engine** when `portfolio_strategy: solo_micro_saas`. Asset allocator for AI micro-businesses — not a venture startup evaluator.
 
-Use when the target operating model is:
+Evaluate the **wedge scope** only (solo-buildable slice). Full platform vision may fail gates while a reduced wedge passes.
+
+## Operating constraints
 
 | Constraint | Target |
 |------------|--------|
-| MRR horizon | €1–10 k/mo within 12 months |
+| MRR horizon | €500–10 k/mo per wedge at maturity |
 | Maintenance | ≤ 10 h/mo at M6 |
 | Initial build | ≤ 100 h MVP |
 | Team | 1 person (no mandatory hire) |
 | Automation | Maximize; avoid recurring manual ops |
-| Horizon | 12 months to revenue signal |
+| Time to revenue | Prefer ≤ 60 days to first € |
 
-The **full platform vision** of an opportunity may fail Micro SaaS gates while a **reduced wedge** passes. Evaluate the wedge only — do not score the platform scope against Micro SaaS criteria.
+## Relationship to startup_studio
 
-## Relationship to Control Plane
+| Strategy | Pipeline | Primary decision | Registry |
+|----------|----------|------------------|----------|
+| `solo_micro_saas` | 4-stage fast path | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO | [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) |
+| `startup_studio` | 10-stage path | build / monitor / kill | active / monitoring / archived |
 
-| Lens | Scope | Primary scores | Portfolio file |
-|------|-------|----------------|----------------|
-| Control Plane | Full opportunity | `global_score`, OQI | active / monitoring / archived |
-| Micro SaaS Portfolio | Wedge only | `msfi`, hard-gates | [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) |
+For `solo_micro_saas`, studio `global_score` and OQI are **diagnostic only** — never gate BUILD_MICRO.
 
-Both decisions are recorded in the opportunity file. They may diverge (e.g. studio MONITOR + Micro SaaS MONITOR_MICRO).
+## Hard gates (absolute)
 
-## Hard Gates (PASS / FAIL)
+Any **FAIL** → **KILL_MICRO**. **No override** for `solo_micro_saas`.
 
-All three must **PASS** for BUILD_MICRO or MONITOR_MICRO. Any **FAIL** → **KILL_MICRO** unless explicitly overridden with documented rationale.
+Evaluate gates in order (fail-fast):
 
-| Gate | Threshold | Measurement |
-|------|-----------|-------------|
-| `build_hours` | ≤ 100 h | Estimated MVP build for one person, including seed data and deploy |
-| `maintenance_hours` | ≤ 10 h/mo at M6 | Amortized support, ops, content, data refresh, billing admin |
-| `solo_operable` | Yes | No mandatory hire for product, support, or distribution in first 12 months |
+| # | Gate | Rule | Measurement |
+|---|------|------|-------------|
+| 1 | `build_hours` | ≤ 100 h | MVP wedge for one person incl. seed data and deploy |
+| 2 | `maintenance_hours` | ≤ 10 h/mo at M6 | Support, ops, data refresh, billing admin |
+| 3 | `solo_operable` | must be true | No mandatory hire for product, support, or distribution in 12 mo |
+| 4 | `monthly_revenue_potential` | ≥ **500 €/mo** | Natural ceiling at maturity for wedge scope (not platform TAM) |
+| 5 | `distribution_cost` | ≤ **7** | From `distribution_channel` cost map (see below) |
+| 6 | Platform / ToS | if `platform_dependency == high` → `alternative_data_source` must be true | API, license, or compliant hybrid — not scraping-only |
+
+### MRR potential signal
+
+| MRR potentiel (€/mo) | Signal |
+|----------------------|--------|
+| < 500 | **KILL** (hard gate) |
+| 500 – 2 000 | good |
+| 2 000 – 10 000 | excellent |
+| > 10 000 | bonus |
+
+### Distribution channel
+
+Frontmatter:
+
+```yaml
+distribution_channel: seo   # enum
+distribution_cost: 2          # computed — do not hand-edit without rationale
+```
+
+Allowed values: `seo` | `communities` | `outbound` | `ads` | `marketplace` | `existing_audience`
+
+| Channel | `distribution_cost` |
+|---------|---------------------|
+| existing_audience | 1 |
+| seo | 2 |
+| communities | 3 |
+| marketplace | 4 |
+| outbound | 8 |
+| ads | 9 |
+
+```text
+IF distribution_cost > 7  →  KILL_MICRO
+```
+
+Products requiring daily cold email, LinkedIn prospecting, or permanent outbound are not passive software assets.
+
+### ToS / platform risk (hard gate)
+
+```text
+IF tos_risk == high
+AND platform_dependency == high
+AND alternative_data_source == false
+THEN KILL_MICRO
+```
+
+Fields: `tos_risk`, `platform_dependency`, `alternative_data_source` (documented in Micro SaaS Evaluation section).
 
 ### Borderline gates
 
-If a gate is within 10% of threshold (e.g. 105 h build, 11 h/mo maintenance), document as **borderline** — default decision is **MONITOR_MICRO** with remediation plan, not BUILD_MICRO.
+If exactly **one** gate is within **10%** of threshold (e.g. build 108 h, maint 11 h/mo):
 
-## Micro SaaS Fit Index (MSFI)
+- Default **MONITOR_MICRO** with remediation plan (30 days)
+- Not eligible for BUILD_MICRO until gate passes
 
-Scale: **0–100**. Measures wedge fit for the solo Micro SaaS operating model.
+Two or more borderline failures, or any hard FAIL → **KILL_MICRO**.
 
-### Formula
+## Micro SaaS Fit Index (MSFI) v2 — soft score
+
+Hard gates filter; MSFI ranks survivors. MSFI **never compensates** for a hard gate failure.
+
+Scale: **0–100**.
 
 ```text
-MSFI = 0.25 × mrr_path_score
-     + 0.25 × automation_score
-     + 0.20 × build_feasibility_score
-     + 0.15 × maintenance_sustainability_score
-     + 0.15 × distribution_solo_score
+MSFI = 0.15 × time_to_revenue_score
+     + 0.15 × automation_score
+     + 0.10 × maintenance_sustainability_score
+     + 0.15 × acquisition_score
+     + 0.15 × wedge_local_score
+     + 0.15 × competition_score
+     + 0.15 × pricing_power_score
 ```
 
 ### Components
 
 | Component | Range | Definition |
 |-----------|-------|------------|
-| `mrr_path_score` | 0–100 | Likelihood of reaching **€1 k MRR** within 12 months via wedge scope; bonus if credible path to €10 k |
-| `automation_score` | 0–100 | Share of operations automatable without recurring human intervention (billing, delivery, data refresh) |
-| `build_feasibility_score` | 0–100 | `100 - max(0, (estimated_build_hours - 80) × 2)`, capped 0–100 |
-| `maintenance_sustainability_score` | 0–100 | `100 - max(0, (estimated_monthly_hours - 8) × 10)`, capped 0–100 |
-| `distribution_solo_score` | 0–100 | Organic SEO, community, or product-led growth reachable without outbound sales team |
+| `time_to_revenue_score` | 0–100 | From `time_to_first_revenue_days`: ≤60→100, 61–120→50, >120→0 |
+| `automation_score` | 0–100 | Ops automatable without daily human intervention |
+| `maintenance_sustainability_score` | 0–100 | Long-run maint burden within 10 h/mo gate |
+| `acquisition_score` | 0–100 | Feasibility at declared `distribution_channel` for solo founder |
+| `wedge_local_score` | 0–100 | Hyper-local or niche wedge defensibility |
+| `competition_score` | 0–100 | Incumbent pressure **within wedge** (10 = weak competition in wedge) |
+| `pricing_power_score` | 0–100 | WTP, ARPU headroom, commoditization risk |
 
-### MRR path scoring guide
+## Decision thresholds
 
-| Score | Criteria |
-|-------|----------|
-| 80–100 | €1 k MRR in ≤6 mo plausible; €10 k path visible with wedge alone |
-| 60–79 | €1 k MRR in 12 mo plausible; €10 k requires expansion beyond wedge |
-| 40–59 | €500–1 k MRR in 12 mo; €10 k improbable solo |
-| 20–39 | <€500 MRR in 12 mo likely |
-| 0–19 | No credible monetization path at wedge ARPU |
+| Decision | Criteria |
+|----------|----------|
+| **BUILD_MICRO** | All hard gates PASS + MSFI ≥ 70 + **live validation** complete (no desk-only) |
+| **MONITOR_MICRO** | All hard gates PASS + MSFI 50–69, OR 1 borderline gate with remediation |
+| **KILL_MICRO** | Any hard gate FAIL OR MSFI < 50 |
 
-## Decision Thresholds
+### Capacity blocking
 
-| Decision | Criteria | Portfolio file |
-|----------|----------|----------------|
-| **BUILD_MICRO** | 3/3 hard-gates PASS **AND** MSFI ≥ 70 | [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) — Active |
-| **MONITOR_MICRO** | Hard-gates PASS **AND** MSFI 50–69, **OR** 1 borderline gate with remediation plan | [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) — Monitoring |
-| **KILL_MICRO** | ≥1 hard-gate FAIL **OR** MSFI < 50 | [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) — Archived |
-
-Review cadence: **MONITOR_MICRO** every **30 days** during validation sprint; **BUILD_MICRO** every **30 days** for first 6 months.
-
-## Opportunity File Requirements
-
-Add to opportunity frontmatter:
+When opportunity qualifies for BUILD_MICRO but portfolio capacity is full:
 
 ```yaml
+decision: MONITOR_MICRO
+capacity_blocked: true
+```
+
+Never use `decision: CAPACITY_BLOCKED` as a fourth state.
+
+Triggers:
+
+- Sum of active BUILD_MICRO `maintenance_hours` ≥ 40 h/mo
+- Active BUILD_MICRO count ≥ 3
+
+## Validation rules
+
+| Decision | Desk research | Live validation |
+|----------|---------------|-----------------|
+| MONITOR_MICRO | Allowed (`desk-only: true`, confidence low) | Not required |
+| BUILD_MICRO | **Not allowed** | Required — ≥1 of: interviews, concierge, waitlist, LOI, revenue |
+| KILL_MICRO | Allowed | Not required |
+
+## Portfolio capacity (solo_micro_saas)
+
+| Parameter | Default |
+|-----------|---------|
+| `max_concurrent_build_micro` | 3 |
+| `max_monitor_micro` | 5 |
+| `target_portfolio_size` | 20 |
+| `max_total_maintenance_hours` | 40 |
+
+Review cadence: MONITOR_MICRO every **30 days**; BUILD_MICRO every **30 days** for first 6 months.
+
+## Opportunity frontmatter
+
+```yaml
+portfolio_strategy: solo_micro_saas
+decision: null   # BUILD_MICRO | MONITOR_MICRO | KILL_MICRO
+capacity_blocked: false
+time_to_first_revenue_days: null
+monthly_revenue_potential: null
+distribution_channel: null
+distribution_cost: null
 micro_saas:
-  decision: build_micro | monitor_micro | kill_micro
+  decision: null
   msfi: null
   build_hours_estimate: null
   maintenance_hours_estimate: null
@@ -96,44 +184,27 @@ micro_saas:
   wedge: ""
 ```
 
-Add section `## Micro SaaS Portfolio Evaluation (Wedge)` with:
-
-- Wedge definition (scope IN / OUT)
-- Hard-gate summary
-- MSFI breakdown with calculation
-- MRR model (12 months)
-- Build and maintenance hour budgets
-- Micro SaaS risks
-- Validation sprint (typically 30 days)
-- Micro SaaS decision and next actions
-- Note excluding full platform from Micro SaaS scope
-
-Tag opportunities: `micro-saas`
-
-## Validation Sprint (MONITOR_MICRO)
+## Validation sprint (MONITOR_MICRO)
 
 Default 30-day sprint before BUILD_MICRO promotion:
 
 | # | Experiment | Success criteria |
 |---|------------|------------------|
-| 1 | Landing + waitlist | Target waitlist size (e.g. 100 emails) |
+| 1 | Landing + waitlist | e.g. 100 emails |
 | 2 | Problem interviews | ≥4/5 confirm wedge pain |
 | 3 | Concierge / manual delivery | ≥70% usefulness rating |
-| 4 | Seed data feasibility | Data research within build budget hours |
+| 4 | Seed data feasibility | Within build budget hours |
 
-Kill wedge if: zero waitlist signal after outreach; ≥3/5 say incumbents sufficient; seed data research exceeds 15 h for initial wedge.
+Kill wedge if: zero waitlist after outreach; ≥3/5 say incumbents sufficient; seed data > 15 h.
 
-## Recording in Portfolio
+## Recording in portfolio
 
-Registry format in [`portfolio/micro-saas.md`](../portfolio/micro-saas.md):
-
-```markdown
-| ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Link |
-```
+Canonical registry: [`portfolio/micro-saas.md`](../portfolio/micro-saas.md).
 
 ## Related
 
-- [Maintenance evaluation](maintenance-evaluation.md)
-- [Scoring rules](scoring-rules.md)
+- [Portfolio strategy](../docs/portfolio-strategy.md)
+- [Evaluation process](evaluation-process.md)
 - [Kill rules](kill-rules.md)
 - [Portfolio rules](portfolio-rules.md)
+- [Validation](validation.md)

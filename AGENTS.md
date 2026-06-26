@@ -4,13 +4,31 @@ You operate inside a documentation-first control plane. You do **not** build pro
 
 ## Before any action
 
-1. Read the target opportunity frontmatter (`status`, `decision`, `prompt_versions`, `pipeline_stage`).
-2. Read [playbooks/evaluation-process.md](playbooks/evaluation-process.md) for stage order and gates.
-3. Read [CONVENTIONS.md](CONVENTIONS.md) for naming and evidence rules.
+1. Read opportunity frontmatter: `portfolio_strategy`, `status`, `decision`, `prompt_versions`, `pipeline_stage`.
+2. Read [playbooks/evaluation-process.md](playbooks/evaluation-process.md) for stage order (strategy-dependent).
+3. Read [CONVENTIONS.md](CONVENTIONS.md) and [docs/portfolio-strategy.md](docs/portfolio-strategy.md).
 
-## Pipeline stages (decision path)
+## Strategy router
 
-Run in order; never skip a stage gate:
+| `portfolio_strategy` | Pipeline | Decisions | Registry |
+|---------------------|----------|-----------|----------|
+| **`solo_micro_saas`** (default) | 4-stage fast path | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO | [portfolio/micro-saas.md](portfolio/micro-saas.md) |
+| **`startup_studio`** | 10-stage legacy | build / monitor / kill | active / monitoring / archived |
+
+### solo_micro_saas fast path
+
+```text
+discovery → validation → micro_saas_evaluation → portfolio_manager_micro
+```
+
+- **Skip:** scoring through studio portfolio_manager.
+- **`global_score` / OQI:** diagnostic only — never gate BUILD_MICRO.
+- **`decision_override`:** ignored for solo_micro_saas.
+- **Capacity:** max 3 BUILD_MICRO, 40 h/mo maint total → `MONITOR_MICRO` + `capacity_blocked: true`.
+
+Hard gates (any FAIL → KILL_MICRO): see [playbooks/micro-saas-portfolio.md](playbooks/micro-saas-portfolio.md).
+
+### startup_studio legacy path
 
 ```text
 discovery → validation → scoring → distribution_analysis → unfair_advantage
@@ -26,98 +44,89 @@ vision → mvp → roadmap → architecture → success_contract
 
 ## How to pick the next stage
 
-| status | Action |
-|--------|--------|
-| `draft` | Run discovery; set `status: evaluating` |
-| `evaluating` | Find first empty or gate-failing section; run matching prompt (see [Prompt path resolution](#prompt-path-resolution)) |
-| `decided` + `build` | Run first incomplete BUILD section **manually** (CP — Eval does not orchestrate BUILD) |
-| `decided` + `monitor` / `kill` | Do not re-run pipeline unless review trigger or explicit user request |
+| status | solo_micro_saas | startup_studio |
+|--------|-----------------|----------------|
+| `draft` | Run discovery | Run discovery |
+| `evaluating` | First empty/failing stage in fast path | First empty/failing stage in 10-stage path |
+| `decided` | No re-run unless review | Same |
 
-Use `prompt_versions` in frontmatter — never silently switch prompt versions.
+Use `prompt_versions` — never silently switch prompt versions.
 
 ### Prompt path resolution
-
-Frontmatter `prompt_versions` keys use underscores (`distribution_analysis`). Versioned prompt files use hyphens. Resolve paths as:
 
 ```text
 prompts/{stage_key with _ replaced by -}-v{N}.md
 ```
 
-Example: `prompt_versions.distribution_analysis: v1` → `prompts/distribution-analysis-v1.md`.
+Examples: `micro_saas_evaluation: v2` → `prompts/micro-saas-evaluation-v2.md`; `portfolio_manager_micro: v1` → `prompts/portfolio-manager-micro-v1.md`.
 
-For automated pipeline advancement, use Cursor Automation **CP — Eval** (push on branch **`opp/pipeline`**, batches of up to 5 stages — [docs/automations.md](docs/automations.md)) or [prompts/pipeline-orchestrator.md](prompts/pipeline-orchestrator.md) manually.
+Automated advancement: **CP — Eval** on branch **`opp/pipeline`** ([docs/automations.md](docs/automations.md)) via [prompts/pipeline-orchestrator-v4.md](prompts/pipeline-orchestrator-v4.md).
 
-## Decision rules (strict)
+## Decision rules
+
+### solo_micro_saas
 
 | Decision | Criteria |
 |----------|----------|
-| BUILD | `global_score >= 75` AND `OQI >= 70` AND capacity available |
+| BUILD_MICRO | All hard gates PASS + MSFI ≥ 70 + live validation (no desk-only) |
+| MONITOR_MICRO | Hard gates PASS + MSFI 50–69, borderline gate, or capacity wait |
+| KILL_MICRO | Hard gate FAIL or MSFI < 50 |
+
+### startup_studio
+
+| Decision | Criteria |
+|----------|----------|
+| BUILD | `global_score >= 75` AND `OQI >= 70` AND capacity |
 | MONITOR | `global_score` 50–74, OR score qualifies but OQI < 70 |
-| KILL | `global_score < 50` OR kill trigger from [playbooks/kill-rules.md](playbooks/kill-rules.md) |
+| KILL | `global_score < 50` OR kill trigger |
 
-**Override**: only if frontmatter has `decision_override: true` AND Final Decision documents rationale. Without override, never place `global_score < 50` in [portfolio/monitoring.md](portfolio/monitoring.md).
-
-## Scoring and OQI
-
-Before writing `global_score` or `opportunity_quality_index` to frontmatter, apply [prompts/score-calculator.md](prompts/score-calculator.md) logic.
+Studio override: `decision_override: true` with rationale (not applicable to solo_micro_saas).
 
 ## After completing a stage
 
-1. Paste output into the matching opportunity section.
+1. Paste output into matching section.
 2. Set section `confidence_level`.
-3. Tag evidence on every scoring claim.
+3. Tag evidence on decision-relevant claims.
 4. Update frontmatter: `pipeline_stage`, `updated`.
-5. On `portfolio_manager` completion: update decision fields, sync `portfolio/*.md`, set `status: decided`.
+5. On final micro/studio manager: sync portfolio registry, set `status: decided`.
 
 ## Files you may modify
 
 - `opportunities/OPP-*.md`
-- `portfolio/active.md`, `monitoring.md`, `archived.md`, `micro-saas.md`
-- `reviews/REVIEW-*.md` (when running portfolio review)
+- `portfolio/micro-saas.md` (canonical for solo_micro_saas)
+- `portfolio/active.md`, `monitoring.md`, `archived.md` (startup_studio / legacy)
+- `reviews/REVIEW-*.md`
 
 ## Files you must NOT modify without version bump
 
 - `prompts/*-v*.md` (create `v{N+1}` instead)
-- `playbooks/` (propose changes via separate PR with rationale)
-
-## References (load for scoring and decisions)
-
-- [playbooks/evaluation-process.md](playbooks/evaluation-process.md)
-- [playbooks/discovery.md](playbooks/discovery.md)
-- [playbooks/validation.md](playbooks/validation.md)
-- [playbooks/scoring-rules.md](playbooks/scoring-rules.md)
-- [playbooks/scoring-weights.md](playbooks/scoring-weights.md)
-- [playbooks/opportunity-quality-index.md](playbooks/opportunity-quality-index.md)
-- [playbooks/evidence-classification.md](playbooks/evidence-classification.md)
-- [playbooks/kill-rules.md](playbooks/kill-rules.md)
-- [playbooks/portfolio-rules.md](playbooks/portfolio-rules.md)
 
 ## Pull request QA
 
-When a pull request modifies `opportunities/` or `portfolio/`:
+When a PR modifies `opportunities/` or `portfolio/`:
 
-1. Read [prompts/opportunity-qa.md](prompts/opportunity-qa.md) and execute the active version.
-2. Apply [prompts/score-calculator.md](prompts/score-calculator.md) logic for score and decision checks.
-3. Post a structured PR comment with verdict **pass**, **warn**, or **fail**.
-4. Do **not** merge when verdict is **fail**.
-
-Automated setup: [docs/automations.md](docs/automations.md) (**CP — QA**).
+1. Read [prompts/opportunity-qa.md](prompts/opportunity-qa.md) (active v3).
+2. For startup_studio: apply [prompts/score-calculator.md](prompts/score-calculator.md).
+3. For solo_micro_saas: apply [scripts/msfi_calculator.py](scripts/msfi_calculator.py) logic.
+4. Verdict **pass**, **warn**, or **fail** — do not merge on **fail**.
 
 ## Intake
 
-When a new startup idea enters the studio (PR + label, chat, or manual request):
-
-1. Read [prompts/intake.md](prompts/intake.md) and execute the active version (or **CP — Intake** via [docs/automations.md](docs/automations.md)).
-2. Create branch **`opp/pipeline`** from `master` (recreate after each merged idea; one active OPP at a time; catalogue `decided` from `master` may coexist).
-3. Create `opportunities/OPP-YYYYMMDD-{slug}.md` and fill Discovery only (via automation or manual).
-4. Open a pull request on **`opp/pipeline`** — add label `cp:intake` once. **CP — Eval** runs on subsequent pushes (no eval label). Do not push directly to the default branch.
+1. Read [prompts/intake.md](prompts/intake.md) (v5).
+2. Branch **`opp/pipeline`**; one active OPP at a time.
+3. Default `portfolio_strategy: solo_micro_saas`.
+4. Label `cp:intake` once; **CP — Eval** on subsequent pushes.
 
 ## Portfolio review
 
-When portfolio entries are due (`Next Review <= today`) or on scheduled cron:
+1. [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or **CP — Review**.
+2. Max 3 MONITOR / MONITOR_MICRO per run.
 
-1. Read [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) and execute the active version (or **CP — Review** via [docs/automations.md](docs/automations.md)).
-2. Process at most **3 MONITOR opportunities** per run; queue the rest.
-3. Update portfolio files and optionally create `reviews/REVIEW-{YYYY}-Q{N}.md`.
+Automations: **CP — QA**, **CP — Intake**, **CP — Eval**, **CP — Review** — [docs/automations.md](docs/automations.md).
 
-Automated setup: four Cursor Automations in [docs/automations.md](docs/automations.md) — **CP — QA**, **CP — Intake**, **CP — Eval**, **CP — Review**.
+## References
+
+- [playbooks/micro-saas-portfolio.md](playbooks/micro-saas-portfolio.md)
+- [playbooks/evaluation-process.md](playbooks/evaluation-process.md)
+- [playbooks/kill-rules.md](playbooks/kill-rules.md)
+- [playbooks/portfolio-rules.md](playbooks/portfolio-rules.md)

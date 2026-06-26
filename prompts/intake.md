@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [intake-v4.md](intake-v4.md)
+**Active**: [intake-v5.md](intake-v5.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v4 | 2026-06-26 | active | Catalogue `decided` coexists; one active OPP per run |
+| v5 | 2026-06-26 | active | Default solo_micro_saas; fast-path prompt_versions |
+| v4 | 2026-06-26 | deprecated | Catalogue `decided` coexists; one active OPP per run |
 | v3 | 2026-06-26 | deprecated | Fixed branch `opp/pipeline`; zero OPP gate |
 | v2 | 2026-06-26 | deprecated | Wildcard `opp/**` |
 | v1 | 2026-06-25 | deprecated | Branch `intake/**` |

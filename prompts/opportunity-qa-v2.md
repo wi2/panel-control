@@ -1,9 +1,10 @@
 ---
 version: 2
 stage: opportunity_qa
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: opportunity-qa-v1
+superseded_by: opportunity-qa-v3
 changelog: "Prompt path resolution (underscore→hyphen); portfolio override column check"
 ---
 

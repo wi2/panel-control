@@ -1,8 +1,10 @@
 ---
 id: OPP-20260625-relance-factures-freelance
+portfolio_strategy: solo_micro_saas
 title: "Relance automatique des factures impayées pour freelances"
 status: decided
-decision: monitor
+capacity_blocked: false
+decision: KILL_MICRO
 global_score: 46
 opportunity_quality_index: 50
 scores:
@@ -21,9 +23,9 @@ scores:
   maintenance_score: 5.2
   risk_exposure_score: 54
   portfolio_fit_score: 48
-decision_override: true
-override_rationale: "Promising uncertainty on WhatsApp wedge; structured validation planned. Strict score gate would be KILL at 46."
-override_expires: 2026-09-25
+decision_override: false
+override_rationale: null
+override_expires: null
 pipeline_stage: portfolio_manager
 next_review_action: validate
 created: 2026-06-25
@@ -33,6 +35,8 @@ tags: [fintech, b2b, saas, france, freelances, whatsapp]
 prompt_versions:
   discovery: v1
   validation: v1
+  micro_saas_evaluation: v2
+  portfolio_manager_micro: v1
   scoring: v2
   distribution_analysis: v1
   unfair_advantage: v1

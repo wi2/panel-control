@@ -14,7 +14,32 @@ BUILD preparation (BUILD only):
   Product Vision → MVP → Roadmap → Architecture → Success Contract
 ```
 
-Target timeline: **4–8 weeks** from draft to decision for most opportunities.
+Target timeline: **4–8 weeks** from draft to decision for `startup_studio` opportunities.
+
+## Strategy router
+
+Read `portfolio_strategy` from frontmatter. Default for new opportunities: `solo_micro_saas` ([portfolio strategy](../docs/portfolio-strategy.md)).
+
+### solo_micro_saas (fast path — default)
+
+```text
+Discovery → Validation → Micro SaaS Evaluation → Portfolio Manager Micro → portfolio/micro-saas.md
+```
+
+| Order | Prompt | Section |
+|-------|--------|---------|
+| 1 | Discovery | Discovery |
+| 2 | Validation | Validation |
+| 3 | [Micro SaaS Evaluation](../prompts/micro-saas-evaluation.md) | Micro SaaS Evaluation |
+| 4 | [Portfolio Manager Micro](../prompts/portfolio-manager-micro.md) | Final Decision (Micro SaaS) |
+
+Skipped: Scoring through studio Portfolio Manager. `global_score`/OQI optional diagnostics only.
+
+### startup_studio (legacy)
+
+```text
+Discovery → Validation → Scoring → … → Portfolio Manager → active/monitoring/archived
+```
 
 ## Step 1: Create Opportunity
 

@@ -107,6 +107,17 @@ Use consistent labels in portfolio archived entries:
 | `success-contract-failure` | BUILD milestone or metric miss |
 | `monitor-timeout` | MONITOR exceeded review cycles without improvement |
 | `manual` | Document specific rationale |
+| `hard-gate-fail` | solo_micro_saas absolute gate failed |
+| `msfi-below-threshold` | MSFI < 50 (solo path) |
+| `distribution-cost-high` | distribution_cost > 7 |
+| `mrr-below-minimum` | monthly_revenue_potential < 500 |
+| `platform-tos-block` | ToS triple condition (solo path) |
+
+## solo_micro_saas kills (KILL_MICRO)
+
+When `portfolio_strategy: solo_micro_saas`, use **KILL_MICRO**. **No overrides.**
+
+Automatic triggers: build > 100 h, maint > 10 h/mo, solo_operable false, MRR < €500/mo, distribution_cost > 7, ToS triple, MSFI < 50.
 
 ## Related
 

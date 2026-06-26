@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [automation-eval-v5.md](automation-eval-v5.md)
+**Active**: [automation-eval-v6.md](automation-eval-v6.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v5 | 2026-06-26 | active | Delegates to pipeline-orchestrator-v3 |
+| v6 | 2026-06-26 | active | Delegates to pipeline-orchestrator-v4 |
+| v5 | 2026-06-26 | deprecated | Delegates to pipeline-orchestrator-v3 |
 | v4 | 2026-06-26 | deprecated | Active OPP resolution; catalogue `decided` from `master` OK on `opp/pipeline` |
 | v3 | 2026-06-26 | deprecated | Fixed branch `opp/pipeline`; counted all OPP files (broken with master catalogue) |
 | v2 | 2026-06-26 | deprecated | Wildcard `opp/**` — not supported by Cursor UI |

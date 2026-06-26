@@ -1,8 +1,10 @@
 ---
 id: OPP-20260625-local-pricing-intelligence-artisans
+portfolio_strategy: solo_micro_saas
 title: "AI Local Pricing Intelligence for Artisans and Contractors"
 status: decided
-decision: monitor
+capacity_blocked: false
+decision: MONITOR_MICRO
 global_score: 52
 opportunity_quality_index: 51
 scores:
@@ -31,7 +33,7 @@ updated: 2026-06-25
 owner: studio-team
 tags: [b2b, saas, ai, pricing, artisans, contractors, home-services, btp, multi-market, micro-saas]
 micro_saas:
-  decision: monitor_micro
+  decision: MONITOR_MICRO
   msfi: 67
   build_hours_estimate: 87
   maintenance_hours_estimate: 8
@@ -40,6 +42,8 @@ micro_saas:
 prompt_versions:
   discovery: v1
   validation: v1
+  micro_saas_evaluation: v2
+  portfolio_manager_micro: v1
   scoring: v2
   distribution_analysis: v1
   unfair_advantage: v1

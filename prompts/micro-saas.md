@@ -12,13 +12,15 @@
 
 ## Usage
 
-Run when an opportunity has a plausible solo-operated wedge. Complements the Control Plane decision path; does not replace `global_score` or OQI.
+Run when an opportunity has `portfolio_strategy: solo_micro_saas` (default). Primary evaluation path — not a secondary lens.
 
-Typical invocation:
+Typical invocation: automated via **CP — Eval** on `opp/pipeline` (4-stage fast path).
 
-1. Define wedge scope after Distribution Analysis or during Portfolio Manager review.
-2. Execute [micro-saas-v1.md](micro-saas-v1.md).
-3. Sync decision to [portfolio/micro-saas.md](../portfolio/micro-saas.md) when applicable.
+1. Execute [micro-saas-evaluation-v2.md](micro-saas-evaluation-v2.md) after Validation.
+2. Execute [portfolio-manager-micro-v1.md](portfolio-manager-micro-v1.md) for final decision.
+3. Sync to [portfolio/micro-saas.md](../portfolio/micro-saas.md).
+
+Legacy manual lens: [micro-saas-v1.md](micro-saas-v1.md) (deprecated).
 
 ## Related
 

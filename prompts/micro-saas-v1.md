@@ -1,9 +1,10 @@
 ---
 version: 1
 stage: micro_saas
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: null
+superseded_by: micro-saas-evaluation-v2
 changelog: "Initial release — Micro SaaS wedge evaluation lens"
 ---
 

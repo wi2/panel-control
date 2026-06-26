@@ -10,6 +10,29 @@ Governance for managing the opportunity portfolio across active, monitoring, and
 | [`monitoring.md`](../portfolio/monitoring.md) | MONITOR | `global_score` 50–74, OR score qualifies but OQI < 70 |
 | [`archived.md`](../portfolio/archived.md) | KILL | `global_score < 50` or kill trigger |
 
+## solo_micro_saas registry (canonical)
+
+When `portfolio_strategy: solo_micro_saas`, use [`portfolio/micro-saas.md`](../portfolio/micro-saas.md) as the **authoritative** registry. Studio files are legacy mirrors only.
+
+| File | Decision | Criteria |
+|------|----------|----------|
+| micro-saas Active | BUILD_MICRO | Hard gates PASS + MSFI ≥ 70 + live validation |
+| micro-saas Monitoring | MONITOR_MICRO | MSFI 50–69, borderline gate, or `capacity_blocked: true` |
+| micro-saas Archived | KILL_MICRO | Hard gate FAIL or MSFI < 50 |
+
+### solo_micro_saas capacity
+
+| Parameter | Default |
+|-----------|---------|
+| `max_concurrent_build_micro` | 3 |
+| `max_monitor_micro` | 5 |
+| `target_portfolio_size` | 20 |
+| `max_total_maintenance_hours` | 40 |
+
+Block BUILD_MICRO when maint sum ≥ 40 h/mo or BUILD count ≥ 3 → `decision: MONITOR_MICRO`, `capacity_blocked: true`. Overrides ignored for solo path.
+
+See [micro-saas-portfolio.md](micro-saas-portfolio.md).
+
 ## Dual-Gate BUILD Rule
 
 BUILD requires **both**:

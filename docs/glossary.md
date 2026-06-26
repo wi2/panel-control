@@ -78,11 +78,19 @@ Portfolio decision when `global_score` is 50–74, or when score qualifies for B
 
 ### Micro SaaS Portfolio
 
-Secondary evaluation lens for solo-operated SaaS wedges (≤100 h build, ≤10 h/mo maintenance, €1–10 k MRR horizon). Produces `msfi` and decisions BUILD_MICRO / MONITOR_MICRO / KILL_MICRO. Recorded in [`portfolio/micro-saas.md`](../portfolio/micro-saas.md). See [`playbooks/micro-saas-portfolio.md`](../playbooks/micro-saas-portfolio.md).
+**Primary decision engine** when `portfolio_strategy: solo_micro_saas`. Asset allocator for solo AI micro-apps (6 hard gates + MSFI v2). Decisions: BUILD_MICRO / MONITOR_MICRO / KILL_MICRO. Canonical registry: [`portfolio/micro-saas.md`](../portfolio/micro-saas.md).
 
 ### micro_saas_fit_index (MSFI)
 
-Wedge fit score (0–100) for the Micro SaaS operating model. Combines MRR path, automation, build feasibility, maintenance sustainability, and solo distribution. BUILD_MICRO requires MSFI ≥ 70 and all hard-gates PASS.
+Soft score (0–100) after hard gates pass. MSFI v2: time to revenue, automation, maintenance, acquisition, wedge local, competition, pricing power. BUILD_MICRO requires MSFI ≥ 70, all hard gates PASS, and live validation.
+
+### portfolio_strategy
+
+Operating lens: `solo_micro_saas` (default), `startup_studio`, `vc_moonshot`, `cashflow_business`. See [`docs/portfolio-strategy.md`](portfolio-strategy.md).
+
+### capacity_blocked
+
+Boolean on `solo_micro_saas` opps. When true, `decision` remains MONITOR_MICRO — bandwidth saturated (maint ≥ 40 h/mo or BUILD slots full).
 
 ### MVP Definition
 
