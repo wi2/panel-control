@@ -16,7 +16,7 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: discovery
+pipeline_stage: validation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -112,26 +112,43 @@ We believe **chauffagistes indépendants et TPE** (1–5 salariés, 50–200 con
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+Desk evaluation only. **desk-only**: true — CP — Eval automation run; live artisan experiments below are **planned**, not executed. One completed internal desk audit satisfies the desk-only fast path per [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
 | # | Experiment | Hypothesis | Method | Success Criteria | Status |
 |---|------------|------------|--------|------------------|--------|
-| 1 | | | | | planned |
+| 0 | Competitive pricing & feature-gap desk audit | Full ERPs (Batappli, ChaudièrePro) are overpriced or over-scoped vs a €9–19/mo rappels-only wedge | Desk research: public pricing pages, ChaudièrePro 2026 comparatif, Batappli blog contrats entretien | ≥2 incumbents priced ≥€39/mo for entretien+rappels ; no standalone €9–19 rappels-only SKU found | **completed** |
+| 1 | Problem interviews | Chauffagistes TPE oublient ≥5 % entretiens contractuels/saison | 8 entretiens via CMA/chambre métiers (1 dept cible) | ≥5/8 confirment oublis récurrents + citent revenu perdu | planned |
+| 2 | WTP landing | Demande à €9–19/mo pour rappels client+artisan | Landing FR + Van Westendorp ; €150 ads Meta artisans chauffage | ≥20 signups ; ≥25 % acceptent ≥€9/mo | planned |
+| 3 | Concierge rappels | Rappels SMS/email J-30/J-7 réduisent oublis vs Calendar seul | 10 artisans, suivi manuel 4 semaines (peak season) | ≥7/10 NPS ≥8 ; ≥3 citent RDV sauvé sans relance manuelle | planned |
+| 4 | Calendar sufficiency | Calendar/iPhone suffit sans outil dédié | 8 interviews usage actuel | ≤3/8 disent Calendar suffit pour 50+ contrats | planned |
 
 ### Results
 
+**Experiment 0 (completed)** — Competitive desk audit (2026-06-26):
+
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
-| | | | | |
+| batappli_artisan_prix | 79 € HT/mo (contrats entretien + SMS relance) | verified | [Batappli tarifs](https://www.batappli.fr/tarifs) ; [blog contrats entretien](https://www.batappli.fr/blog-du-logiciel-batiment/plombiers-chauffagistes-comment-suivre-ses-contrats-d-entretien) | 2026-06 |
+| chaudierepro_standard_prix | Freemium 0 € (15 clients) ; Standard 39 €/mo (29 €/mo annuel) ; relances J-60/30/7 | verified | [ChaudièrePro comparatif 2026](https://chaudierepro.com/meilleur-logiciel-chauffagiste) | 2026-06 |
+| standalone_rappels_sku | Aucun concurrent identifié à €9–19/mo rappels-only sans ERP | inferred | Audit 9 solutions comparatif ChaudièrePro ; BatUp/ArtisanPro dès ~15–29 €/mo avec devis+factures | 2026-06 |
+| entretien_obligatoire_demande | Entretien annuel obligatoire chaudières 4–400 kW | verified | Décret 2009-649 ; [ecologie.gouv.fr](https://www.ecologie.gouv.fr/politiques-publiques/entretien-inspection-systemes-chauffage-climatisation) | 2009 |
+| contrats_rentabilite_solo | 80–150 visites entretien/an ; CA récurrent 12–22 k€/an | estimated | [Artisan Rentable — chauffagiste](https://artisanrentable.fr/metier/chauffagiste-independant) | 2026 |
+| seuil_outil_numerique | À partir de ~20 contrats, logiciel recommandé pour éviter oublis | inferred | [Adler Technologies — contrat entretien](https://www.adlertechnologies.eu/blog-contrat-entretien-chauffagiste) | 2026 |
+| pain_confirmation | — | unknown | Pas d'entretiens studio | — |
+| wtp_signal | — | unknown | Pas de landing / LOI | — |
+| concierge_usefulness | — | unknown | Pas de concierge | — |
+| calendar_sufficiency | — | unknown | Pas d'interviews usage | — |
+
+**Desk audit conclusion**: Regulatory demand is verified and recurring. Incumbent solutions bundle rappels into ERP/CVC suites at **€39–79+/mo** (ChaudièrePro Standard 39 €, Batappli Artisan 79 € HT). A **narrow wedge** (client list + contract dates + email/SMS rappels only) at **€9–19/mo** is **not disproven** by desk research — but **WTP and Calendar sufficiency remain unvalidated** without live experiments. ChaudièrePro Freemium (15 clients) is a **direct substitute risk** for micro-TPE before paid conversion.
 
 ### Kill / Continue Signals
 
-- **Continue if**: ...
-- **Kill if**: ...
+- **Continue if**: ≥5/8 entretiens confirment oublis saisonniers ; ≥3 pré-commandes ou LOI à €9+/mo ; concierge NPS ≥8 pour ≥7/10 ; ≤3/8 disent Calendar suffit à 50+ contrats
+- **Kill if**: ≥5/8 disent Calendar + ChaudièrePro gratuit suffisent ; 0 signup après €150 ads ; ARPU viable <€7/mo ; ≥6/8 refusent payer pour rappels seuls
 
-**confidence_level**: high / medium / low
+**confidence_level**: low
 
 ---
 
