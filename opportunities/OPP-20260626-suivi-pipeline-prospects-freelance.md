@@ -16,7 +16,7 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: discovery
+pipeline_stage: validation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -117,26 +117,43 @@ We believe **solo FR/EU freelancers** (dev, design, conseil, rédaction) with **
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+**desk-only**: true — live customer experiments (interviews, landing, concierge) are **planned** for sprint validation; one desk audit completed. BUILD_MICRO requires live validation before promotion. See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
 | # | Experiment | Hypothesis | Method | Success Criteria | Status |
 |---|------------|------------|--------|------------------|--------|
-| 1 | | | | | planned |
+| 1 | Competitive & pain-signal audit | Solo FR/EU freelancers lose deals when pre-quote pipeline (contact→brief→devis) is fragmented across Notion/email/memory; incumbents are over-scoped or lack FR-first pipeline-only wedge with stagnation alerts + stage conversion stats | Desk research: incumbent pricing/features (SoloPipeline, Workdeck, freelanceOS, Plutio/Bonsai), portfolio overlap vs [OPP-20260626-relance-devis-freelance](../opportunities/OPP-20260626-relance-devis-freelance.md), pre-quote timing benchmarks | ≥3 verified sources confirm quote-timing / follow-up lift applies upstream of quote send; no ≤€15/mo FR-first pipeline-only incumbent without proposals/billing bundle; wedge distinct from post-quote relance-devis | completed |
+| 2 | Problem interviews | Solo FR freelancers (dev/design/consulting) lose ≥1 prospect/quarter between first contact and quote send due to lack of structured pipeline | 8 entretiens (Malt, LinkedIn, CPM) | ≥5/8 confirment oubli/stagnation pré-devis + citent Notion/Excel/calendrier insuffisants | planned |
+| 3 | WTP landing page | Demande €12–19/mo pour tracker pipeline minimal (étapes fixes + rappels stagnation, sans génération devis) | Landing FR + Van Westendorp ; €200 ads Meta/LinkedIn freelance | ≥25 signups ; ≥25 % acceptent ≥€12/mo | planned |
+| 4 | Concierge pipeline tracker | Kanban manuel (contact→qualifié→brief→devis envoyé→gagné/perdu) + rappels email si carte stagne >5 jours réduit prospects « perdus en route » | 10 freelances, suivi Notion/Sheet + rappels manuels, 4 sem, 3+ prospects chacun | ≥7/10 NPS ≥8 ; ≥5 citent prospect oublié/avancé trop tard sans concierge | planned |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
-| | | | | |
+| solopipeline_pricing | $9.99–19.99/mo (Pro/Advanced) ; free tier ≤20 leads | verified | SoloPipeline pricing page | 2026 |
+| workdeck_pricing | $12/mo ($120/yr) ; Kanban Lead→Won + AI proposals suite | verified | Workdeck pricing page | 2026 |
+| freelanceos_pricing | Free (leads, pipeline, invoicing) ; Premium flou | verified | freelanceOS site | 2026 |
+| moxie_all_in_one_floor | $10/mo annual Solo ; CRM pipeline + proposals + billing | verified | Moxie review / pricing compare 2026 | 2026 |
+| plutio_bonsai_floor | €19–49/mo all-in-one freelance OS | estimated | Discovery competitor table ; comparatifs 2026 | 2026 |
+| stale_deal_alerts_incumbent | WhizziQ alerte deals quiet 14+ jours ; SoloPipeline next actions + reminders ; Crmzix stale-deal detection | verified | WhizziQ ; SoloPipeline ; Crmzix product pages | 2026 |
+| proposal_timing_lift | Proposals sent within 24–48 h of discovery close at significantly higher rates ; decline after 72 h | verified | Pitchsite win-rate benchmarks 2026 ; Waco3 proposal benchmarks | 2026 |
+| pre_quote_qualification_lift | Pre-proposal qualification step moves win rate +10–15 pts | estimated | Waco3 — freelance proposal benchmarks | 2026 |
+| followup_consistency_lift | 3-touch follow-up over 3 weeks adds +10–20 % close on fence proposals | estimated | Waco3 ; Proposify 2025 (post-quote, analogous cadence) | 2025 |
+| notion_crm_substitute | 47 % freelances tech FR utilisent Notion comme CRM principal | estimated | Discovery — Plateya / Notion France 2025 | 2025 |
+| pipeline_only_gap | Aucun tier FR-first ≤€15/mo « pipeline seul » sans proposals/billing/AI bundle identifié (SoloPipeline/Workdeck incluent proposals AI) | estimated | Desk audit concurrentiel ; Discovery | 2026 |
+| portfolio_wedge_overlap | Pre-quote pipeline (contact→devis) chevauche partiellement post-quote relance-devis ; bundling « funnel commercial freelance » possible | inferred | PR intake ; [OPP-20260626-relance-devis-freelance](../opportunities/OPP-20260626-relance-devis-freelance.md) (MONITOR_MICRO, desk-only) | 2026 |
+| pre_quote_pain_live | — | unknown | Pas d'entretiens studio (exp. 2 planned) | — |
+| wtp_signal_live | — | unknown | Pas de landing / LOI (exp. 3 planned) | — |
+| concierge_usefulness | — | unknown | Pas de concierge (exp. 4 planned) | — |
 
 ### Kill / Continue Signals
 
-- **Continue if**: ...
-- **Kill if**: ...
+- **Continue if**: ≥5/8 entretiens confirment stagnation/oubli **pré-devis** (contact→brief→devis) + insuffisance Notion/calendrier ; ≥25 signups landing avec ≥25 % WTP ≥€12/mo ; concierge NPS ≥8 pour ≥7/10 ; ICP confirme 3–15 prospects actifs ; aucun incumbent ne lance tier pipeline-only ≤€15/mo FR-first avec stats conversion par étape
+- **Kill if**: ≥6/8 disent Notion/Trello/calendrier ou all-in-one (Plutio/Bonsai/Moxie) suffisent ; 0 signup après €200 ads ; ≥4/8 n'ont <3 prospects actifs en parallèle ; SoloPipeline/Workdeck/freelanceOS lance tier pipeline seul ≤€12/mo FR-first avec rappels stagnation natifs ; douleur perçue = un seul problème déjà couvert par relance-devis sans valeur pré-devis distincte
 
-**confidence_level**: high / medium / low
+**confidence_level**: low
 
 ---
 
