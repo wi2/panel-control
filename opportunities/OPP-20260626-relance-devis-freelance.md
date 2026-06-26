@@ -2,9 +2,9 @@
 id: OPP-20260626-relance-devis-freelance
 title: "Relance devis freelance"
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
@@ -16,21 +16,20 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: micro_saas_evaluation
-next_review_action: null
+pipeline_stage: portfolio_manager_micro
+next_review_action: "2026-07-26 — re-run validation sprint (interviews + landing + concierge); promote BUILD_MICRO if MSFI ≥70 + live signal"
 created: 2026-06-26
 updated: 2026-06-26
 owner: studio-team
 tags: [freelance, b2b, micro-saas]
 automation_intake_at: 2026-06-26
 micro_saas:
-  decision: null
+  decision: MONITOR_MICRO
   msfi: 60.9
   build_hours_estimate: 78
   maintenance_hours_estimate: 5
   mrr_target_12m: "500-1200 EUR"
   wedge: "Minimal quote tracker — register quote metadata (amount, client, send/expiry dates), email/Slack reminders (J+3/J+7/J+14 + pre-expiry), status pipeline (pending, nudged, won, lost, expired), conversion stats — solo FR/EU freelancer; no quote generation, invoicing, or CRM"
-  decision: MONITOR_MICRO
 prompt_versions:
   discovery: v1
   validation: v1
@@ -370,17 +369,33 @@ MSFI calc: `0.15×50 + 0.15×88 + 0.10×82 + 0.15×52 + 0.15×68 + 0.15×58 + 0.
 
 ## Final Decision (Micro SaaS)
 
-<!-- Paste output from prompts/portfolio-manager-micro.md — primary for solo_micro_saas -->
-
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | XX |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 60.9 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-26 |
+| **Rationale** | All six hard gates PASS (build 78 h, maint 5 h/mo, solo operable, MRR 750 €/mo, distribution_cost 3, ToS low). MSFI 60.9 in MONITOR band (50–69). Desk-only Validation (`desk-only: true`, confidence low) blocks BUILD_MICRO per playbook — no live interviews, landing, or concierge yet. Tracker-only wedge gap documented (Validation #1) but WTP unknown and free incumbent relances (Henrri/Indy) + calendar reminders anchor pricing down. Portfolio capacity open (0 BUILD_MICRO active) but MONITOR queue at 5/5 after this entry — sprint validation prioritized before promotion. |
 
-**confidence_level**: high / medium / low
+### Expected Learnings
+
+- [ ] Topic: quote_followup_pain — Method: 8 entretiens freelances FR (Malt, LinkedIn, CPM) — Applies to: MONITOR_MICRO, KILL_MICRO
+- [ ] Topic: willingness_to_pay — Method: Landing Van Westendorp €9–19/mo + €200 ads Meta/LinkedIn — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: incumbent_sufficiency — Method: 8 interviews Henrri/Indy/calendar vs tracker dédié — Applies to: KILL_MICRO
+- [ ] Topic: concierge_usefulness — Method: Concierge quote tracker 10 freelances 4 sem (J+3/J+7/J+14) — Applies to: MONITOR_MICRO, BUILD_MICRO
+
+### Next Actions
+
+- [ ] Publier landing FR « relance devis freelance » + waitlist — deadline 2026-07-15
+- [ ] 8 entretiens freelances dev/design/consulting — deadline 2026-07-20
+- [ ] Concierge quote tracker 10 freelances 4 semaines — deadline 2026-07-25
+- [ ] Re-calculer MSFI ; promouvoir BUILD_MICRO si MSFI ≥70 + live validation — deadline 2026-07-26
+
+### Portfolio Update
+
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md) (Monitoring)
+
+**confidence_level**: medium
 
 ---
 
