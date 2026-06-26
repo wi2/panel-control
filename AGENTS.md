@@ -62,6 +62,8 @@ Examples: `micro_saas_evaluation: v2` → `prompts/micro-saas-evaluation-v2.md`;
 
 Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v7.md](prompts/pipeline-orchestrator-v7.md). **Staged eval**: one stage per `cp:eval`; re-add label until `status: decided` (solo: typically 3× after intake). **CP — Intake** runs on PR opened (optional label `cp:intake`). **CP — QA** runs on push to PR only; merge gate only when `decided`.
 
+Automated maintenance: **CP — Review** via [prompts/automation-review-v2.md](prompts/automation-review-v2.md) → [portfolio-review-runner-v2.md](prompts/portfolio-review-runner-v2.md). Registry: [portfolio/micro-saas.md](portfolio/micro-saas.md) for `solo_micro_saas`. Review cadence: **30 days** for MONITOR_MICRO and BUILD_MICRO. Trigger: cron (Monday 09:00) or label **`cp:review`** on branch `review/**`.
+
 ## Decision rules
 
 ### solo_micro_saas
@@ -119,10 +121,13 @@ When a PR modifies `opportunities/` or `portfolio/`:
 
 ## Portfolio review
 
-1. [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or **CP — Review**.
-2. Max 3 MONITOR / MONITOR_MICRO per run.
+1. [prompts/portfolio-review-runner-v2.md](prompts/portfolio-review-runner-v2.md) (active) or **CP — Review** — [prompts/automation-review-v2.md](prompts/automation-review-v2.md).
+2. **solo_micro_saas**: registry [portfolio/micro-saas.md](portfolio/micro-saas.md); re-eval validation → micro_saas_evaluation → portfolio_manager_micro; max **3 MONITOR_MICRO** per run; **Next Review +30 days**.
+3. **startup_studio** (legacy): [portfolio-review-runner-v1.md](prompts/portfolio-review-runner-v1.md) via strategy router; registry active / monitoring / archived; **Next Review +90 days** for MONITOR.
 
 Automations: **CP — QA**, **CP — Intake**, **CP — Eval**, **CP — Review** — [docs/automations.md](docs/automations.md).
+
+Production bootstrap: [docs/prod-cutover.md](docs/prod-cutover.md).
 
 ## References
 

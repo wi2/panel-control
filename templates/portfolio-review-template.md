@@ -86,3 +86,48 @@ Opportunities recommended for kill with rationale:
 ## Next Review
 
 Scheduled: YYYY-MM-DD
+
+---
+
+## Micro SaaS (solo_micro_saas)
+
+Use these sections when reviewing [portfolio/micro-saas.md](../portfolio/micro-saas.md). Skip studio sections above for micro-only runs.
+
+## Active (BUILD_MICRO) Review
+
+| ID | Wedge | MSFI | Owner | Success Contract Status | Maint h/mo | Action |
+|----|-------|------|-------|-------------------------|------------|--------|
+| | | | | on track / at risk / failing | | continue / demote / kill |
+
+### BUILD_MICRO Changes
+
+- Promotions from MONITOR_MICRO: none
+- Demotions to MONITOR_MICRO: none
+- Kills: none
+
+## Monitoring (MONITOR_MICRO) Review
+
+| ID | Wedge | MSFI | Owner | Last Review | Re-score MSFI | Desk-only | Action |
+|----|-------|------|-------|-------------|---------------|-----------|--------|
+| | | | | YYYY-MM-DD | XX | yes / no | BUILD_MICRO / continue / kill |
+
+### MONITOR_MICRO Changes
+
+- Promotions to BUILD_MICRO: none
+- Kills: none
+- Stale (2× 30-day cycles without BUILD qualification): none
+- capacity_blocked: none
+
+## Archived This Quarter (KILL_MICRO)
+
+| ID | Wedge | MSFI | Kill Reason | Date | Key Learning |
+|----|-------|------|-------------|------|--------------|
+| | | | hard-gate-fail / monitor-timeout / … | | |
+
+## Micro SaaS Capacity Assessment
+
+| Category | Current | Max | Available |
+|----------|---------|-----|-----------|
+| Active (BUILD_MICRO) | | 3 | |
+| Monitoring (MONITOR_MICRO) | | 5 | |
+| Total maint h/mo (Active BUILD) | | 40 | |
