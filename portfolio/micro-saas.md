@@ -49,19 +49,15 @@ _No entries._
 
 | ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Notes | Link |
 |----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
-| OPP-20260625-local-pricing-intelligence-artisans | FR dept 69 × climatisation | 67 | MONITOR_MICRO | 87 | 8 | 500–1000 EUR | studio-team | 2026-06-25 | 2026-07-25 | | [opportunity](../opportunities/OPP-20260625-local-pricing-intelligence-artisans.md) |
-| OPP-20260625-veille-ao-pme-locales | Veille AO PME locales wedge | — | MONITOR_MICRO | — | — | 500+ EUR | studio-team | 2026-06-25 | 2026-07-25 | pending micro re-eval | [opportunity](../opportunities/OPP-20260625-veille-ao-pme-locales.md) |
-| OPP-20260626-suivi-conformite-artisans-btp | Conformité échéances BTP wedge | 65 | MONITOR_MICRO | 48 | 4 | 500–1000 EUR | studio-team | 2026-06-26 | 2026-07-26 | desk-only; sprint validation | [opportunity](../opportunities/OPP-20260626-suivi-conformite-artisans-btp.md) |
-| OPP-20260626-stock-consommables-electriciens-tpe | Catalogue consommables + seuils + alertes réappro — 1 département, TPE sans magasinier | 64.3 | MONITOR_MICRO | 92 | 8 | 500–900 EUR | studio-team | 2026-06-26 | 2026-07-26 | desk-only; sprint validation | [opportunity](../opportunities/OPP-20260626-stock-consommables-electriciens-tpe.md) |
-| OPP-20260626-relance-devis-freelance | Minimal quote tracker — rappels J+3/J+7/J+14 + stats conversion solo FR/EU | 60.9 | MONITOR_MICRO | 78 | 5 | 500–1200 EUR | studio-team | 2026-06-26 | 2026-07-26 | desk-only; MONITOR queue at cap (5/5) | [opportunity](../opportunities/OPP-20260626-relance-devis-freelance.md) |
-| OPP-20260626-suivi-pipeline-prospects-freelance | Kanban pipeline pré-devis — étapes fixes + rappels stagnation + stats conversion solo FR/EU | 58.7 | MONITOR_MICRO | 80 | 5 | 500–1200 EUR | studio-team | 2026-06-26 | 2026-07-26 | desk-only; MONITOR queue over cap (6/5); partial overlap relance-devis | [opportunity](../opportunities/OPP-20260626-suivi-pipeline-prospects-freelance.md) |
+
+_No entries._
 
 ## Archived (KILL_MICRO)
 
 | ID | Wedge | MSFI | Decision | Kill reason | Decision Date | Link |
 |----|-------|------|----------|-------------|---------------|------|
-| OPP-20260625-detection-opportunites-linkedin | LinkedIn signal wedge | — | KILL_MICRO | platform-tos-block | 2026-06-25 | [opportunity](../opportunities/OPP-20260625-detection-opportunites-linkedin.md) |
-| OPP-20260625-relance-factures-freelance | WhatsApp relance wedge | — | KILL_MICRO | mrr-below-minimum | 2026-06-25 | [opportunity](../opportunities/OPP-20260625-relance-factures-freelance.md) |
+
+_No entries._
 
 ## Related
 

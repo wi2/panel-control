@@ -23,7 +23,7 @@ Capacity limit: **3 active opportunities** (see [portfolio rules](../playbooks/p
 
 | ID | Title | Global Score | OQI | Decision | Owner | Decision Date | Next Review | Link |
 |----|-------|--------------|-----|----------|-------|---------------|-------------|------|
-| _No active opportunities yet_ | | | | | | | | |
+| _No entries._ | | | | | | | | |
 
 ## Related
 

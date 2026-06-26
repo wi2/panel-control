@@ -18,7 +18,7 @@ Kill reason vocabulary (see [kill rules](../playbooks/kill-rules.md)):
 
 | ID | Title | Global Score | OQI | Owner | Decision Date | Kill Reason | Link |
 |----|-------|--------------|-----|-------|---------------|-------------|------|
-| _No archived opportunities yet_ | | | | | | | |
+| _No entries._ | | | | | | | |
 
 ## Related
 
