@@ -1,9 +1,9 @@
 ---
 version: 1
 stage: portfolio_review_runner
-status: active
+status: deprecated
 created: 2026-06-25
-supersedes: null
+superseded_by: portfolio-review-runner-v2
 changelog: "Scheduled review of MONITOR and BUILD portfolio entries"
 ---
 
