@@ -51,8 +51,7 @@ _No entries._
 
 | ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Notes | Link |
 |----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
-
-_No entries._
+| OPP-20260626-coachbrief | CSV → weekly roster digest for solo endurance coaches | 63.5 | MONITOR_MICRO | 68 | 5 | €980/mo | studio-team | 2026-06-26 | 2026-07-26 | Desk-only; run interview + concierge sprint before BUILD | [OPP](../opportunities/OPP-20260626-coachbrief.md) |
 
 ## Archived (KILL_MICRO)
 
