@@ -8,15 +8,15 @@ decision: null
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
+time_to_first_revenue_days: 90
+monthly_revenue_potential: 600
+distribution_channel: seo
+distribution_cost: 2
 scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: validation
+pipeline_stage: micro_saas_evaluation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -24,11 +24,11 @@ owner: studio-team
 tags: [b2b, saas, france, btp, chauffage, micro-saas]
 automation_intake_at: 2026-06-26
 micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: ""
+  decision: MONITOR_MICRO
+  msfi: 65
+  build_hours_estimate: 72
+  maintenance_hours_estimate: 5
+  mrr_target_12m: "500-900 EUR"
   wedge: "Rappels contrats entretien chaudière — 1 dept, TPE sans ERP"
 prompt_versions:
   discovery: v1
@@ -309,9 +309,50 @@ Desk evaluation only. **desk-only**: true — CP — Eval automation run; live a
 
 ## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
+**Wedge scope**: Liste clients + dates contrats entretien chaudière/PAC avec rappels email/SMS automatiques J-30/J-7 pour artisan **et** client final — **1 département**, chauffagistes TPE 1–5 salariés (50–200 contrats actifs), sans ERP. **Hors scope** : devis/factures, attestations CERFA/décret 2009-649, ERP chantier, multi-dept self-serve, CRM généraliste.
 
-**confidence_level**: high / medium / low
+### Hard Gates
+
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | 72 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 5 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 600 €/mo (40×€15) | PASS |
+| distribution_cost | ≤ 7 | 2 (channel: seo) | PASS |
+| platform / ToS | see playbook | tos low, user-entered data | PASS |
+
+Build estimate breakdown (estimated): auth + Stripe billing 15 h ; client/contrat CRUD 20 h ; moteur rappels cron email/SMS (Brevo/Twilio) 25 h ; landing SEO locale 12 h. Maintenance: support artisan TPE occasionnel + monitoring SMS deliverability — pas de refresh données externe.
+
+MRR ceiling (estimated): ~2 000–3 500 établissements chauffage dans un dept moyen ; cible réaliste 40 payants à €15/mo = **600 €/mo** (verified: seuil gate 500 €) ; upside 80×€19 ≈ 1 520 €/mo si conversion SEO locale forte.
+
+### Platform Risk
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| tos_risk | low | Données saisies par l'artisan ; APIs email/SMS standards (Brevo, Twilio) |
+| regulatory_risk | medium | Produit = rappels opérationnels, pas attestation réglementaire ; disclaimer non-conseil |
+| platform_dependency | low | Pas de scrape ; pas d'API tierce métier obligatoire |
+| alternative_data_source | true | Artisan saisit ses propres échéances contrats |
+
+### MSFI v2
+
+| Component | Score | Rationale |
+|-----------|-------|-----------|
+| time_to_revenue_score | 50 | ~90 j (estimated) — SEO local + CMA sans audience fondateur ; 61–120 band |
+| automation_score | 90 | Rappels cron entièrement automatisés ; onboarding self-serve |
+| maintenance_sustainability_score | 85 | Pas de seed data externe ; support léger TPE |
+| acquisition_score | 55 | SEO niche viable mais concurrence ChaudièrePro Freemium ; pas d'audience studio |
+| wedge_local_score | 75 | Wedge hyper-local 1 dept + contexte réglementaire FR entretien annuel |
+| competition_score | 58 | ERPs €39–79/mo surdimensionnés ; Freemium 15 clients = substitut direct micro-TPE |
+| pricing_power_score | 48 | WTP inconnu (desk-only) ; Calendar gratuit + ChaudièrePro 0 € plafonnent WTP |
+| **MSFI** | **65** | |
+
+MSFI calc: `0.15×50 + 0.15×90 + 0.10×85 + 0.15×55 + 0.15×75 + 0.15×58 + 0.15×48 = 64.9 → 65`
+
+**Provisional decision**: MONITOR_MICRO — all hard gates PASS ; MSFI 65 (band 50–69) ; Validation desk-only → BUILD_MICRO blocked until live sprint (experiments 1–4).
+
+**confidence_level**: medium
 
 ---
 
