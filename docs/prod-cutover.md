@@ -66,11 +66,11 @@ Scheduled and on-demand portfolio reviews use **CP — Review** ([automations.md
 
 Track cutover and prod-readiness steps:
 
-- [ ] Test OPP fixtures removed from `opportunities/`
-- [ ] Portfolio registries reset (empty tables)
-- [ ] CP — Review v2 active (`portfolio-review-runner-v2`, `automation-review-v2`)
-- [ ] [`validate_opportunities.py`](../scripts/validate_opportunities.py) includes portfolio registry checks
-- [ ] Cursor automations configured per [automations.md](automations.md)
+- [x] Test OPP fixtures removed from `opportunities/`
+- [x] Portfolio registries reset (empty tables)
+- [x] CP — Review v2 active (`portfolio-review-runner-v2`, `automation-review-v2`)
+- [x] [`validate_opportunities.py`](../scripts/validate_opportunities.py) includes portfolio registry checks
+- [ ] Cursor automations configured per [automations.md](automations.md) — update CP — Review to `automation-review-v2.md` in Cursor UI
 - [ ] GitHub labels synced ([`.github/labels.yml`](../.github/labels.yml))
 - [ ] First real opportunity evaluated through full pipeline
 

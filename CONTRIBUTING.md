@@ -85,9 +85,9 @@ See [`prompts/README.md`](prompts/README.md) for versioning details.
 
 Run quarterly reviews using [`templates/portfolio-review-template.md`](templates/portfolio-review-template.md). Save artifacts in [`reviews/`](reviews/) as `REVIEW-{YYYY}-Q{N}.md` (see [reviews/README.md](reviews/README.md)).
 
-Review all entries in [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md). Aggregate `expected_learnings` from archived opportunities. Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
+Review all entries in [`portfolio/micro-saas.md`](portfolio/micro-saas.md) (canonical for `solo_micro_saas`) or legacy [`portfolio/active.md`](portfolio/active.md) and [`portfolio/monitoring.md`](portfolio/monitoring.md) for `startup_studio`. Aggregate `expected_learnings` from archived opportunities. Apply kill rules from [`playbooks/kill-rules.md`](playbooks/kill-rules.md) where triggers are met.
 
-Scheduled reviews: use [prompts/portfolio-review-runner.md](prompts/portfolio-review-runner.md) or Cursor Automation **CP — Review** ([docs/automations.md](docs/automations.md)).
+Scheduled reviews: use [prompts/portfolio-review-runner-v2.md](prompts/portfolio-review-runner-v2.md) via Cursor Automation **CP — Review** ([prompts/automation-review-v2.md](prompts/automation-review-v2.md); see [docs/automations.md](docs/automations.md)).
 
 ## Pull Request Checklist
 

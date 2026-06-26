@@ -273,6 +273,7 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 | `automation-eval-v8`, `pipeline-orchestrator-v6` | Upgrade to v9 / v7 (staged eval) |
 | `automation-intake-v6`, `automation-qa-v4` | Upgrade to v7 / v5 |
 | Eval full-run v6/v8 partial confusion | Use v7/v9 staged contract; re-add `cp:eval` until `decided` |
+| `automation-review-v1`, `portfolio-review-runner-v1` | Upgrade to v2 — micro-saas registry, MSFI, 30-day cadence |
 | Open smoke/test PRs on old branches | Close without merge |
 
 ---
