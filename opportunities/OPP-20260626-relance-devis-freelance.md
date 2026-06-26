@@ -8,15 +8,15 @@ decision: null
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
+time_to_first_revenue_days: 75
+monthly_revenue_potential: 750
+distribution_channel: communities
+distribution_cost: 3
 scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: validation
+pipeline_stage: micro_saas_evaluation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -25,11 +25,12 @@ tags: [freelance, b2b, micro-saas]
 automation_intake_at: 2026-06-26
 micro_saas:
   decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: ""
-  wedge: ""
+  msfi: 60.9
+  build_hours_estimate: 78
+  maintenance_hours_estimate: 5
+  mrr_target_12m: "500-1200 EUR"
+  wedge: "Minimal quote tracker — register quote metadata (amount, client, send/expiry dates), email/Slack reminders (J+3/J+7/J+14 + pre-expiry), status pipeline (pending, nudged, won, lost, expired), conversion stats — solo FR/EU freelancer; no quote generation, invoicing, or CRM"
+  decision: MONITOR_MICRO
 prompt_versions:
   discovery: v1
   validation: v1
@@ -314,9 +315,56 @@ We believe **solo FR/EU freelancers** (consultants, devs, designers) sending **5
 
 ## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
+**Wedge scope**: Enregistrer un devis (montant, client, date d'envoi, date d'expiration), rappels email/Slack (J+3/J+7/J+14 + alerte pré-expiration), statuts (en attente, relancé, gagné, perdu, expiré), stats simples (taux de conversion, délai moyen de réponse) — pour **solo freelance FR/EU** (~€9–19/mo). **Hors scope** : génération de devis/PDF, facturation, intégration compta, CRM/pipeline commercial complet, multi-utilisateur agence.
 
-**confidence_level**: high / medium / low
+### Hard Gates
+
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | 78 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 5 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 750 €/mo (50×€15) | PASS |
+| distribution_cost | ≤ 7 | 3 (channel: communities) | PASS |
+| platform / ToS | see playbook | tos low ; user-owned data | PASS |
+
+**Gate evidence**
+
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| build_hours_mvp | 78 h (CRUD devis, moteur rappels email/Slack, pipeline statuts, stats conversion, auth, billing Stripe, deploy) | estimated | Scope wedge Discovery ; stack SaaS standard comparable wedges MONITOR | 2026-06-26 |
+| maintenance_m6 | 5 h/mo (support solo, monitoring envoi email, bugfixes) | estimated | Pas d'intégration compta ; données user-owned ; comparable suivi-conformite 4 h/mo | 2026-06-26 |
+| mrr_ceiling_wedge | 750 €/mo = 50 clients × €15/mo | estimated | ICP 4,8 M TI Urssaf ; wedge étroit tracker seul ; ARPU €9–19 hyp. Discovery | 2026-06-26 |
+| distribution_primary | Groupes Facebook/Malt freelance FR + contenu SEO « relance devis freelance » | inferred | Validation exp. 2–3 canaux ; coût map communities=3 | 2026-06-26 |
+| tracker_only_gap | Aucun tier FR-first ≤€15/mo tracker seul identifié | estimated | Validation desk audit #1 ; DevisTrack/Relance+ = devis complet ou enterprise | 2026-06-26 |
+
+### Platform Risk
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| tos_risk | low | Données devis saisies par l'utilisateur ; pas de scrape réseaux sociaux |
+| regulatory_risk | low | Suivi commercial pré-contrat ; pas de données réglementées |
+| platform_dependency | low | Email (Brevo/Resend) + Slack API optionnelle ; pas de dépendance plateforme tierce pour données core |
+| alternative_data_source | true | Métadonnées devis entièrement user-owned ; export CSV |
+
+### MSFI v2
+
+| Component | Score | Rationale |
+|-----------|-------|-----------|
+| time_to_revenue_score | 50 | 75 j (landing + outreach communities freelance + 1er payant) — bande 61–120 j |
+| automation_score | 88 | Rappels J+3/J+7/J+14 + alerte expiration automatisés ; saisie self-serve |
+| maintenance_sustainability_score | 82 | 5 h/mo estimé ; pas d'intégration compta ; support solo léger |
+| acquisition_score | 52 | Communities/SEO freelance faisable solo mais lent ; pas d'audience studio ; concurrence contenu relance |
+| wedge_local_score | 68 | Wedge FR-first tracker devis solo ; pas hyper-local géo mais niche métier claire |
+| competition_score | 58 | Gap tracker seul documenté (Validation #1) ; pression Henrri/Indy gratuits et suites all-in-one |
+| pricing_power_score | 35 | WTP unknown ; Henrri/Indy relances gratuites + rappels calendrier ancrent le bas |
+| **MSFI** | **60.9** | |
+
+MSFI calc: `0.15×50 + 0.15×88 + 0.10×82 + 0.15×52 + 0.15×68 + 0.15×58 + 0.15×35 = 60.9`
+
+**Provisional decision**: MONITOR_MICRO — all hard gates PASS ; MSFI 60.9 in 50–69 band ; desk-only Validation (`desk-only: true`, confidence low) blocks BUILD_MICRO until live sprint (entretiens + landing + concierge).
+
+**confidence_level**: medium
 
 ---
 
