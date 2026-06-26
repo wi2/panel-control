@@ -104,7 +104,7 @@ When submitting changes via git:
 - [ ] Internal links use relative paths
 - [ ] `python scripts/validate_opportunities.py` passes locally (CI runs on PR)
 
-Automated review: **CP — QA** runs [prompts/automation-qa-v3.md](prompts/automation-qa-v3.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
+Automated review: **CP — QA** runs [prompts/automation-qa-v4.md](prompts/automation-qa-v4.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail** on a `status: decided` opportunity.
 
 ## GitHub labels and branch conventions
 

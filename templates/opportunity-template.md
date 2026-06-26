@@ -111,7 +111,9 @@ We believe [target user] will [behavior] because [reason].
 
 ## Scoring
 
-<!-- Paste output from prompts/scoring.md. See playbooks/scoring-rules.md -->
+> **N/A for `portfolio_strategy: solo_micro_saas`** — fast path skips this section. Leave empty; QA must not fail on unfilled rows.
+
+<!-- Paste output from prompts/scoring.md. startup_studio only. See playbooks/scoring-rules.md -->
 
 | Dimension | Raw (0–10) | Weight | Weighted | Evidence | Rationale |
 |-----------|------------|--------|----------|----------|-----------|

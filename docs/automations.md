@@ -9,7 +9,7 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automation
 Four automations — one job each, thin wrapper → versioned prompt:
 
 ```text
-CP — QA      (read-only)  → prompts/automation-qa-v3.md       → opportunity-qa-v3
+CP — QA      (read-only)  → prompts/automation-qa-v4.md       → opportunity-qa-v4
 CP — Intake  (write)      → prompts/automation-intake-v6.md   → intake-v6
 CP — Eval    (write)      → prompts/automation-eval-v7.md     → pipeline-orchestrator-v5
 CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
@@ -101,7 +101,7 @@ Read-only validation. **Never commits.**
 ```text
 You are running CP — QA for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-qa-v3.md against this pull request.
+Execute prompts/automation-qa-v4.md against this pull request.
 Do not modify any files.
 
 You MUST post the QA verdict on this pull request using the Comment on PRs tool.
@@ -214,7 +214,7 @@ After merging v5 docs, reconfigure Cursor automations:
 |------------|---------|-------------------|
 | **CP — Intake** | Label `cp:intake` | `prompts/automation-intake-v6.md` |
 | **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v7.md` |
-| **CP — QA** | PR open/push | `prompts/automation-qa-v3.md` (unchanged) |
+| **CP — QA** | PR open/push | `prompts/automation-qa-v4.md` |
 | **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v1.md` (unchanged) |
 
 Verify **CP — Eval** has **no** push trigger on `opp/pipeline`.
@@ -365,7 +365,7 @@ git push origin --delete opp/pipeline
 After configuring all four Cursor Automations, verify each item:
 
 - [ ] `gh label list` shows `cp:intake`, `cp:eval`, and `cp:review` (or run **Sync GitHub labels** workflow)
-- [ ] **CP — QA** uses `prompts/automation-qa-v3.md`; test with a PR touching `opportunities/`
+- [ ] **CP — QA** uses `prompts/automation-qa-v4.md`; test with a PR touching `opportunities/`
 - [ ] **CP — Intake** uses `prompts/automation-intake-v6.md`; trigger label `cp:intake`
 - [ ] **CP — Eval** uses `prompts/automation-eval-v7.md`; trigger label `cp:eval` only (**no push trigger**)
 - [ ] **CP — Review** uses `prompts/automation-review-v1.md`; cron + `cp:review` on `review/**`

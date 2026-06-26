@@ -1,9 +1,10 @@
 ---
 version: 3
 stage: opportunity_qa
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: opportunity-qa-v2
+superseded_by: opportunity-qa-v4
 changelog: "Strategy-aware QA — solo_micro_saas hard gates + MSFI; studio path unchanged"
 ---
 

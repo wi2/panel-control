@@ -105,7 +105,7 @@ Studio override: `decision_override: true` with rationale (not applicable to sol
 
 When a PR modifies `opportunities/` or `portfolio/`:
 
-1. Read [prompts/opportunity-qa.md](prompts/opportunity-qa.md) (active v3).
+1. Read [prompts/opportunity-qa.md](prompts/opportunity-qa.md) (active v4).
 2. For startup_studio: apply [prompts/score-calculator.md](prompts/score-calculator.md).
 3. For solo_micro_saas: apply [scripts/msfi_calculator.py](scripts/msfi_calculator.py) logic.
 4. Verdict **pass**, **warn**, or **fail** — do not merge on **fail**.

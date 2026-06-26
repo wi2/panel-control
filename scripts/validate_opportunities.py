@@ -18,6 +18,19 @@ VALID_MICRO_DECISIONS = {"BUILD_MICRO", "MONITOR_MICRO", "KILL_MICRO"}
 VALID_PORTFOLIO_STRATEGY = {"solo_micro_saas", "startup_studio", "vc_moonshot", "cashflow_business"}
 OPP_FILENAME = re.compile(r"^OPP-\d{8}-[a-z0-9-]+\.md$")
 LINK_PATTERN = re.compile(r"\]\(([^)]+)\)")
+H2_SECTION = re.compile(r"^## .+", re.MULTILINE)
+
+
+def h2_section(body: str, heading: str) -> str:
+    """Return content under a level-2 heading until the next level-2 heading."""
+    marker = f"## {heading}"
+    if marker not in body:
+        return ""
+    rest = body.split(marker, 1)[1]
+    match = H2_SECTION.search(rest)
+    if match:
+        return rest[: match.start()]
+    return rest
 
 
 def parse_frontmatter(text: str) -> tuple[dict | None, str]:
@@ -125,8 +138,21 @@ def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
     if status == "decided" and "<!-- Paste output -->" in body:
         errors.append(f"{rel}: decided file contains unresolved template placeholder")
 
-    if status == "decided" and "confidence_level" not in body.split("## Final Decision")[-1]:
-        errors.append(f"{rel}: Final Decision section missing confidence_level")
+    if status == "decided":
+        if ps == "solo_micro_saas":
+            micro_section = h2_section(body, "Final Decision (Micro SaaS)")
+            if micro_section and "confidence_level" not in micro_section:
+                errors.append(f"{rel}: Final Decision (Micro SaaS) section missing confidence_level")
+            elif not micro_section and h2_section(body, "Micro SaaS Evaluation"):
+                micro_eval = h2_section(body, "Micro SaaS Evaluation")
+                if "confidence_level" not in micro_eval and "Micro SaaS Decision" not in body:
+                    warnings.append(
+                        f"{rel}: solo_micro_saas decided without Final Decision (Micro SaaS) section"
+                    )
+        else:
+            studio_section = h2_section(body, "Final Decision")
+            if studio_section and "confidence_level" not in studio_section:
+                errors.append(f"{rel}: Final Decision section missing confidence_level")
 
     intake_complete = fm.get("intake_complete", "").strip().lower()
     if status == "evaluating":
