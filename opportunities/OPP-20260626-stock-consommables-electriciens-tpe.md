@@ -16,7 +16,7 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: discovery
+pipeline_stage: validation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -109,26 +109,41 @@ We believe **electrician TPE owners** (1–5 employees, 3–8 jobs/week, no ERP,
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+Desk evaluation only. **desk-only**: true — live customer experiments below are **planned**, not executed; one **completed** desk scan satisfies the orchestrator gate for MONITOR_MICRO path only (BUILD_MICRO requires live validation). See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
 | # | Experiment | Hypothesis | Method | Success Criteria | Status |
 |---|------------|------------|--------|------------------|--------|
-| 1 | | | | | planned |
+| 1 | Problem interviews | TPE électriciens confirment ruptures consommables ≥1×/semaine | 8 entretiens via CMA / groupe Facebook métier dept pilote | ≥5/8 confirment pain + citent course négoce urgente | planned |
+| 2 | WTP landing | Demande à €9–19/mo pour stock seul | Landing FR + Van Westendorp ; €200 ads Facebook artisans locaux | ≥25 signups ; ≥20 % acceptent ≥€9/mo | planned |
+| 3 | Concierge stock | Suivi manuel seuils + alertes SMS réduit ruptures | 8 TPE, catalogue 30 SKU, alertes SMS 4 semaines | ≥6/8 rapportent ≥1 rupture évitée ; ≥3 pré-commandent après pilote | planned |
+| 4 | Competitive landscape desk scan | Tolteck/Obat/Excel ne couvrent pas le wedge alertes camion | Revue éditeurs BTP, comparatifs, StockEleec/Nocodia, templates Excel BTP | Gap documenté sur ≥2 critères wedge (seuils camion, alertes SMS, historique/chantier) | **completed** |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
-| | | | | |
+| pain_confirmation | — | unknown | Pas d'entretiens studio | — |
+| wtp_signal | — | unknown | Pas de landing / LOI | — |
+| concierge_usefulness | — | unknown | Pas de concierge | — |
+| erp_entry_floor | €19–25/mo HT (Tolteck annuel 19 € ; mensuel 25 € ; Obat Pro dès 25 € annuel) | verified | tool-advisor Tolteck ; compafacturation Obat vs Tolteck ; independant.io | 2026 |
+| tolteck_obat_stock_module | Devis/factures + ouvrages ; pas de module stock consommables camion documenté | verified | Comparatifs Obat/Tolteck ; organilog comparatif électriciens | 2026 |
+| organilog_stock_bundled | Module stock présent mais suite CRM/planning €24–40/mo/utilisateur | verified | Yolah CRM électricien ; Organilog comparatif | 2026 |
+| free_alternative_dominance | Excel/Sheets + modèles BTP gratuits restent l'alternative #1 | verified | sheetcontrole ; cours-genie-civil modèles chantier ; archipelia comparatif stock | 2026 |
+| stockeleec_positioning | App stock électricien gratuite (Google Sheets) — cible pédagogique Bac Pro/CAP, pas TPE pro | verified | MyEleec StockEleec | 2026 |
+| nocodia_custom_stock | Stock camion + alertes existe en sur-mesure no-code (coût projet, pas SaaS self-serve) | verified | nocodia.fr application métier électricien | 2026 |
+| wedge_gap_score | 4/4 critères wedge absents ou secondaires chez incumbents entry-tier | inferred | Desk scan #4 vs wedge scope Discovery | 2026-06-26 |
+| excel_pain_pattern | Ateliers/BTP : sorties consommables non tracées → ruptures au mauvais moment | inferred | sheetcontrole cas atelier consommables ; PR intake | 2026 |
+
+**Experiment #4 summary**: Entry-tier ERPs (Tolteck, Obat) compete on devis/factures/chantier, not van consumable min/max alerts. Organilog bundles stock at higher per-user pricing. Free paths (Excel, StockEleec pédagogique) confirm demand for stock tracking but lack SMS/seuils métier TPE and field adoption discipline. **Wedge gap is plausible** but **WTP vs €19 Tolteck bundle and vs Excel gratuit remains unvalidated**.
 
 ### Kill / Continue Signals
 
-- **Continue if**: ...
-- **Kill if**: ...
+- **Continue if**: ≥5/8 entretiens confirment ruptures hebdo ; ≥3 pré-commandes ou LOI €9+/mo ; concierge ≥6/8 cite rupture évitée ; ARPU viable ≥€9/mo après Van Westendorp
+- **Kill if**: ≥5/8 disent Excel/Tolteck suffisent ; 0 signup après €200 ads ; ≥4/8 refusent tout outil payant stock seul ; Tolteck/Obat lance module stock camion natif à ≤€15/mo
 
-**confidence_level**: high / medium / low
+**confidence_level**: low
 
 ---
 
