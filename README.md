@@ -97,6 +97,8 @@ See [`opportunities/_example-opportunity.md`](opportunities/_example-opportunity
 | [`reviews/`](reviews/) | Quarterly portfolio review artifacts |
 | [`docs/`](docs/) | Foundational reference: philosophy, principles, glossary, automations |
 
+Production bootstrap (empty portfolio, first real OPP): [`docs/prod-cutover.md`](docs/prod-cutover.md).
+
 ## Standards
 
 - Agent operating rules: [`AGENTS.md`](AGENTS.md)
