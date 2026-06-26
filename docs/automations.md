@@ -6,16 +6,26 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automation
 
 ## Architecture
 
-Four small automations — one job each, thin wrapper → versioned prompt:
+Four automations — one job each, thin wrapper → versioned prompt:
 
 ```text
-CP — QA      (read-only)  → prompts/automation-qa-v1.md      → opportunity-qa-v1
-CP — Intake  (write)      → prompts/automation-intake-v1.md  → intake-v1
-CP — Eval    (write)      → prompts/automation-eval-v1.md    → pipeline-orchestrator-v1
-CP — Review  (write)      → prompts/automation-review-v1.md  → portfolio-review-runner-v1
+CP — QA      (read-only)  → prompts/automation-qa-v1.md       → opportunity-qa-v1
+CP — Intake  (write)      → prompts/automation-intake-v3.md   → intake-v3
+CP — Eval    (write)      → prompts/automation-eval-v3.md     → pipeline-orchestrator-v2
+CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
 ```
 
-Replace the legacy single-purpose automations (**Control Plane — PR QA**, **Intake**, **MONITOR Review**) with these four. Disable legacy automations after enabling the new set to avoid duplicate runs.
+**Studio branch**: fixed name **`opp/pipeline`** — one opportunity at a time. One PR, one label (`cp:intake`). Eval advances on each **push** to `opp/pipeline` (up to 5 stages per run) until `decided`.
+
+## Cursor UI constraints
+
+| Limitation | Workaround |
+|------------|------------|
+| No branch wildcards (`opp/**`) | Use exact branch name `opp/pipeline` |
+| Branch field cannot be empty (defaults to `master`) | Set trigger branch to `opp/pipeline` explicitly |
+| No reliable « PR pushed » trigger in all setups | Use **New push to branch** on `opp/pipeline` |
+
+After each merged idea: delete `opp/pipeline`, recreate from `master` for the next intake.
 
 ## Prerequisites
 
@@ -24,8 +34,9 @@ Before enabling automations:
 1. Push this repository to GitHub and connect it in Cursor.
 2. Configure `gitConfig` in each automation: repo `wi2/panel-control`, branch `master`.
 3. Create GitHub labels (see [GitHub labels](#github-labels)).
-4. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
-5. Enable **ignore draft PRs** on Git triggers where available.
+4. Enable **usage-based pricing** and a spend limit in Cursor (Background Agents require billing).
+5. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
+6. Enable **ignore draft PRs** on Git triggers where available.
 
 **Remote**: `git@github.com:wi2/panel-control.git`
 
@@ -33,19 +44,35 @@ Before enabling automations:
 
 ## GitHub labels
 
-Create these labels in the GitHub repository settings:
-
 | Label | Color (suggested) | Automation | Purpose |
 |-------|-------------------|------------|---------|
-| `cp:intake` | `#0E8A16` | CP — Intake | Create OPP + Discovery from PR body |
-| `cp:eval` | `#1D76DB` | CP — Eval | Advance pipeline by one stage |
-| `cp:review` | `#D93F0B` | CP — Review | Run portfolio review on demand |
+| `cp:intake` | `#0E8A16` | CP — Intake | Create OPP + Discovery (once per pipeline run) |
+| `cp:review` | `#D93F0B` | CP — Review | Portfolio review on demand |
+
+**Removed**: `cp:eval` — Eval is push-triggered on `opp/pipeline`, no label.
 
 **Rules**
 
-- One action label per PR — do not combine `cp:intake` and `cp:eval` on the same PR.
-- Write automations require **both** the label and the matching branch prefix (see each section below).
-- QA does not use a label — it runs automatically on PR open/push when paths match.
+- Add `cp:intake` **once** when starting a new idea on `opp/pipeline`.
+- QA runs automatically on PR open/push when paths match — no label.
+- Review uses `cp:review` on `review/**` branches only.
+
+---
+
+## Studio workflow (`opp/pipeline`)
+
+```text
+1. git checkout master && git pull
+2. git checkout -b opp/pipeline master
+3. git push -u origin opp/pipeline
+4. Open PR + ## Intake body → label cp:intake (once)
+5. CP — Intake → push → CP — Eval (batch) → push → … until decided
+6. CP — QA on each push → merge when pass
+7. git push origin --delete opp/pipeline   # optional cleanup
+8. Next idea: repeat from step 1
+```
+
+Only **one active OPP** on `opp/pipeline` at a time.
 
 ---
 
@@ -71,16 +98,15 @@ You are running CP — QA for the AI Startup Studio Brain control plane.
 
 Execute prompts/automation-qa-v1.md against this pull request.
 Do not modify any files.
+
+You MUST post the QA verdict on this pull request using the Comment on PRs tool.
+Do not mark the run complete until the comment is visible on the PR.
+If the diff is outside opportunities/ or portfolio/, post NOOP: outside QA scope as a PR comment.
 ```
 
 ### Expected output
 
 PR comment titled **Control Plane QA — pass | warn | fail**.
-
-### Related prompts
-
-- [prompts/automation-qa.md](../prompts/automation-qa.md)
-- [prompts/opportunity-qa.md](../prompts/opportunity-qa.md)
 
 ---
 
@@ -97,7 +123,9 @@ Creates a new opportunity file and runs Discovery from a PR description.
 | **Repo checkout** | `wi2/panel-control`, branch `master` |
 | **ignoreDraftPrs** | `true` |
 
-**Branch gate**: PR head branch must match `intake/**`.
+**Branch gate**: PR head branch must be **exactly** `opp/pipeline`.
+
+**Precondition**: no `opportunities/OPP-*.md` on the branch yet.
 
 ### PR body template
 
@@ -118,70 +146,60 @@ Creates a new opportunity file and runs Discovery from a PR description.
 ```text
 You are running CP — Intake for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-intake-v1.md against this pull request.
-Commit to the PR branch. Do not push to master.
+Execute prompts/automation-intake-v3.md against this pull request.
+Commit and push to opp/pipeline. Do not push to master.
 ```
 
 ### Expected output
 
-New file under `opportunities/`, Discovery section filled, **Intake Complete** summary comment.
-
-### Workflow
-
-1. Create branch `intake/{slug}`.
-2. Open PR with the intake template in the description.
-3. Add label `cp:intake`.
-4. Merge after **CP — QA** passes.
-
-### Related prompts
-
-- [prompts/automation-intake.md](../prompts/automation-intake.md)
-- [prompts/intake.md](../prompts/intake.md)
+New file under `opportunities/`, Discovery section filled, **Intake Complete** summary. Push triggers **CP — Eval**.
 
 ---
 
 ## CP — Eval
 
-Advances one opportunity by exactly one pipeline stage.
+Advances the pipeline in **batches of up to 5 stages** per push. **No label.**
 
 | Setting | Value |
 |---------|-------|
 | **Name** | CP — Eval |
-| **Description** | Pipeline +1 for one opportunity on eval branch |
-| **Trigger** | Git — **label change** (label `cp:eval`) |
-| **Tools** | None (agent commits via PR branch) |
+| **Description** | Pipeline batch (max 5 stages) on opp/pipeline push |
+| **Trigger** | Git — **new push to branch** |
+| **Branch (exact)** | `opp/pipeline` |
+| **Tools** | None (agent commit + push on PR branch) |
 | **Repo checkout** | `wi2/panel-control`, branch `master` |
-| **ignoreDraftPrs** | `true` |
+| **ignoreDraftPrs** | `true` (if PR triggers also configured) |
 
-**Branch gate**: PR head branch must match `eval/OPP-YYYYMMDD-slug`.
+**Do not** use label `cp:eval`. **Do not** leave branch as `master` — Eval would never run on pipeline pushes.
 
-The opportunity file `opportunities/OPP-YYYYMMDD-slug.md` must already exist on the branch.
+**Branch gate**: push target / PR head branch must be **`opp/pipeline`**.
+
+**OPP resolution**: exactly **one** `opportunities/OPP-*.md` on the branch.
 
 ### Agent instructions
 
 ```text
 You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-eval-v1.md against this pull request.
-Commit to the PR branch. One pipeline stage per run. Do not push to master.
+Execute prompts/automation-eval-v3.md against this pull request.
+Commit and push to opp/pipeline. Up to 5 pipeline stages per run. Do not push to master.
 ```
 
 ### Expected output
 
-Updated opportunity section, **Pipeline Run Summary** comment. **CP — QA** runs on the subsequent push.
+**Pipeline Run Summary** with stages executed (≤5). If not `decided`, next push runs the next batch. **CP — QA** runs on each push.
 
-### Workflow
+### Cursor setup (required)
 
-1. Create branch `eval/OPP-YYYYMMDD-slug` from `master`.
-2. Open PR (opportunity file must exist).
-3. Add label `cp:eval` → one stage executes.
-4. Re-add label `cp:eval` to advance the next stage, or merge and open a new eval PR.
-5. Merge after **CP — QA** passes.
+1. Open automation **CP — Eval**.
+2. **Remove** any label `cp:eval` trigger.
+3. **Add** trigger: **New push to branch**.
+4. Repo: `wi2/panel-control`.
+5. Branch: **`opp/pipeline`** (exact — no wildcard).
+6. Paste agent instructions above.
+7. Save.
 
-### Related prompts
-
-- [prompts/automation-eval.md](../prompts/automation-eval.md)
-- [prompts/pipeline-orchestrator.md](../prompts/pipeline-orchestrator.md)
+Also update **CP — Intake** instructions to `automation-intake-v3.md`.
 
 ---
 
@@ -210,45 +228,39 @@ Process at most 3 MONITOR opportunities per run.
 Open a pull request for any file changes. Do not push to master.
 ```
 
-### Expected output
+---
 
-**Portfolio Review Run** summary; optional `reviews/REVIEW-*.md`; PR with opportunity and portfolio updates. **CP — QA** runs on the subsequent push.
+## End-to-end flow
 
-### Manual trigger
-
-1. Create branch `review/YYYY-MM-DD`.
-2. Open PR, add label `cp:review`.
-
-### Related prompts
-
-- [prompts/automation-review.md](../prompts/automation-review.md)
-- [prompts/portfolio-review-runner.md](../prompts/portfolio-review-runner.md)
+```text
+opp/pipeline → PR + ## Intake → cp:intake (once)
+  → Intake → push → Eval batch → push → Eval batch → decided
+  → QA each push → merge → delete opp/pipeline → next idea
+```
 
 ---
 
-## End-to-end flows
+## Migration
 
-### New idea
+| Legacy | Action |
+|--------|--------|
+| `intake/**`, `eval/OPP-*`, `opp/{slug}` | Use `opp/pipeline` only |
+| Label `cp:eval` | Remove from GitHub and CP — Eval |
+| Trigger on `master` or `opp/automation-v2-smoke` | Change to `opp/pipeline` |
+| Open smoke/test PRs on old branches | Close without merge |
 
-```text
-intake/mon-idee → PR + ## Intake body → label cp:intake
-  → CP — Intake commits OPP → CP — QA comments → merge
-```
+---
 
-### Pipeline advancement
+## Troubleshooting
 
-```text
-eval/OPP-20260625-slug → PR → label cp:eval (repeat per stage)
-  → CP — Eval (+1 stage) → CP — QA → merge when decided
-```
-
-### Weekly review
-
-```text
-Cron Monday 09:00 → CP — Review → PR review/YYYY-MM-DD → CP — QA
-```
-
-Or manually: `review/YYYY-MM-DD` + label `cp:review`.
+| Symptom | Likely cause | Fix |
+|---------|--------------|-----|
+| Eval never starts after Intake | Trigger branch is `master` or wrong name | Set CP — Eval to **push** → `opp/pipeline` |
+| Eval NOOP: wrong branch | PR not on `opp/pipeline` | Recreate branch with exact name |
+| Eval NOOP: ambiguous OPP | Multiple OPP files on branch | One OPP per pipeline run only |
+| Intake NOOP: OPP exists | Reused branch without cleanup | Delete branch, recreate from `master` |
+| QA success, no PR comment | Comment on PRs disabled | Enable on CP — QA |
+| Automation failed to start | Billing / spend limit | Cursor dashboard → Settings |
 
 ---
 
@@ -257,13 +269,66 @@ Or manually: `review/YYYY-MM-DD` + label `cp:review`.
 | Automation | Writes files | Tools |
 |------------|--------------|-------|
 | CP — QA | **No** | Comment on PRs only |
-| CP — Intake | Yes | Agent commit on PR branch |
-| CP — Eval | Yes | Agent commit on PR branch |
+| CP — Intake | Yes | Agent commit + push on `opp/pipeline` |
+| CP — Eval | Yes | Agent commit + push on `opp/pipeline` |
 | CP — Review | Yes | Agent commit + open PR |
 
 - Write automations never push to `master` directly.
-- Branch prefix + label double-gate prevents accidental pipeline runs.
 - Do not merge when **CP — QA** verdict is **fail**.
+
+---
+
+## Smoke test (`opp/pipeline`)
+
+Run after merging v3 docs to `master` and reconfiguring Cursor automations.
+
+### Prerequisites
+
+1. Merge docs PR (v3 prompts + this file) to `master`.
+2. **CP — Eval**: trigger **New push to branch** → `opp/pipeline`; instructions → `automation-eval-v3.md`; remove `cp:eval` label trigger.
+3. **CP — Intake**: instructions → `automation-intake-v3.md`.
+4. Close without merge (if still open): PRs on `opp/automation-v2-smoke`, `intake/automation-smoke-test`, `test/qa-smoke`.
+
+### Steps
+
+```bash
+git checkout master && git pull
+git checkout -b opp/pipeline master
+git push -u origin opp/pipeline
+```
+
+1. Open PR from `opp/pipeline` → `master`.
+2. PR body:
+
+```markdown
+## Intake
+
+**Title:** Pipeline smoke test
+**Owner:** studio-team
+**Tags:** smoke-test
+
+### Description
+
+Minimal smoke test for opp/pipeline v3 flow. Safe to kill after verification.
+```
+
+3. Add label `cp:intake` once.
+4. Wait for **Intake Complete** → verify one `opportunities/OPP-*.md` on branch.
+5. Each agent push should trigger **CP — Eval** (batch ≤5 stages) until `decided` or manual stop.
+6. **CP — QA** should comment on each push.
+7. After verification: close PR without merge (or merge if you want to keep the OPP), then:
+
+```bash
+git push origin --delete opp/pipeline
+```
+
+### Legacy branch cleanup
+
+| Branch | Action |
+|--------|--------|
+| `opp/automation-v2-smoke` | Delete remote + local after v3 smoke passes |
+| `intake/automation-smoke-test` | Close PR; delete branch |
+| `test/qa-smoke`, `test/qa-pr-automation` | Close if obsolete |
 
 ---
 

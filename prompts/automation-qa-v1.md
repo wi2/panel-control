@@ -28,8 +28,9 @@ Run [opportunity-qa-v1.md](opportunity-qa-v1.md) on the PR diff and post a struc
 1. Read [AGENTS.md](../AGENTS.md).
 2. Execute [opportunity-qa-v1.md](opportunity-qa-v1.md) against all changed files in scope.
 3. Apply [score-calculator-v1.md](score-calculator-v1.md) logic for every changed opportunity with a Scoring section.
-4. Post the structured QA comment (verdict: **pass**, **warn**, or **fail**).
-5. Do **not** modify any repository files. Do **not** approve merge when verdict is **fail**.
+4. Post the structured QA comment (verdict: **pass**, **warn**, or **fail**) using the **Comment on PRs** tool.
+5. Do **not** finish the run until the PR comment is posted. Output in the agent transcript alone is not sufficient.
+6. Do **not** modify any repository files. Do **not** approve merge when verdict is **fail**.
 
 ## Output
 
