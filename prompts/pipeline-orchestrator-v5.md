@@ -4,7 +4,7 @@ stage: pipeline_orchestrator
 status: deprecated
 created: 2026-06-26
 supersedes: pipeline-orchestrator-v4
-superseded_by: pipeline-orchestrator-v6
+superseded_by: pipeline-orchestrator-v7
 changelog: "Full pipeline in one run (no 5-stage cap); strategy router; gate fail-fast"
 ---
 

@@ -24,7 +24,7 @@ Used exclusively by Cursor Automation **CP — Intake** (see [docs/automations.m
 2. Open PR with `## Intake` section in the PR body → **Intake runs on PR opened**.
 3. Optional fallback: add label `cp:intake` once if PR-open trigger did not run.
 4. Agent delegates to [intake-v6.md](intake-v6.md). Push triggers **CP — QA** (push only).
-5. Add label **`cp:eval`** once to start **CP — Eval** (full pipeline run → `decided`).
+5. Add label **`cp:eval`** — one stage per label until **CP — Eval** reaches `decided`.
 
 ## Related
 

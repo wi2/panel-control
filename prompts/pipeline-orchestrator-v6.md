@@ -1,13 +1,16 @@
 ---
 version: 6
 stage: pipeline_orchestrator
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: pipeline-orchestrator-v5
+superseded_by: pipeline-orchestrator-v7
 changelog: "Strict full run — no single-stage exit; failed_incomplete on partial; no re-add cp:eval"
 ---
 
 # Pipeline Orchestrator Prompt v6
+
+**Superseded by [pipeline-orchestrator-v7.md](pipeline-orchestrator-v7.md)** — staged eval (one stage per `cp:eval`).
 
 ## Role
 

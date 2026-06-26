@@ -11,11 +11,11 @@ Four automations — one job each, thin wrapper → versioned prompt:
 ```text
 CP — QA      (read-only)  → prompts/automation-qa-v5.md       → opportunity-qa-v4
 CP — Intake  (write)      → prompts/automation-intake-v7.md   → intake-v6
-CP — Eval    (write)      → prompts/automation-eval-v8.md     → pipeline-orchestrator-v6
+CP — Eval    (write)      → prompts/automation-eval-v9.md     → pipeline-orchestrator-v7
 CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
 ```
 
-**Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. **Intake** on PR opened (or label `cp:intake`); **`cp:eval` once** for full pipeline → `decided`.
+**Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. **Intake** on PR opened (or label `cp:intake`); **`cp:eval`** staged — **one stage per label**, re-add until `decided`.
 
 ## Cursor UI constraints
 
@@ -47,7 +47,7 @@ Before enabling automations:
 | Label | Color (suggested) | Automation | Purpose |
 |-------|-------------------|------------|---------|
 | `cp:intake` | `#0E8A16` | CP — Intake | Optional fallback if PR-open Intake did not run |
-| `cp:eval` | `#1D76DB` | CP — Eval | Full pipeline evaluation (all remaining stages → `decided`) |
+| `cp:eval` | `#1D76DB` | CP — Eval | Staged evaluation — one stage per label until `decided` |
 | `cp:review` | `#D93F0B` | CP — Review | Portfolio review on demand |
 
 Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync via GitHub Actions workflow **Sync GitHub labels** or create manually in the repo settings.
@@ -56,7 +56,7 @@ Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync vi
 
 - Open PR with `## Intake` on `opp/pipeline` → **CP — Intake** runs on PR opened.
 - Label `cp:intake` is **optional** (fallback only).
-- After **Intake Complete**, add `cp:eval` **once** — must reach `decided` in one run (or `failed_incomplete`).
+- After **Intake Complete**, add `cp:eval` — **one stage per run**; re-add after each staged summary until `Remaining stages: none` and `status: decided` (solo: typically 3×).
 - Remove `cp:eval` after successful `decided` to avoid re-trigger.
 - **CP — QA** runs on **push to PR** only (after Intake or Eval commits) — no label.
 - Review uses `cp:review` on `review/**` branches only.
@@ -74,10 +74,11 @@ Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync vi
 5. git push -u origin opp/pipeline
 6. Open PR + ## Intake body → CP — Intake (PR opened)
 7. Push after Intake → CP — QA
-8. label cp:eval (once) → CP — Eval (full run → decided) → push → CP — QA
-9. Merge when latest QA = pass or warn
-10. git push origin --delete opp/pipeline
-11. Next idea: repeat from step 1
+8. label cp:eval → validation → re-add → micro_saas → re-add → portfolio_manager → decided
+9. Push after each stage → CP — QA (warn mid-pipeline OK; merge gate on decided push)
+10. Merge when latest QA = pass or warn on **decided** push
+11. git push origin --delete opp/pipeline
+12. Next idea: repeat from step 1
 ```
 
 Only **one active OPP** (`draft` or `evaluating`) on `opp/pipeline` at a time. Catalogue `decided` files inherited from `master` are normal.
@@ -161,18 +162,18 @@ Commit and push to opp/pipeline. Do not push to master.
 
 ### Expected output
 
-New file under `opportunities/`, Discovery section filled, `intake_complete: true`, **Intake Complete** summary. Push triggers **CP — QA** (push only) — add label **`cp:eval`** once to start evaluation.
+New file under `opportunities/`, Discovery section filled, `intake_complete: true`, **Intake Complete** summary. Push triggers **CP — QA** (push only) — add label **`cp:eval`** to start **validation** (staged path).
 
 ---
 
 ## CP — Eval
 
-Runs the **full remaining pipeline** in one invocation when label **`cp:eval`** is added.
+Runs **one pipeline stage** per label **`cp:eval`** (staged eval).
 
 | Setting | Value |
 |---------|-------|
 | **Name** | CP — Eval |
-| **Description** | Full pipeline run on opp/pipeline (all remaining stages → decided) |
+| **Description** | Staged pipeline on opp/pipeline — one stage per cp:eval until decided |
 | **Trigger** | Git — **label change** (label `cp:eval`) |
 | **Tools** | None (agent commit + push on PR branch) |
 | **Repo checkout** | `wi2/panel-control`, branch `master` |
@@ -191,13 +192,13 @@ Runs the **full remaining pipeline** in one invocation when label **`cp:eval`** 
 ```text
 You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-eval-v8.md against this pull request.
-Commit and push to opp/pipeline. Full pipeline run (all remaining stages → decided in one invocation). Do not push to master.
+Execute prompts/automation-eval-v9.md against this pull request.
+Commit and push to opp/pipeline. Staged eval — one stage per invocation; re-add cp:eval until decided. Do not push to master.
 ```
 
 ### Expected output
 
-**Pipeline Run Summary** with `Mode: full run`, `Remaining stages: none`, `status: decided`. On `Gate status: failed_incomplete` — do not merge. **CP — QA** runs on push. Remove `cp:eval` after success.
+**Pipeline Run Summary** with `Mode: staged`. Mid-pipeline: `Remaining stages: {list}` + instruction to **re-add `cp:eval`**. Final run: `Remaining stages: none`, `status: decided`. **Do not merge** while `status: evaluating`. **CP — QA** runs on push. Remove `cp:eval` after `decided`.
 
 ### Cursor setup (required)
 
@@ -208,14 +209,14 @@ Commit and push to opp/pipeline. Full pipeline run (all remaining stages → dec
 5. Paste agent instructions above.
 6. Save.
 
-### Cursor reconfig (v6/v7/v8)
+### Cursor reconfig (v7/v9)
 
 After merging prompt updates, reconfigure Cursor automations:
 
 | Automation | Trigger | Instructions file |
 |------------|---------|-------------------|
 | **CP — Intake** | PR **opened** + label `cp:intake` (optional) | `prompts/automation-intake-v7.md` |
-| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v8.md` |
+| **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v9.md` |
 | **CP — QA** | Push to PR only (**remove** PR opened) | `prompts/automation-qa-v5.md` |
 | **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v1.md` (unchanged) |
 
@@ -256,7 +257,8 @@ Open a pull request for any file changes. Do not push to master.
 ```text
 opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
   → Intake Complete → push → QA (push)
-  → cp:eval (once) → full Eval → decided → push → QA (merge gate)
+  → cp:eval (staged) → validation → re-add → micro_saas → re-add → manager → decided
+  → QA on each push; merge gate on decided push only
   → merge → delete opp/pipeline → next idea
 ```
 
@@ -268,9 +270,9 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 |--------|--------|
 | `intake/**`, `eval/OPP-*`, `opp/{slug}` | Use `opp/pipeline` only |
 | CP — Eval push trigger on `opp/pipeline` | **Remove** — use label `cp:eval` only |
-| `automation-eval-v7`, `pipeline-orchestrator-v5` | Upgrade to v8 / v6 |
+| `automation-eval-v8`, `pipeline-orchestrator-v6` | Upgrade to v9 / v7 (staged eval) |
 | `automation-intake-v6`, `automation-qa-v4` | Upgrade to v7 / v5 |
-| Eval « single stage » partial runs | Upgrade to orchestrator v6; one `cp:eval` → `decided` or fail |
+| Eval full-run v6/v8 partial confusion | Use v7/v9 staged contract; re-add `cp:eval` until `decided` |
 | Open smoke/test PRs on old branches | Close without merge |
 
 ---
@@ -286,7 +288,8 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 | Eval NOOP: ambiguous OPP | Multiple **active** OPPs (`draft`/`evaluating`) on branch | One active OPP per run; catalogue `decided` is OK |
 | Intake NOOP: active OPP exists | Pipeline already in progress | Add `cp:eval` or wait until `decided` |
 | Eval re-runs on decided OPP | `cp:eval` label still present | Remove label; Eval NOOPs on `decided` |
-| Eval partial run (`Remaining stages` ≠ none) | Agent stopped mid-pipeline | Do not merge; upgrade to v8/v6; re-run manually if needed |
+| Eval partial run (`Remaining stages` ≠ none) while `status: evaluating` | Expected under **staged v7/v9** — re-add `cp:eval` | Do not merge until `Remaining stages: none` |
+| Merged mid-pipeline | Ignored QA warn | Wait for `decided`; never merge on mid-pipeline warn |
 | QA on empty PR open | PR opened trigger on CP — QA | Remove PR opened; push-only on CP — QA |
 | QA success, no PR comment | Comment on PRs disabled | Enable on CP — QA |
 | Automation failed to start | Billing / spend limit | Cursor dashboard → Settings |
@@ -309,12 +312,12 @@ opp/pipeline → empty commit → PR + ## Intake → Intake (PR opened)
 
 ## Smoke test (`opp/pipeline`)
 
-Run after merging v6/v7/v8 prompts to `master` and reconfiguring Cursor automations.
+Run after merging v7/v9 prompts to `master` and reconfiguring Cursor automations.
 
 ### Prerequisites
 
 1. Merge docs PR to `master`.
-2. **CP — Eval**: label `cp:eval` only; instructions → `automation-eval-v8.md`.
+2. **CP — Eval**: label `cp:eval` only; instructions → `automation-eval-v9.md`.
 3. **CP — Intake**: PR opened + optional `cp:intake`; instructions → `automation-intake-v7.md`.
 4. **CP — QA**: push to PR only (**no** PR opened); instructions → `automation-qa-v5.md`.
 5. Sync labels: `gh label list | grep cp:` shows `cp:intake`, `cp:eval`, `cp:review`.
@@ -335,19 +338,19 @@ git push -u origin opp/pipeline
 ```markdown
 ## Intake
 
-**Title:** Pipeline smoke test v6
+**Title:** Pipeline smoke test v7 staged
 **Owner:** studio-team
 **Tags:** smoke-test
 
 ### Description
 
-Minimal smoke test — Intake on PR open, one cp:eval → decided. Safe to kill after verification.
+Minimal smoke test — Intake on PR open, staged cp:eval (3× solo) → decided. Safe to kill after verification.
 ```
 
 3. Wait for **Intake Complete** (PR opened trigger) — no `cp:intake` required.
 4. **No QA** on PR open alone (empty commit only).
-5. Add label `cp:eval` **once**.
-6. Wait for **Pipeline Run Summary**: `Mode: full run`, `Remaining stages: none`, `decided`.
+5. Add label `cp:eval` — re-add after each staged summary until `decided` (solo: 3×).
+6. Wait for final **Pipeline Run Summary**: `Mode: staged`, `Remaining stages: none`, `decided`.
 7. **CP — QA** on Intake push and Eval push (pass or warn).
 8. After verification: merge or close, then:
 
@@ -361,7 +364,7 @@ git push origin --delete opp/pipeline
 |------|--------|----------|
 | 1 | Open PR with ## Intake | Intake runs; OPP + Discovery |
 | 2 | No cp:eval before Intake done | Eval not started |
-| 3 | cp:eval once after Intake | Full run → `decided` (not single stage) |
+| 3 | cp:eval staged after Intake | 3× solo (or N studio) → `decided`; mid-pipeline QA warn OK |
 | 4 | `python3 scripts/validate_opportunities.py` | pass |
 | 5 | CP — QA | pass or warn on Eval push only |
 
@@ -374,10 +377,10 @@ After configuring all four Cursor Automations, verify each item:
 - [ ] `gh label list` shows `cp:intake`, `cp:eval`, and `cp:review` (or run **Sync GitHub labels** workflow)
 - [ ] **CP — QA** uses `prompts/automation-qa-v5.md`; trigger **push to PR only** (no PR opened)
 - [ ] **CP — Intake** uses `prompts/automation-intake-v7.md`; triggers PR **opened** + optional label `cp:intake`
-- [ ] **CP — Eval** uses `prompts/automation-eval-v8.md`; trigger label `cp:eval` only (**no push trigger**)
+- [ ] **CP — Eval** uses `prompts/automation-eval-v9.md`; trigger label `cp:eval` only (**no push trigger**)
 - [ ] **CP — Review** uses `prompts/automation-review-v1.md`; cron + `cp:review` on `review/**`
 - [ ] GitHub Action **Validate opportunities and portfolio** passes on PR
-- [ ] Smoke test: one `cp:eval` → `decided`; QA only on pushes after Intake/Eval
+- [ ] Smoke test: staged cp:eval → `decided`; QA merge gate only on decided push
 
 ### Post-setup verification commands
 

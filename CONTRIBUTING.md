@@ -113,12 +113,12 @@ Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 | Label | Branch | Action |
 |-------|--------|--------|
 | `cp:intake` | **`opp/pipeline`** (exact) | Create OPP + Discovery from PR `## Intake` body (once) |
-| `cp:eval` | **`opp/pipeline`** (exact) | Full pipeline evaluation — all remaining stages → `decided` (once, after Intake Complete) |
+| `cp:eval` | **`opp/pipeline`** (exact) | Staged pipeline eval — **one stage per label**; re-add until `decided` (solo: ~3× after Intake) |
 | `cp:review` | `review/**` | Run portfolio review on demand |
 
 **Studio rule**: one **active** opportunity (`draft` / `evaluating`) on `opp/pipeline` at a time. Catalogue of `decided` OPP files inherited from `master` is normal. Recreate the branch from `master` after each merge.
 
-Workflow: `cp:intake` → wait for Intake Complete → `cp:eval` → merge when QA passes. Do not add both labels at once.
+Workflow: `cp:intake` → Intake Complete → `cp:eval` (staged, re-add until `decided`) → merge when QA pass/warn on **decided** push. Do not add both labels at once.
 
 QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required. The first QA run on PR open may be a NOOP or incomplete; **use the latest QA comment after the Eval push** as the merge gate.
 
@@ -169,8 +169,8 @@ Use when Background Agents must create and evaluate the OPP from the PR alone.
 6. Open PR opp/pipeline → master with ## Intake body (Title + Description) → **CP — Intake runs on PR opened**
 7. Optional: label `cp:intake` if PR-open Intake did not run
 8. Wait for Intake Complete (`intake_complete: true`)
-9. Add label `cp:eval` **once** — must reach `status: decided` in one run (`Remaining stages: none`)
-10. Merge when latest CP — QA = pass or warn on **Eval push** (not on PR open)
+9. Add label `cp:eval` — run **validation**; re-add after each **Pipeline Run Summary** until `Remaining stages: none` and `status: decided` (solo: typically 3×)
+10. Merge when latest CP — QA = pass or warn on **decided** push (not on mid-pipeline warn)
 11. Remove `cp:eval` label after success; delete opp/pipeline after merge
 ```
 
@@ -183,8 +183,9 @@ Use when Background Agents must create and evaluate the OPP from the PR alone.
 | Event | QA behaviour |
 |-------|----------------|
 | PR opened (empty commit only) | **No QA** (push does not touch opportunities/portfolio) |
-| Push after Intake | Validates Discovery + intake markers |
-| Push after Eval | **Authoritative merge gate** (full decided OPP) |
+| Push after Intake | Validates Discovery + intake markers (warn OK) |
+| Push after each staged Eval stage | QA **warn** expected while `status: evaluating` |
+| Push after final Eval (`decided`) | **Authoritative merge gate** |
 
 Do not merge on **fail**. **warn** is acceptable for MONITOR_MICRO desk-only runs.
 

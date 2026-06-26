@@ -71,11 +71,11 @@ All automated intake and eval use the **fixed branch** `opp/pipeline`:
 | Discovery confidence | high / medium / low |
 | intake_complete | true |
 | Open questions count | N |
-| Recommended next step | Add label **`cp:eval`** on this PR to start full pipeline evaluation |
+| Recommended next step | Add label **`cp:eval`** on this PR to run **validation** (staged — re-add after each stage until `decided`) |
 
 ### PR note
 
-Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coexist on this branch. After intake commit+push, add **`cp:eval`** once — **CP — Eval** runs all remaining stages in one run. Merge when `status: decided` and **CP — QA** passes. Recreate `opp/pipeline` from `master` for the next idea.
+Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coexist on this branch. After intake commit+push, add **`cp:eval`** — **CP — Eval** runs **one stage per label** (solo: ~3× until `decided`). Merge when `status: decided` and **CP — QA** passes. Recreate `opp/pipeline` from `master` for the next idea.
 ```
 
 ## Constraints
@@ -90,6 +90,6 @@ Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coe
 ## Related
 
 - [Discovery](discovery-v1.md)
-- [Pipeline orchestrator v6](pipeline-orchestrator-v6.md)
+- [Pipeline orchestrator v7](pipeline-orchestrator-v7.md)
 - [Automation intake v7](automation-intake-v7.md)
 - Previous: [intake-v5.md](intake-v5.md)

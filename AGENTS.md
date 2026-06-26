@@ -60,7 +60,7 @@ prompts/{stage_key with _ replaced by -}-v{N}.md
 
 Examples: `micro_saas_evaluation: v2` → `prompts/micro-saas-evaluation-v2.md`; `portfolio_manager_micro: v1` → `prompts/portfolio-manager-micro-v1.md`.
 
-Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v6.md](prompts/pipeline-orchestrator-v6.md). One `cp:eval` must complete all remaining stages → `decided` or report `failed_incomplete`. **CP — Intake** runs on PR opened (optional label `cp:intake`). **CP — QA** runs on push to PR only.
+Automated advancement: **CP — Eval** on branch **`opp/pipeline`** via label **`cp:eval`** ([docs/automations.md](docs/automations.md)) using [prompts/pipeline-orchestrator-v7.md](prompts/pipeline-orchestrator-v7.md). **Staged eval**: one stage per `cp:eval`; re-add label until `status: decided` (solo: typically 3× after intake). **CP — Intake** runs on PR opened (optional label `cp:intake`). **CP — QA** runs on push to PR only; merge gate only when `decided`.
 
 ## Decision rules
 
@@ -115,7 +115,7 @@ When a PR modifies `opportunities/` or `portfolio/`:
 1. Read [prompts/intake.md](prompts/intake.md) (v6).
 2. Branch **`opp/pipeline`**; one active OPP at a time.
 3. Default `portfolio_strategy: solo_micro_saas`.
-4. Label `cp:intake` once; then label **`cp:eval`** after Intake Complete for full pipeline run.
+4. Label `cp:intake` once; then label **`cp:eval`** after Intake Complete — **re-add `cp:eval`** after each staged summary until `decided`.
 
 ## Portfolio review
 

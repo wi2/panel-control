@@ -58,10 +58,10 @@ Each completed section must have `confidence_level`.
 
 Required `prompt_versions` keys: `micro_saas_evaluation`, `portfolio_manager_micro` — resolved files must exist.
 
-When `status: evaluating` (mid-pipeline):
+When `status: evaluating` (mid-pipeline — **expected under staged cp:eval**):
 
 - **Do not fail** for missing Final Decision (Micro SaaS) or unfilled portfolio sync.
-- Report **Pipeline → warn** with note: in progress; merge gate applies only when `status: decided`.
+- Report **Pipeline → warn** with note: staged eval in progress; merge gate applies only when `status: decided`.
 - Validate only sections that are filled (no `<!-- Paste output -->` in completed sections).
 
 When `status: draft`:
@@ -169,7 +169,7 @@ For solo_micro_saas: MSFI + hard gates only (global_score/OQI = N/A).
 - **Comment only** — never edit files.
 - **Never** apply v1/v2 Scoring-table blocking rules to `solo_micro_saas`.
 - Do not approve merge when verdict is **fail** on a `status: decided` opportunity.
-- Mid-pipeline `evaluating` may be **warn** — author should wait for `decided` before merge.
+- Mid-pipeline `evaluating` → **warn** (expected for staged eval); do not merge until `decided`.
 
 ## Related
 

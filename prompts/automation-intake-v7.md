@@ -66,7 +66,7 @@ Use these as inputs to intake-v6.
 2. Execute [intake-v6.md](intake-v6.md) with parsed inputs.
 3. Commit and **push** to **`opp/pipeline`** (not `master`). Push triggers **CP — QA** (push only) — **not** CP — Eval.
 4. Post **Intake Complete** summary from intake-v6 output format.
-5. Remind in the PR comment: add label **`cp:eval`** once to run full pipeline evaluation.
+5. Remind in the PR comment: add label **`cp:eval`** to run **validation** (re-add after each staged summary until `decided`).
 6. Do **not** run validation, scoring, or portfolio decisions in intake.
 
 ## Constraints
