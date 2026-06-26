@@ -7,6 +7,7 @@ on:
       - "portfolio/**"
       - "scripts/validate_opportunities.py"
       - "scripts/msfi_calculator.py"
+      - "scripts/test_msfi_audit.py"
       - "metrics/**"
       - ".github/workflows/validate-opportunities.yml"
   push:
@@ -17,6 +18,7 @@ on:
       - "portfolio/**"
       - "scripts/validate_opportunities.py"
       - "scripts/msfi_calculator.py"
+      - "scripts/test_msfi_audit.py"
       - "metrics/**"
 
 jobs:
@@ -31,3 +33,6 @@ jobs:
 
       - name: Run opportunity and portfolio validation
         run: python scripts/validate_opportunities.py
+
+      - name: Run MSFI audit smoke test
+        run: python scripts/test_msfi_audit.py

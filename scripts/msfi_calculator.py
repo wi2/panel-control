@@ -33,6 +33,10 @@ def compute_msfi_lite(components: dict[str, float]) -> float:
     return round(total, 1)
 
 
+# Back-compat alias
+compute_msfi = compute_msfi_lite
+
+
 def distribution_cost_for_channel(channel: str | None) -> int | None:
     if not channel:
         return None

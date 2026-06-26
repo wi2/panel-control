@@ -1,17 +1,17 @@
 # Micro SaaS Evaluation Prompt
 
-## Current Version
+## Status
 
-**Active**: [micro-saas-evaluation-v2.md](micro-saas-evaluation-v2.md)
+**Deprecated on active path (v3-lite).** Superseded by [fit-and-decide.md](fit-and-decide.md).
 
-## Changelog
+Historical versions retained for reproducibility:
 
-| Version | Date | Status | Notes |
-|---------|------|--------|-------|
-| v2 | 2026-06-26 | active | Primary fast-path stage — 6 hard gates, MSFI v2 |
-| v1 (legacy key `micro_saas`) | 2026-06-26 | deprecated | [micro-saas-v1.md](micro-saas-v1.md) |
+| Version | File | Status |
+|---------|------|--------|
+| v2 | [micro-saas-evaluation-v2.md](micro-saas-evaluation-v2.md) | deprecated |
+| v1 | [micro-saas-v1.md](micro-saas-v1.md) | deprecated |
 
 ## Related
 
-- [Micro SaaS portfolio playbook](../playbooks/micro-saas-portfolio.md)
-- [Portfolio manager micro](portfolio-manager-micro.md)
+- [ADR v3-lite](../docs/decisions/2026-06-simplification-v3-lite.md)
+- [fit-and-decide-v1.md](fit-and-decide-v1.md)

@@ -1,16 +1,12 @@
 # Portfolio Manager Micro Prompt
 
-## Current Version
+## Status
 
-**Active**: [portfolio-manager-micro-v1.md](portfolio-manager-micro-v1.md)
+**Deprecated on active path (v3-lite).** Merged into [fit-and-decide.md](fit-and-decide.md).
 
-## Changelog
-
-| Version | Date | Status | Notes |
-|---------|------|--------|-------|
-| v1 | 2026-06-26 | active | Final solo_micro_saas decision |
+Historical version: [portfolio-manager-micro-v1.md](portfolio-manager-micro-v1.md) (deprecated).
 
 ## Related
 
-- [Micro SaaS evaluation](micro-saas-evaluation.md)
-- [Portfolio micro-saas.md](../portfolio/micro-saas.md)
+- [fit-and-decide-v1.md](fit-and-decide-v1.md)
+- [ADR v3-lite](../docs/decisions/2026-06-simplification-v3-lite.md)
