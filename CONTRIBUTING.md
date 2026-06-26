@@ -163,15 +163,20 @@ Use when Background Agents must create and evaluate the OPP from the PR alone.
 ```text
 1. git checkout master && git pull
 2. git push origin --delete opp/pipeline   # if branch exists from prior run
-3. git checkout -b opp/pipeline master && git push -u origin opp/pipeline
-4. Open PR opp/pipeline → master with ## Intake body (Title + Description)
-5. Add label cp:intake once — wait for Intake Complete (intake_complete: true)
-6. Add label cp:eval once — wait for Pipeline Run Summary (status: decided)
-7. Merge when latest CP — QA = pass or warn
-8. Remove cp:eval label after success; delete opp/pipeline after merge
+3. git checkout -b opp/pipeline master
+4. git commit --allow-empty -m "chore: open pipeline PR for automation run"
+5. git push -u origin opp/pipeline
+6. Open PR opp/pipeline → master with ## Intake body (Title + Description)
+7. Add label cp:intake once — wait for Intake Complete (intake_complete: true)
+8. Add label cp:eval once — wait for Pipeline Run Summary (status: decided)
+9. If Eval stops mid-pipeline (status still evaluating), add cp:eval once more
+10. Merge when latest CP — QA = pass or warn on decided OPP
+11. Remove cp:eval label after success; delete opp/pipeline after merge
 ```
 
-**Critical:** no manual commits to `opportunities/` or `portfolio/` on the branch **before** step 5. Pre-filled pipeline commits make `cp:intake` / `cp:eval` NOOP.
+**GitHub PR requirement:** base and head must differ by at least one commit — use the **empty commit** in step 4 (touches no `opportunities/` or `portfolio/` files).
+
+**Critical:** no manual commits to `opportunities/` or `portfolio/` on the branch **before** step 7. Pre-filled pipeline commits make `cp:intake` / `cp:eval` NOOP.
 
 #### CP — QA timing (both flows)
 
