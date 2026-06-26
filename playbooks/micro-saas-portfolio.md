@@ -94,33 +94,25 @@ If exactly **one** gate is within **10%** of threshold (e.g. build 108 h, maint 
 
 Two or more borderline failures, or any hard FAIL → **KILL_MICRO**.
 
-## Micro SaaS Fit Index (MSFI) v2 — soft score
+## MSFI-lite (v3-lite) — soft score
 
-Hard gates filter; MSFI ranks survivors. MSFI **never compensates** for a hard gate failure.
-
-Scale: **0–100**.
+Hard gates filter; MSFI-lite ranks survivors. Computed in [scripts/msfi_calculator.py](../scripts/msfi_calculator.py).
 
 ```text
-MSFI = 0.15 × time_to_revenue_score
-     + 0.15 × automation_score
-     + 0.10 × maintenance_sustainability_score
-     + 0.15 × acquisition_score
-     + 0.15 × wedge_local_score
-     + 0.15 × competition_score
-     + 0.15 × pricing_power_score
+MSFI = 0.40 × speed_score + 0.35 × economics_score + 0.25 × reach_score
 ```
 
-### Components
+| Component | Definition |
+|-----------|------------|
+| `speed_score` | Time to revenue + automation potential (0–100) |
+| `economics_score` | Pricing power, maintenance burden, MRR headroom (0–100) |
+| `reach_score` | Acquisition at declared channel + wedge competition (0–100) |
 
-| Component | Range | Definition |
-|-----------|-------|------------|
-| `time_to_revenue_score` | 0–100 | From `time_to_first_revenue_days`: ≤60→100, 61–120→50, >120→0 |
-| `automation_score` | 0–100 | Ops automatable without daily human intervention |
-| `maintenance_sustainability_score` | 0–100 | Long-run maint burden within 10 h/mo gate |
-| `acquisition_score` | 0–100 | Feasibility at declared `distribution_channel` for solo founder |
-| `wedge_local_score` | 0–100 | Hyper-local or niche wedge defensibility |
-| `competition_score` | 0–100 | Incumbent pressure **within wedge** (10 = weak competition in wedge) |
-| `pricing_power_score` | 0–100 | WTP, ARPU headroom, commoditization risk |
+Store in frontmatter: `msfi`, `speed_score`, `economics_score`, `reach_score`.
+
+### Legacy MSFI v2
+
+Seven-component MSFI v2 (deprecated): see git history before 2026-06-26 or [ADR v3-lite](../docs/decisions/2026-06-simplification-v3-lite.md).
 
 ## Decision thresholds
 

@@ -39,7 +39,7 @@ The orchestrator and [evaluation-process.md](evaluation-process.md) allow Scorin
 
 ## solo_micro_saas validation gates
 
-For `portfolio_strategy: solo_micro_saas`, gate is **Validation → micro_saas_evaluation** (not Scoring).
+For `portfolio_strategy: solo_micro_saas`, gate is **Validation → fit_and_decide** (not Scoring).
 
 | Target | Desk-only | Live validation |
 |--------|-----------|-----------------|

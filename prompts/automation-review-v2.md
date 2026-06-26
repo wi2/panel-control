@@ -1,7 +1,7 @@
 ---
 version: 2
 stage: automation_review
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-review-v1
 changelog: "Portfolio review wrapper v2 — delegates to portfolio-review-runner-v2 for solo_micro_saas"

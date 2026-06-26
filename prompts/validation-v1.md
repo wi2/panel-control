@@ -1,7 +1,7 @@
 ---
 version: 1
 stage: validation
-status: active
+status: deprecated
 created: 2026-06-25
 supersedes: null
 changelog: "Initial release"

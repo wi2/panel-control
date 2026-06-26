@@ -92,59 +92,42 @@ changelog: "Initial release"
 ---
 ```
 
-## Opportunity Frontmatter
+## Opportunity Frontmatter (v3-lite)
 
 ```yaml
 ---
 id: OPP-YYYYMMDD-slug
 title: ""
+eval_engine: v3-lite
 portfolio_strategy: solo_micro_saas
 status: draft
+intake_complete: false
 decision: null
 capacity_blocked: false
-global_score: null
-opportunity_quality_index: null
+msfi: null
+speed_score: null
+economics_score: null
+reach_score: null
 time_to_first_revenue_days: null
 monthly_revenue_potential: null
 distribution_channel: null
 distribution_cost: null
-scores: {}
-decision_override: false
-override_rationale: null
-override_expires: null
+build_hours_estimate: null
+maintenance_hours_estimate: null
+wedge: ""
 pipeline_stage: null
-next_review_action: null
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
 tags: []
-micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: ""
-  wedge: ""
 prompt_versions:
   discovery: v1
-  validation: v1
-  micro_saas_evaluation: v2
-  portfolio_manager_micro: v1
-  scoring: v2
-  distribution_analysis: v1
-  unfair_advantage: v1
-  maintenance_evaluation: v1
-  risk_analysis: v1
-  portfolio_intelligence: v1
-  scenario_planning: v1
-  portfolio_manager: v2
-  vision: v1
-  mvp: v1
-  roadmap: v1
-  architecture: v1
-  success_contract: v1
+  validation: v2
+  fit_and_decide: v1
 ---
 ```
+
+Legacy studio frontmatter (`global_score`, OQI, `scores{}`): see [legacy-studio.md](docs/legacy-studio.md).
 
 ## Evidence Standards
 

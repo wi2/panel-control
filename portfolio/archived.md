@@ -1,6 +1,6 @@
 # Archived Portfolio (KILL)
 
-Opportunities with `global_score < 50` or meeting automatic kill triggers. No further investment.
+> **Legacy frozen (2026-06-26).** Use [micro-saas.md](micro-saas.md). See [legacy-studio.md](../docs/legacy-studio.md).
 
 ## Instructions
 

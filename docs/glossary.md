@@ -12,13 +12,19 @@ High-level system design for an opportunity: components, build-vs-buy choices, i
 
 ### BUILD
 
-Portfolio decision when `global_score >= 75` AND `opportunity_quality_index >= 70`. Indicates sufficient evidence and fit to allocate build resources. Recorded in [`portfolio/active.md`](../portfolio/active.md).
+**Legacy (studio, frozen):** `global_score >= 75` AND `OQI >= 70` → [portfolio/active.md](../portfolio/active.md).
+
+**Active (v3-lite):** see **BUILD_MICRO**.
+
+### BUILD_MICRO
+
+Portfolio decision when hard gates PASS, MSFI-lite ≥ 70, and live validation (not desk-only). Recorded in [portfolio/micro-saas.md](../portfolio/micro-saas.md) Active table.
 
 ## C
 
 ### confidence_level
 
-Section-level assessment of decision reliability: `high`, `medium`, or `low`. Required on every decision-path section. Portfolio Manager must not BUILD when Scoring, Distribution, or Risk are `low` without override.
+Section-level assessment of decision reliability: `high`, `medium`, or `low`. Required on Discovery, Validation, Fit and Decide, and Final Decision (Micro SaaS).
 
 ### Control Plane
 
@@ -28,7 +34,9 @@ This repository. The central system for evaluating, documenting, and managing st
 
 ### Decision Path
 
-The evaluation sequence for all opportunities: Discovery → Validation → Scoring → Distribution Analysis → Unfair Advantage → Maintenance Evaluation → Risk Analysis → Portfolio Intelligence → Scenario Planning → Portfolio Management.
+**v3-lite (active):** Discovery → Validation → Fit and Decide → portfolio/micro-saas.md.
+
+**Legacy (frozen):** 10-stage studio path — see [legacy-studio.md](legacy-studio.md).
 
 ### Discovery
 
@@ -39,6 +47,14 @@ First pipeline stage. Identifies the problem, market signals, competitors, and i
 Evaluates customer acquisition feasibility. Produces `distribution_score` and `distribution_notes`. See [`playbooks/distribution-analysis.md`](../playbooks/distribution-analysis.md).
 
 ## E
+
+### eval_engine
+
+Version tag for evaluation rules. Active value: **`v3-lite`**. Recorded in opportunity frontmatter.
+
+### Fit and Decide
+
+Third pipeline stage (v3-lite). Hard gates, MSFI-lite, final BUILD_MICRO / MONITOR_MICRO / KILL_MICRO decision, portfolio sync. Driven by [fit-and-decide-v1.md](../prompts/fit-and-decide-v1.md).
 
 ### Evidence
 
@@ -58,13 +74,17 @@ The full process including decision path and BUILD preparation stages. See [Deci
 
 ### global_score
 
-Weighted composite (0–100) from 10 scoring dimensions. Replaces legacy single `score`. See [`playbooks/scoring-rules.md`](../playbooks/scoring-rules.md).
+**Legacy (frozen).** Weighted composite (0–100) from 10 scoring dimensions. See [legacy-studio.md](legacy-studio.md).
 
 ## K
 
-### KILL
+### KILL_MICRO
 
-Portfolio decision when `global_score < 50`, or when automatic kill triggers are met. Terminates further investment. Recorded in [`portfolio/archived.md`](../portfolio/archived.md).
+Terminate wedge — hard gate FAIL or MSFI-lite < 50. Archived in [portfolio/micro-saas.md](../portfolio/micro-saas.md).
+
+### KILL (legacy)
+
+Studio decision when `global_score < 50`. Frozen — [legacy-studio.md](legacy-studio.md).
 
 ## M
 
@@ -78,15 +98,19 @@ Portfolio decision when `global_score` is 50–74, or when score qualifies for B
 
 ### Micro SaaS Portfolio
 
-**Primary decision engine** when `portfolio_strategy: solo_micro_saas`. Asset allocator for solo AI micro-apps (6 hard gates + MSFI v2). Decisions: BUILD_MICRO / MONITOR_MICRO / KILL_MICRO. Canonical registry: [`portfolio/micro-saas.md`](../portfolio/micro-saas.md).
+**Primary decision engine** for `eval_engine: v3-lite`. Hard gates + MSFI-lite. Decisions: BUILD_MICRO / MONITOR_MICRO / KILL_MICRO. Registry: [portfolio/micro-saas.md](../portfolio/micro-saas.md).
+
+### MSFI-lite
+
+Soft score (0–100): 40% speed + 35% economics + 25% reach. Computed in [scripts/msfi_calculator.py](../scripts/msfi_calculator.py). BUILD_MICRO requires MSFI ≥ 70, gates PASS, live validation.
 
 ### micro_saas_fit_index (MSFI)
 
-Soft score (0–100) after hard gates pass. MSFI v2: time to revenue, automation, maintenance, acquisition, wedge local, competition, pricing power. BUILD_MICRO requires MSFI ≥ 70, all hard gates PASS, and live validation.
+Legacy seven-component MSFI v2 — deprecated. See [ADR v3-lite](decisions/2026-06-simplification-v3-lite.md).
 
 ### portfolio_strategy
 
-Operating lens: `solo_micro_saas` (default), `startup_studio`, `vc_moonshot`, `cashflow_business`. See [`docs/portfolio-strategy.md`](portfolio-strategy.md).
+Operating lens. **Active:** `solo_micro_saas` only. **Frozen:** `startup_studio`. See [portfolio-strategy.md](portfolio-strategy.md).
 
 ### capacity_blocked
 
@@ -104,13 +128,13 @@ A single startup idea under evaluation. One markdown file in [`opportunities/`](
 
 ### opportunity_quality_index (OQI)
 
-Decision reliability index (0–100) combining evidence quality, confidence levels, score reliability, and risk profile. BUILD requires OQI >= 70. See [`playbooks/opportunity-quality-index.md`](../playbooks/opportunity-quality-index.md).
+**Legacy (frozen).** Decision reliability index for studio path. See [legacy-studio.md](legacy-studio.md).
 
 ## P
 
 ### Portfolio
 
-The set of all evaluated opportunities, split by decision: active (BUILD), monitoring (MONITOR), archived (KILL).
+The set of evaluated opportunities. **Active registry:** [portfolio/micro-saas.md](../portfolio/micro-saas.md). Legacy studio files frozen.
 
 ### Portfolio Intelligence
 
@@ -160,7 +184,7 @@ Evaluates structural moats: audience, expertise, data, partnerships, technical/S
 
 ### Validation
 
-Second pipeline stage. Designs and records experiments to test the discovery hypothesis. Driven by [`prompts/validation.md`](../prompts/validation.md).
+Second pipeline stage. Experiments and desk-only vs live validation flag. Driven by [validation-v2.md](../prompts/validation-v2.md).
 
 ### Validation Experiment
 
@@ -168,7 +192,7 @@ A time-boxed test designed to produce evidence for or against a hypothesis (e.g.
 
 ## Related
 
+- [ADR v3-lite](decisions/2026-06-simplification-v3-lite.md)
 - [Philosophy](philosophy.md)
-- [Principles](principles.md)
+- [legacy-studio.md](legacy-studio.md)
 - [Conventions](../CONVENTIONS.md)
-- [Migration v1 to v2](../playbooks/migration-v1-to-v2.md)

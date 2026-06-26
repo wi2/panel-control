@@ -1,7 +1,7 @@
 ---
 version: 4
 stage: opportunity_qa
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: opportunity-qa-v3
 changelog: "Explicit solo_micro_saas skip for studio Scoring/OQI; mid-pipeline warn not fail; MSFI-only score audit"
