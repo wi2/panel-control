@@ -109,13 +109,15 @@ Automated review: **CP — QA** runs [prompts/automation-qa-v1.md](prompts/autom
 
 Used by Cursor Automations (see [docs/automations.md](docs/automations.md)):
 
-| Label | Branch prefix | Action |
-|-------|---------------|--------|
-| `cp:intake` | `opp/**` | Create OPP + Discovery from PR `## Intake` body (once) |
-| _(none)_ | `opp/**` | **CP — Eval** on each push — up to 5 pipeline stages until `decided` |
+| Label | Branch | Action |
+|-------|--------|--------|
+| `cp:intake` | **`opp/pipeline`** (exact) | Create OPP + Discovery from PR `## Intake` body (once) |
+| _(none)_ | **`opp/pipeline`** | **CP — Eval** on each push — up to 5 pipeline stages until `decided` |
 | `cp:review` | `review/**` | Run portfolio review on demand |
 
-Legacy (deprecated): `intake/**`, `eval/OPP-*`, label `cp:eval`.
+**Studio rule**: one active opportunity on `opp/pipeline` at a time. Recreate the branch from `master` after each merge.
+
+Legacy (deprecated): `intake/**`, `eval/OPP-*`, `opp/{slug}`, label `cp:eval`.
 
 QA (`CP — QA`) runs automatically on PRs touching `opportunities/` or `portfolio/` — no label required.
 

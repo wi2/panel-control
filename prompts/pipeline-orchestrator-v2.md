@@ -146,4 +146,4 @@ After Final Decision is written in the batch:
 - [Score calculator](score-calculator-v1.md)
 - [Evaluation process](../playbooks/evaluation-process.md)
 - [Portfolio rules](../playbooks/portfolio-rules.md)
-- [Automation eval wrapper](automation-eval-v2.md)
+- [Automation eval wrapper](automation-eval-v3.md)

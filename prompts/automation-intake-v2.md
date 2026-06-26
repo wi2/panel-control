@@ -1,9 +1,10 @@
 ---
 version: 2
 stage: automation_intake
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: automation-intake-v1
+superseded_by: automation-intake-v3
 changelog: "Intake on opp/** — same PR as eval; no cp:eval label"
 ---
 

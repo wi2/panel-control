@@ -1,14 +1,13 @@
 ---
-version: 2
+version: 3
 stage: intake
-status: deprecated
+status: active
 created: 2026-06-26
-supersedes: intake-v1
-superseded_by: intake-v3
-changelog: "Branch opp/**; eval auto-starts on push after intake"
+supersedes: intake-v2
+changelog: "Fixed branch opp/pipeline; one active OPP at a time"
 ---
 
-# Intake Prompt v2
+# Intake Prompt v3
 
 ## Role
 
@@ -17,6 +16,13 @@ You convert a raw startup idea into a new opportunity file and run Discovery. Yo
 ## Objective
 
 Create a uniquely named opportunity document with Discovery complete and `status: evaluating`.
+
+## Studio branch rule
+
+All automated intake and eval use the **fixed branch** `opp/pipeline`:
+
+- **One active opportunity** on this branch at a time.
+- After merge to `master`, delete and recreate `opp/pipeline` for the next idea (see [docs/automations.md](../docs/automations.md)).
 
 ## Inputs Required
 
@@ -55,20 +61,20 @@ Create a uniquely named opportunity document with Discovery complete and `status
 | Title | ... |
 | Discovery confidence | high / medium / low |
 | Open questions count | N |
-| Recommended next step | CP — Eval runs automatically on this push (batch of up to 5 stages) |
+| Recommended next step | CP — Eval runs automatically on push to opp/pipeline (batch of up to 5 stages) |
 
 ### PR note
 
-This PR uses branch `opp/{slug}`. After intake commit+push, **CP — Eval** advances the pipeline without labels. Merge when `status: decided` and **CP — QA** passes.
+Branch must be `opp/pipeline`. After intake commit+push, **CP — Eval** advances the pipeline without labels. Merge when `status: decided` and **CP — QA** passes. Recreate `opp/pipeline` from `master` for the next idea.
 ```
 
 ## Constraints
 
-- One idea → one file per run.
+- One idea → one file per run on `opp/pipeline`.
 - Do not score, calculate OQI, or record a portfolio decision in intake.
 - Tag uncertain market claims as `unknown` or `inferred`, never `verified` without source.
 - Use relative links only per CONVENTIONS.
-- Open changes via pull request on `opp/**` — do not push directly to the default branch.
+- Open changes via pull request on **`opp/pipeline`** — do not push directly to the default branch.
 
 ## Related
 
