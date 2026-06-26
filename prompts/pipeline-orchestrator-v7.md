@@ -1,9 +1,9 @@
 ---
 version: 7
 stage: pipeline_orchestrator
-status: active
+status: deprecated
 created: 2026-06-26
-supersedes: pipeline-orchestrator-v6
+supersedes: pipeline-orchestrator-v7
 changelog: "Staged eval — one next stage per cp:eval; re-add cp:eval until decided; Mode staged"
 ---
 

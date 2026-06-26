@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import re
 import sys
+from datetime import date
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -12,10 +13,14 @@ OPPORTUNITIES = ROOT / "opportunities"
 PORTFOLIO = ROOT / "portfolio"
 PROMPTS = ROOT / "prompts"
 
-REQUIRED_FRONTMATTER = {"id", "title", "status", "prompt_versions"}
+sys.path.insert(0, str(ROOT / "scripts"))
+from msfi_calculator import audit_opportunity  # noqa: E402
+
+REQUIRED_FRONTMATTER = {"id", "title", "status", "prompt_versions", "portfolio_strategy", "eval_engine"}
 VALID_STATUS = {"draft", "evaluating", "decided"}
 VALID_MICRO_DECISIONS = {"BUILD_MICRO", "MONITOR_MICRO", "KILL_MICRO"}
 VALID_PORTFOLIO_STRATEGY = {"solo_micro_saas", "startup_studio", "vc_moonshot", "cashflow_business"}
+V3_LITE_CUTOVER = date(2026, 6, 26)
 OPP_FILENAME = re.compile(r"^OPP-\d{8}-[a-z0-9-]+\.md$")
 LINK_PATTERN = re.compile(r"\]\(([^)]+)\)")
 H2_SECTION = re.compile(r"^## .+", re.MULTILINE)
@@ -25,10 +30,12 @@ MICRO_SAAS_SECTIONS: dict[str, str] = {
     "Monitoring (MONITOR_MICRO)": "MONITOR_MICRO",
     "Archived (KILL_MICRO)": "KILL_MICRO",
 }
+MAX_BUILD = 3
+MAX_MONITOR = 5
+MAX_MAINT_HOURS = 40
 
 
 def h2_section(body: str, heading: str) -> str:
-    """Return content under a level-2 heading until the next level-2 heading."""
     marker = f"## {heading}"
     if marker not in body:
         return ""
@@ -55,6 +62,15 @@ def parse_frontmatter(text: str) -> tuple[dict | None, str]:
     return data, text[end + 4 :]
 
 
+def parse_date(val: str) -> date | None:
+    if not val or val in ("null", '""'):
+        return None
+    try:
+        return date.fromisoformat(val.strip()[:10])
+    except ValueError:
+        return None
+
+
 def resolve_prompt_path(stage_key: str, version: str) -> Path:
     slug = stage_key.replace("_", "-")
     ver = version if version.startswith("v") else f"v{version}"
@@ -65,9 +81,7 @@ def check_links(content: str, source: Path) -> list[str]:
     errors: list[str] = []
     for match in LINK_PATTERN.finditer(content):
         target = match.group(1).strip()
-        if target.startswith("http") or target.startswith("#"):
-            continue
-        if target.startswith("mailto:"):
+        if target.startswith(("http", "#", "mailto:")):
             continue
         resolved = (source.parent / target).resolve()
         try:
@@ -86,23 +100,23 @@ def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
     text = path.read_text(encoding="utf-8")
     rel = path.relative_to(ROOT)
 
-    if path.name.startswith("OPP-"):
-        if not OPP_FILENAME.match(path.name):
-            errors.append(f"{rel}: filename does not match OPP-YYYYMMDD-slug.md")
-        opp_id = path.stem
-        if path.name == "_example-opportunity.md":
-            pass
-        elif not path.name.startswith(opp_id if False else ""):
-            pass
+    if path.name.startswith("OPP-") and not OPP_FILENAME.match(path.name):
+        errors.append(f"{rel}: filename does not match OPP-YYYYMMDD-slug.md")
 
     fm, body = parse_frontmatter(text)
     if fm is None:
         errors.append(f"{rel}: missing YAML frontmatter")
-        return errors
+        return errors, warnings
 
     missing = REQUIRED_FRONTMATTER - set(fm.keys())
-    if missing and path.name.startswith("OPP-"):
-        errors.append(f"{rel}: missing frontmatter keys: {sorted(missing)}")
+    if missing and path.name.startswith("OPP-") and path.name != "_example-opportunity.md":
+        if path.name == "_example-opportunity.md":
+            pass
+        elif fm.get("eval_engine") != "v3-lite" and "eval_engine" in missing:
+            warnings.append(f"{rel}: missing eval_engine (expected v3-lite for new OPPs)")
+            missing = missing - {"eval_engine"}
+        if missing:
+            errors.append(f"{rel}: missing frontmatter keys: {sorted(missing)}")
 
     status = fm.get("status", "").strip()
     if status and status not in VALID_STATUS:
@@ -130,10 +144,20 @@ def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
                 elif line.startswith("---") or (line and not line.startswith(" ")):
                     break
 
-
     ps = fm.get("portfolio_strategy", "").strip()
     if ps and ps not in VALID_PORTFOLIO_STRATEGY:
         errors.append(f"{rel}: invalid portfolio_strategy '{ps}'")
+
+    created = parse_date(fm.get("created", ""))
+    if (
+        path.name.startswith("OPP-")
+        and path.name != "_example-opportunity.md"
+        and created
+        and created >= V3_LITE_CUTOVER
+        and ps != "solo_micro_saas"
+    ):
+        warnings.append(f"{rel}: new OPP should use portfolio_strategy solo_micro_saas (studio frozen)")
+
     if ps == "solo_micro_saas" and status == "decided":
         dec = fm.get("decision", "").strip()
         if dec and dec not in VALID_MICRO_DECISIONS:
@@ -141,31 +165,26 @@ def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
         if fm.get("decision_override", "").strip() == "true":
             errors.append(f"{rel}: decision_override not allowed for solo_micro_saas")
 
+        micro_section = h2_section(body, "Final Decision (Micro SaaS)")
+        fit_section = h2_section(body, "Fit and Decide")
+        if micro_section and "confidence_level" not in micro_section:
+            errors.append(f"{rel}: Final Decision (Micro SaaS) missing confidence_level")
+        if fit_section and "confidence_level" not in fit_section:
+            errors.append(f"{rel}: Fit and Decide section missing confidence_level")
+        elif status == "decided" and not fit_section:
+            errors.append(f"{rel}: decided solo_micro_saas missing Fit and Decide section")
+
+        errors.extend(audit_opportunity(path))
+
     if status == "decided" and "<!-- Paste output -->" in body:
         errors.append(f"{rel}: decided file contains unresolved template placeholder")
-
-    if status == "decided":
-        if ps == "solo_micro_saas":
-            micro_section = h2_section(body, "Final Decision (Micro SaaS)")
-            if micro_section and "confidence_level" not in micro_section:
-                errors.append(f"{rel}: Final Decision (Micro SaaS) section missing confidence_level")
-            elif not micro_section and h2_section(body, "Micro SaaS Evaluation"):
-                micro_eval = h2_section(body, "Micro SaaS Evaluation")
-                if "confidence_level" not in micro_eval and "Micro SaaS Decision" not in body:
-                    warnings.append(
-                        f"{rel}: solo_micro_saas decided without Final Decision (Micro SaaS) section"
-                    )
-        else:
-            studio_section = h2_section(body, "Final Decision")
-            if studio_section and "confidence_level" not in studio_section:
-                errors.append(f"{rel}: Final Decision section missing confidence_level")
 
     intake_complete = fm.get("intake_complete", "").strip().lower()
     if status == "evaluating":
         if intake_complete == "true":
             discovery_part = body.split("## Discovery", 1)
             if len(discovery_part) < 2 or "<!-- Paste output -->" in discovery_part[1].split("## ", 1)[0]:
-                warnings.append(f"{rel}: intake_complete but Discovery section empty or has template placeholder")
+                warnings.append(f"{rel}: intake_complete but Discovery empty or has template placeholder")
         elif intake_complete != "false" and not intake_complete:
             warnings.append(f"{rel}: evaluating without intake_complete — CP — Eval will NOOP until intake finishes")
 
@@ -187,7 +206,6 @@ def parse_table_rows(section_text: str) -> list[list[str]]:
 
 
 def parse_micro_saas_registry(text: str) -> dict[str, tuple[str, str, str]]:
-    """Return opp_id -> (section_heading, table_decision, expected_decision)."""
     registry: dict[str, tuple[str, str, str]] = {}
     for heading, expected in MICRO_SAAS_SECTIONS.items():
         section = h2_section(text, heading)
@@ -202,6 +220,33 @@ def parse_micro_saas_registry(text: str) -> dict[str, tuple[str, str, str]]:
             table_decision = cells[3] if len(cells) > 3 else ""
             registry[opp_id] = (heading, table_decision, expected)
     return registry
+
+
+def validate_micro_saas_capacity(text: str) -> tuple[list[str], list[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    build_section = h2_section(text, "Active (BUILD_MICRO)")
+    monitor_section = h2_section(text, "Monitoring (MONITOR_MICRO)")
+
+    build_rows = [r for r in parse_table_rows(build_section) if r and r[0].startswith("OPP-")]
+    monitor_rows = [r for r in parse_table_rows(monitor_section) if r and r[0].startswith("OPP-")]
+
+    if len(build_rows) > MAX_BUILD:
+        errors.append(f"portfolio/micro-saas.md: {len(build_rows)} BUILD_MICRO exceeds max {MAX_BUILD}")
+    if len(monitor_rows) > MAX_MONITOR:
+        warnings.append(f"portfolio/micro-saas.md: {len(monitor_rows)} MONITOR_MICRO exceeds max {MAX_MONITOR}")
+
+    maint_total = 0.0
+    for row in build_rows:
+        if len(row) > 5:
+            val = re.sub(r"[^\d.]", "", row[5])
+            if val:
+                maint_total += float(val)
+    if maint_total > MAX_MAINT_HOURS:
+        errors.append(
+            f"portfolio/micro-saas.md: maintenance sum {maint_total}h exceeds {MAX_MAINT_HOURS}h budget"
+        )
+    return errors, warnings
 
 
 def validate_micro_saas_registry(
@@ -249,6 +294,8 @@ def validate_micro_saas_registry(
 def validate_orphan_micro_opportunities(registry_ids: set[str]) -> list[str]:
     warnings: list[str] = []
     for path in sorted(OPPORTUNITIES.glob("OPP-*.md")):
+        if path.name == "_example-opportunity.md":
+            continue
         fm, _ = parse_frontmatter(path.read_text(encoding="utf-8"))
         if fm is None:
             continue
@@ -275,21 +322,11 @@ def validate_portfolio(path: Path) -> tuple[list[str], list[str], set[str]]:
         registry = parse_micro_saas_registry(text)
         registry_ids = set(registry.keys())
         reg_errors, reg_warnings = validate_micro_saas_registry(registry)
+        cap_errors, cap_warnings = validate_micro_saas_capacity(text)
         errors.extend(reg_errors)
+        errors.extend(cap_errors)
         warnings.extend(reg_warnings)
-
-    if "_example-opportunity.md" in text and path.name == "monitoring.md":
-        in_entries = False
-        for line in text.splitlines():
-            if line.startswith("## Entries"):
-                in_entries = True
-            if in_entries and line.startswith("## ") and "Entries" not in line:
-                in_entries = False
-            if in_entries and "_example-opportunity.md" in line:
-                errors.append(
-                    f"{rel}: fictional example must not appear in Entries table (use Example section)"
-                )
-                break
+        warnings.extend(cap_warnings)
 
     errors.extend(check_links(text, path))
     return errors, warnings, registry_ids

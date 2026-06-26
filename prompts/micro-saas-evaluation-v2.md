@@ -1,7 +1,7 @@
 ---
 version: 2
 stage: micro_saas_evaluation
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: micro-saas-v1
 changelog: "Primary fast-path stage — 6 hard gates, MSFI v2, distribution channel, ToS triple"

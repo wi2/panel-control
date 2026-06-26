@@ -1,5 +1,7 @@
 # Active Portfolio (BUILD)
 
+> **Legacy frozen (2026-06-26).** Do not add entries. Use [micro-saas.md](micro-saas.md). See [legacy-studio.md](../docs/legacy-studio.md).
+
 Opportunities with `global_score >= 75` AND `OQI >= 70` approved for build.
 
 ## Instructions

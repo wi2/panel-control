@@ -1,9 +1,9 @@
 ---
 version: 6
 stage: intake
-status: active
+status: deprecated
 created: 2026-06-26
-supersedes: intake-v5
+supersedes: intake-v6
 changelog: "intake_complete marker; cp:eval handoff (no push-triggered eval)"
 ---
 

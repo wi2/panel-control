@@ -1,6 +1,8 @@
 # Micro SaaS Portfolio
 
-**Canonical registry** for `portfolio_strategy: solo_micro_saas`. Studio files ([active.md](active.md), [monitoring.md](monitoring.md), [archived.md](archived.md)) are legacy mirrors only.
+**Canonical registry** for `portfolio_strategy: solo_micro_saas`.
+
+> Legacy studio files ([active.md](active.md), [monitoring.md](monitoring.md), [archived.md](archived.md)) are **frozen** — see [legacy-studio.md](../docs/legacy-studio.md).
 
 ## Capacity (solo_micro_saas)
 
@@ -21,7 +23,7 @@ When a wedge receives a Micro SaaS decision:
 
 1. Add a row to the appropriate table below.
 2. Set **Next Review** to 30 days from decision date for MONITOR_MICRO and BUILD_MICRO.
-3. Link to the opportunity file; ensure `## Micro SaaS Portfolio Evaluation (Wedge)` is complete.
+3. Link to the opportunity file; ensure `## Fit and Decide` is complete.
 
 On review:
 

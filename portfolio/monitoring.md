@@ -1,6 +1,6 @@
 # Monitoring Portfolio (MONITOR)
 
-> **Legacy registry** for `startup_studio` decisions. For `solo_micro_saas`, use **[micro-saas.md](micro-saas.md)** (canonical).
+> **Legacy frozen (2026-06-26).** Use [micro-saas.md](micro-saas.md). See [legacy-studio.md](../docs/legacy-studio.md).
 
 Opportunities with studio `monitor` decision under periodic re-evaluation.
 

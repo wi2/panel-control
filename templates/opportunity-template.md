@@ -1,63 +1,44 @@
 ---
 id: OPP-YYYYMMDD-slug
 title: ""
+eval_engine: v3-lite
 portfolio_strategy: solo_micro_saas
 status: draft
 intake_complete: false
 decision: null
 capacity_blocked: false
-global_score: null
-opportunity_quality_index: null
+msfi: null
+speed_score: null
+economics_score: null
+reach_score: null
 time_to_first_revenue_days: null
 monthly_revenue_potential: null
 distribution_channel: null
 distribution_cost: null
-scores: {}
-decision_override: false
-override_rationale: null
-override_expires: null
+build_hours_estimate: null
+maintenance_hours_estimate: null
+wedge: ""
 pipeline_stage: null
 next_review_action: null
 created: YYYY-MM-DD
 updated: YYYY-MM-DD
 owner: ""
 tags: []
-micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: ""
-  wedge: ""
 prompt_versions:
   discovery: v1
-  validation: v1
-  micro_saas_evaluation: v2
-  portfolio_manager_micro: v1
-  scoring: v2
-  distribution_analysis: v1
-  unfair_advantage: v1
-  maintenance_evaluation: v1
-  risk_analysis: v1
-  portfolio_intelligence: v1
-  scenario_planning: v1
-  portfolio_manager: v2
-  vision: v1
-  mvp: v1
-  roadmap: v1
-  architecture: v1
-  success_contract: v1
+  validation: v2
+  fit_and_decide: v1
 ---
 
 # {Title}
 
 ## Discovery
 
-<!-- Paste output from prompts/discovery.md -->
+<!-- Paste output from prompts/discovery-v1.md -->
 
 ### Problem Statement
 
-Describe the problem in one paragraph. Who has it? How painful is it?
+Who has the problem? How painful is it?
 
 ### Market Signal
 
@@ -78,374 +59,109 @@ We believe [target user] will [behavior] because [reason].
 ### Open Questions
 
 - [ ] Question 1
-- [ ] Question 2
 
-**confidence_level**: high / medium / low
+```yaml
+confidence_level: high / medium / low
+```
 
 ---
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+<!-- Paste output from prompts/validation-v2.md -->
 
 ### Experiments
 
-| # | Experiment | Hypothesis | Method | Success Criteria | Status |
-|---|------------|------------|--------|------------------|--------|
-| 1 | | | | | planned |
+| # | Experiment | Method | Success Criteria | Status |
+|---|------------|--------|------------------|--------|
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
-| | | | | |
 
 ### Kill / Continue Signals
 
-- **Continue if**: ...
-- **Kill if**: ...
+- **Continue if**:
+- **Kill if**:
 
-**confidence_level**: high / medium / low
-
----
-
-## Scoring
-
-> **N/A for `portfolio_strategy: solo_micro_saas`** — fast path skips this section. Leave empty; QA must not fail on unfilled rows.
-
-<!-- Paste output from prompts/scoring.md. startup_studio only. See playbooks/scoring-rules.md -->
-
-| Dimension | Raw (0–10) | Weight | Weighted | Evidence | Rationale |
-|-----------|------------|--------|----------|----------|-----------|
-| pain_level | | 15% | | | |
-| urgency | | 10% | | | |
-| willingness_to_pay | | 15% | | | |
-| competition | | 8% | | | |
-| distribution_advantage | | 12% | | | |
-| technical_complexity | | 8% | | | |
-| maintenance_complexity | | 7% | | | |
-| founder_fit | | 10% | | | |
-| market_timing | | 8% | | | |
-| defensibility | | 7% | | | |
-| **Total** | | **100%** | **XX** | | |
-
-**global_score**: XX
-
-**confidence_level**: high / medium / low
+```yaml
+desk_only: true
+confidence_level: high / medium / low
+```
 
 ---
 
-## Distribution Analysis
+## Fit and Decide
 
-<!-- Paste output from prompts/distribution-analysis.md -->
+<!-- Paste output from prompts/fit-and-decide-v1.md -->
 
-| Factor | Score / Value | Evidence | Rationale |
-|--------|---------------|----------|-----------|
-| Acquisition difficulty | 0–10 | | |
-| Channel accessibility | 0–10 | | |
-| Estimated CAC | | | |
-| Competition intensity | 0–10 | | |
-| Founder audience advantage | 0–10 | | |
+**Wedge scope**:
 
-**distribution_score**: XX
+### Hard Gates
 
-**distribution_notes**:
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | | |
+| maintenance_hours | ≤ 10 h/mo | | |
+| solo_operable | Yes | | |
+| monthly_revenue_potential | ≥ 500 €/mo | | |
+| distribution_cost | ≤ 7 | | |
+| platform / ToS | see playbook | | |
 
-**confidence_level**: high / medium / low
+### Platform Risk
 
----
+| Field | Value |
+|-------|-------|
+| tos_risk | |
+| platform_dependency | |
+| alternative_data_source | |
 
-## Unfair Advantage Analysis
+### MSFI-lite
 
-<!-- Paste output from prompts/unfair-advantage.md -->
+| Component | Score |
+|-----------|-------|
+| speed_score | |
+| economics_score | |
+| reach_score | |
+| **MSFI** | |
 
-| Advantage Type | Strength | Evidence | Notes |
-|----------------|----------|----------|-------|
-| existing_audience | high/medium/low/none | | |
-| existing_expertise | | | |
-| proprietary_data | | | |
-| exclusive_partnerships | | | |
-| technical_moat | | | |
-| seo_moat | | | |
-| community_moat | | | |
-
-**moat_score**: XX
-
-**confidence_level**: high / medium / low
-
----
-
-## Maintenance Evaluation
-
-<!-- Paste output from prompts/maintenance-evaluation.md -->
-
-| Factor | Score (1–10) | Evidence | Rationale |
-|--------|--------------|----------|-----------|
-| customer_support | | | |
-| ai_costs | | | |
-| integrations | | | |
-| external_dependencies | | | |
-| regulations | | | |
-| manual_operations | | | |
-
-**maintenance_score**: XX
-
-**confidence_level**: high / medium / low
-
----
-
-## Risk Analysis
-
-<!-- Paste output from prompts/risk-analysis.md -->
-
-| Risk | Probability | Impact | Mitigation | Evidence |
-|------|-------------|--------|------------|----------|
-| market_risk | low/medium/high | | | |
-| technical_risk | | | | |
-| regulatory_risk | | | | |
-| competition_risk | | | | |
-| execution_risk | | | | |
-
-**risk_exposure_score**: XX
-
-**confidence_level**: high / medium / low
-
----
-
-## Portfolio Intelligence
-
-<!-- Paste output from prompts/portfolio-intelligence.md -->
-
-| Factor | Score (0–10) | Evidence | Rationale |
-|--------|--------------|----------|-----------|
-| diversification_impact | | | |
-| overlap_with_existing | | | |
-| shared_infrastructure | | | |
-| cross_selling | | | |
-| operational_synergies | | | |
-
-**portfolio_fit_score**: XX
-
-**portfolio_fit_notes**:
-
-**confidence_level**: high / medium / low
-
----
-
-## Scenario Planning
-
-<!-- Paste output from prompts/scenario-planning.md -->
-
-### Optimistic
-
-- **Assumptions**:
-- **global_score**: XX
-- **Decision**: build / monitor / kill
-
-### Realistic
-
-- **Assumptions**:
-- **global_score**: XX
-- **Decision**: build / monitor / kill
-
-### Pessimistic
-
-- **Assumptions**:
-- **global_score**: XX
-- **Decision**: build / monitor / kill
-
-### Probabilities
-
-| Outcome | Probability |
-|---------|-------------|
-| build | XX% |
-| monitor | XX% |
-| kill | XX% |
-
-**confidence_level**: high / medium / low
-
----
-
-## Micro SaaS Evaluation
-
-<!-- Paste output from prompts/micro-saas-evaluation.md — solo_micro_saas fast path -->
-
-**confidence_level**: high / medium / low
+```yaml
+confidence_level: high / medium / low
+```
 
 ---
 
 ## Final Decision (Micro SaaS)
 
-<!-- Paste output from prompts/portfolio-manager-micro.md — primary for solo_micro_saas -->
-
 | Field | Value |
 |-------|-------|
 | **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | XX |
+| **MSFI** | |
 | **capacity_blocked** | true / false |
 | **Date** | YYYY-MM-DD |
 | **Rationale** | |
 
-**confidence_level**: high / medium / low
-
----
-
-## Final Decision (Studio — startup_studio only)
-
-<!-- Paste output from prompts/portfolio-manager.md — skip for solo_micro_saas -->
-
-| Field | Value |
-|-------|-------|
-| **Primary Decision** | build / monitor / kill |
-| **global_score** | XX |
-| **opportunity_quality_index** | XX |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
-
-### OQI Breakdown
-
-| Component | Score |
-|-----------|-------|
-| evidence_quality | XX |
-| confidence_aggregate | XX |
-| score_reliability | XX |
-| risk_adjustment | XX |
-| **OQI** | **XX** |
-
 ### Expected Learnings
 
-- [ ] Topic: ... — Method: ... — Applies to: monitor / kill
+- [ ] Topic — Method — Applies to: MONITOR_MICRO / KILL_MICRO
 
 ### Next Actions
 
 - [ ] Action 1
-- [ ] Action 2
-
-### Dissent (if any)
-
-Record any disagreement and reasoning.
 
 ### Portfolio Update
 
-- [ ] Added to [portfolio/active.md](../portfolio/active.md) / [monitoring.md](../portfolio/monitoring.md) / [archived.md](../portfolio/archived.md)
+- [ ] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
+
+```yaml
+confidence_level: high / medium / low
+```
 
 ---
 
-## BUILD Preparation
+## Post-BUILD_MICRO (manual)
 
-<!-- Complete only if Primary Decision is BUILD -->
+Complete after BUILD_MICRO decision — not orchestrated by CP — Eval.
 
-### Product Vision
-
-<!-- Paste output from prompts/vision.md -->
-
-#### Target User
-
-Who is the primary user? Be specific (role, company size, context).
-
-#### Value Proposition
-
-One sentence: We help [user] do [outcome] by [approach].
-
-#### Differentiation
-
-What makes this different from alternatives?
-
-#### North Star Metric
-
-The single metric that best captures value delivered.
-
----
-
-### MVP Definition
-
-<!-- Paste output from prompts/mvp.md -->
-
-#### Scope In
-
-- Item 1
-
-#### Scope Out
-
-- Item 1
-
-#### Success Metrics
-
-| Metric | Target | Measurement method |
-|--------|--------|--------------------|
-| | | |
-
-#### Smallest Testable Slice
-
-The minimum build or experiment to validate core value.
-
----
-
-### Roadmap
-
-<!-- Paste output from prompts/roadmap.md -->
-
-#### Phase 1: {Name} (Weeks X–Y)
-
-- Milestone 1
-
-**Dependencies**: ...
-
-#### Resource Assumptions
-
-| Role | Allocation | Duration |
-|------|------------|----------|
-| | | |
-
----
-
-### Architecture Proposal
-
-<!-- Paste output from prompts/architecture.md. Documentation only — no code -->
-
-Reference **Risk Analysis** for business and technical risks.
-
-#### System Overview
-
-High-level description of components and data flow.
-
-#### Build vs Buy
-
-| Component | Decision | Rationale |
-|-----------|----------|-----------|
-| | build / buy | |
-
-#### Integration Points
-
-External systems, APIs, or data sources required.
-
-#### Technical Risks (summary)
-
-See [Risk Analysis](#risk-analysis) for full register. Key technical items:
-
-| Risk | Likelihood | Impact | Mitigation |
-|------|------------|--------|------------|
-| | | | |
-
----
-
-### Success Contract
-
-<!-- Paste output from prompts/success-contract.md -->
-
-#### Commitments
-
-| Commitment | Metric | Target | Review Date |
-|------------|--------|--------|-------------|
-| | | | |
-
-#### Review Schedule
-
-- First review: YYYY-MM-DD
-- Cadence: every 30 days
-
-#### Exit Triggers
-
-Conditions that trigger re-evaluation or kill:
-
-- Trigger 1: ...
+See [docs/legacy-studio.md](../docs/legacy-studio.md) BUILD prep prompts (vision, mvp, roadmap, architecture, success_contract) or a separate product repo.

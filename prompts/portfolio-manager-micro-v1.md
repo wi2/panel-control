@@ -1,7 +1,7 @@
 ---
 version: 1
 stage: portfolio_manager_micro
-status: active
+status: deprecated
 created: 2026-06-26
 supersedes: null
 changelog: "Final solo_micro_saas decision — capacity, no overrides"

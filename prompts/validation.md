@@ -2,19 +2,15 @@
 
 ## Current Version
 
-**Active**: [validation-v1.md](validation-v1.md)
+**Active**: [validation-v2.md](validation-v2.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v1 | 2026-06-25 | active | Initial release |
-
-## Usage
-
-Requires completed **Discovery** section. Output goes into the **Validation** section.
+| v2 | 2026-06-26 | active | v3-lite solo path; desk-only flag |
+| v1 | 2026-06-25 | deprecated | Superseded by v2 |
 
 ## Related
 
-- Previous: [discovery.md](discovery.md)
-- Next stage: [scoring.md](scoring.md)
+- [fit-and-decide.md](fit-and-decide.md)
