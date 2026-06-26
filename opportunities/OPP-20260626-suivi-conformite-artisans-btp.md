@@ -2,34 +2,34 @@
 id: OPP-20260626-suivi-conformite-artisans-btp
 title: "Suivi échéances conformité pour artisans BTP locaux"
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
+time_to_first_revenue_days: 90
+monthly_revenue_potential: 800
+distribution_channel: seo
+distribution_cost: 2
 scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: discovery
-next_review_action: null
+pipeline_stage: portfolio_manager_micro
+next_review_action: validate
 created: 2026-06-26
 updated: 2026-06-26
 owner: studio-team
 tags: [b2b, saas, france, btp, conformite, micro-saas]
 automation_intake_at: 2026-06-26
 micro_saas:
-  decision: null
-  msfi: null
-  build_hours_estimate: null
-  maintenance_hours_estimate: null
-  mrr_target_12m: ""
-  wedge: ""
+  decision: MONITOR_MICRO
+  msfi: 65
+  build_hours_estimate: 48
+  maintenance_hours_estimate: 4
+  mrr_target_12m: "500-1000 EUR"
+  wedge: "Rappels multi-doc conformité BTP — 1 dept"
 prompt_versions:
   discovery: v1
   validation: v1
@@ -51,6 +51,8 @@ prompt_versions:
 ---
 
 # Suivi échéances conformité pour artisans BTP locaux
+
+Desk evaluation completed 2026-06-26. No live validation experiments yet. Primary decision **MONITOR_MICRO** (MSFI 65) — 30-day validation sprint before BUILD_MICRO or KILL_MICRO.
 
 **Proposition** : rappels automatiques multi-documents (assurance décennale, RC Pro, Qualibat, attestation URSSAF) pour artisans du bâtiment TPE qui gèrent encore leurs échéances sur calendrier papier ou Excel.
 
@@ -104,32 +106,107 @@ We believe **artisans BTP TPE** (1–5 salariés, 2–8 chantiers/mo) in **one F
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+Desk evaluation only. **desk-only**: true — live experiments below are **planned**, not executed. See [validation.md](../playbooks/validation.md).
+
+### Experiments
+
+| # | Experiment | Hypothesis | Method | Success Criteria | Status |
+|---|------------|------------|--------|------------------|--------|
+| 1 | Problem interviews | Artisans confirment oublis RC Pro/Qualibat ≥1×/an | 8 entretiens via CMA dept 69 | ≥5/8 confirment pain + citent blocage chantier | planned |
+| 2 | WTP landing | Demande à €9+/mo existe | Landing FR + Van Westendorp ; €200 ads Facebook artisans | ≥25 signups ; ≥20 % acceptent ≥€9/mo | planned |
+| 3 | Concierge rappels | Rappels manuels SMS 30/7/1 jours réduisent stress | 10 artisans, suivi Excel + SMS, 4 semaines | ≥7/10 NPS ≥8 ; ≥3 citent doc oublié sans concierge | planned |
+| 4 | Competitive sufficiency | Calendar/assureur insuffisants | 8 interviews usage actuel | ≥4/8 disent solution actuelle incomplète | planned |
+
+### Results
+
+| Claim | Value | Evidence | Source | Date |
+|-------|-------|----------|--------|------|
+| pain_confirmation | — | unknown | Pas d'entretiens studio | — |
+| wtp_signal | — | unknown | Pas de landing / LOI | — |
+| concierge_usefulness | — | unknown | Pas de concierge | — |
+| competitive_sufficiency | — | unknown | Pas d'interviews | — |
+
+### Kill / Continue Signals
+
+- **Continue if**: ≥3 pré-commandes €9+/mo ; ≥5/8 entretiens confirment oublis multi-doc ; concierge NPS ≥8 pour ≥7/10
+- **Kill if**: ≥5/8 disent Calendar + assureur suffisent ; 0 signup après €200 ads ; ARPU viable <€7/mo
+
+**confidence_level**: low
 
 ---
 
 ## Micro SaaS Evaluation
 
-<!-- Paste output from prompts/micro-saas-evaluation.md -->
+**Wedge scope**: Suivi centralisé échéances conformité BTP (décennale, RC Pro, Qualibat, URSSAF) avec alertes email/SMS — **1 département**, artisans TPE 1–5 salariés. **Hors scope** : ERP chantier, devis, compta, multi-dept self-serve.
 
-**confidence_level**: high / medium / low
+### Hard Gates
+
+| Gate | Threshold | Estimate | Result |
+|------|-----------|----------|--------|
+| build_hours | ≤ 100 h | 48 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 4 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 800 €/mo (40×€19) | PASS |
+| distribution_cost | ≤ 7 | 2 (channel: seo) | PASS |
+| platform / ToS | see playbook | tos low, no scrape | PASS |
+
+### Platform Risk
+
+| Field | Value | Notes |
+|-------|-------|-------|
+| tos_risk | low | User-uploaded docs ; no platform API dependency |
+| regulatory_risk | low | Reminders only ; disclaimer non-conseil juridique |
+| platform_dependency | low | Email/SMS providers only |
+| alternative_data_source | true | User enters own expiry dates |
+
+### MSFI v2
+
+| Component | Score |
+|-----------|-------|
+| time_to_revenue_score | 50 |
+| automation_score | 85 |
+| maintenance_sustainability_score | 90 |
+| acquisition_score | 62 |
+| wedge_local_score | 70 |
+| competition_score | 58 |
+| pricing_power_score | 52 |
+| **MSFI** | **65** |
+
+MSFI calc: `0.15×50 + 0.15×85 + 0.10×90 + 0.15×62 + 0.15×70 + 0.15×58 + 0.15×52 = 65.35 → 65`
+
+**Provisional decision**: MONITOR_MICRO
+
+**confidence_level**: medium
 
 ---
 
 ## Final Decision (Micro SaaS)
 
-<!-- Paste output from prompts/portfolio-manager-micro.md -->
+| Field | Value |
+|-------|-------|
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 65 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-26 |
+| **Rationale** | All hard gates PASS. MSFI 65 in MONITOR band (50–69). Pain structurel vérifié (obligations décennale/RC Pro) mais WTP et différenciation vs Calendar/assureur non validés. Desk-only Validation — BUILD_MICRO blocked until live sprint. |
 
-**confidence_level**: high / medium / low
+### Expected Learnings
+
+- [ ] Topic: multi_doc_pain — Method: 8 entretiens CMA artisans dept 69 — Applies to: MONITOR_MICRO, KILL_MICRO
+- [ ] Topic: willingness_to_pay — Method: Landing Van Westendorp €9–19/mo — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: competitive_sufficiency — Method: 8 interviews Calendar vs outil dédié — Applies to: KILL_MICRO
+
+### Next Actions
+
+- [ ] Publier landing SEO "rappel assurance décennale artisan" + waitlist — deadline 2026-07-15
+- [ ] 8 entretiens artisans via CMA Rhône — deadline 2026-07-20
+- [ ] Concierge SMS 10 artisans 4 semaines — deadline 2026-07-25
+- [ ] Re-calculer MSFI ; promouvoir BUILD_MICRO si MSFI ≥70 + live validation — deadline 2026-07-26
+
+### Portfolio Update
+
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md) (Monitoring)
+
+**confidence_level**: medium
 
 ---
-
-## Scoring
-
-<!-- studio path skipped for solo_micro_saas -->
-
----
-
-## Final Decision (Studio — startup_studio only)
-
-<!-- skipped for solo_micro_saas -->

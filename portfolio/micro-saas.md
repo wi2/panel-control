@@ -51,6 +51,7 @@ _No entries._
 |----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
 | OPP-20260625-local-pricing-intelligence-artisans | FR dept 69 × climatisation | 67 | MONITOR_MICRO | 87 | 8 | 500–1000 EUR | studio-team | 2026-06-25 | 2026-07-25 | | [opportunity](../opportunities/OPP-20260625-local-pricing-intelligence-artisans.md) |
 | OPP-20260625-veille-ao-pme-locales | Veille AO PME locales wedge | — | MONITOR_MICRO | — | — | 500+ EUR | studio-team | 2026-06-25 | 2026-07-25 | pending micro re-eval | [opportunity](../opportunities/OPP-20260625-veille-ao-pme-locales.md) |
+| OPP-20260626-suivi-conformite-artisans-btp | Conformité échéances BTP wedge | 65 | MONITOR_MICRO | 48 | 4 | 500–1000 EUR | studio-team | 2026-06-26 | 2026-07-26 | desk-only; sprint validation | [opportunity](../opportunities/OPP-20260626-suivi-conformite-artisans-btp.md) |
 
 ## Archived (KILL_MICRO)
 
