@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [automation-review-v1.md](automation-review-v1.md)
+**Active**: [automation-review-v2.md](automation-review-v2.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v1 | 2026-06-25 | active | Portfolio review wrapper for Cursor Automation **CP — Review** |
+| v2 | 2026-06-26 | active | Delegates to portfolio-review-runner-v2 (solo_micro_saas) |
+| v1 | 2026-06-25 | deprecated | Delegated to portfolio-review-runner-v1 (studio only) |
 
 ## Usage
 
@@ -17,7 +18,7 @@ Used exclusively by Cursor Automation **CP — Review** (see [docs/automations.m
 - **Scheduled**: cron every Monday 09:00.
 - **Manual**: PR from branch `review/YYYY-MM-DD` + label `cp:review`.
 
-Delegates to [portfolio-review-runner-v1.md](portfolio-review-runner-v1.md).
+Delegates to [portfolio-review-runner-v2.md](portfolio-review-runner-v2.md).
 
 ## Related
 

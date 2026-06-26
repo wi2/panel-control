@@ -1,9 +1,9 @@
 ---
 version: 1
 stage: automation_review
-status: active
+status: deprecated
 created: 2026-06-25
-supersedes: null
+superseded_by: automation-review-v2
 changelog: "Portfolio review wrapper for Cursor Automation CP — Review"
 ---
 

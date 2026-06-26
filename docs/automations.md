@@ -12,7 +12,7 @@ Four automations — one job each, thin wrapper → versioned prompt:
 CP — QA      (read-only)  → prompts/automation-qa-v5.md       → opportunity-qa-v4
 CP — Intake  (write)      → prompts/automation-intake-v7.md   → intake-v6
 CP — Eval    (write)      → prompts/automation-eval-v9.md     → pipeline-orchestrator-v7
-CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
+CP — Review  (write)      → prompts/automation-review-v2.md   → portfolio-review-runner-v2
 ```
 
 **Studio branch**: fixed name **`opp/pipeline`** — one **active** opportunity (`draft` / `evaluating`) at a time. Catalogue of `decided` OPP files from `master` may coexist on the branch. **Intake** on PR opened (or label `cp:intake`); **`cp:eval`** staged — **one stage per label**, re-add until `decided`.
@@ -218,7 +218,7 @@ After merging prompt updates, reconfigure Cursor automations:
 | **CP — Intake** | PR **opened** + label `cp:intake` (optional) | `prompts/automation-intake-v7.md` |
 | **CP — Eval** | Label `cp:eval` (not push) | `prompts/automation-eval-v9.md` |
 | **CP — QA** | Push to PR only (**remove** PR opened) | `prompts/automation-qa-v5.md` |
-| **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v1.md` (unchanged) |
+| **CP — Review** | Cron + label `cp:review` | `prompts/automation-review-v2.md` |
 
 Verify **CP — Eval** has **no** push trigger on `opp/pipeline`.
 Verify **CP — QA** has **no** PR opened trigger.
@@ -245,8 +245,8 @@ Scheduled and on-demand portfolio review of due MONITOR and BUILD entries.
 ```text
 You are running CP — Review for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-review-v1.md.
-Process at most 3 MONITOR opportunities per run.
+Execute prompts/automation-review-v2.md.
+Process at most 3 MONITOR_MICRO opportunities per run (solo_micro_saas registry).
 Open a pull request for any file changes. Do not push to master.
 ```
 
