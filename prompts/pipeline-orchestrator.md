@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [pipeline-orchestrator-v5.md](pipeline-orchestrator-v5.md)
+**Active**: [pipeline-orchestrator-v6.md](pipeline-orchestrator-v6.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v5 | 2026-06-26 | active | Full pipeline in one run; strategy router; gate fail-fast |
+| v6 | 2026-06-26 | active | Strict full run; failed_incomplete; no single-stage handoff |
+| v5 | 2026-06-26 | deprecated | Full pipeline in one run; strategy router; gate fail-fast |
 | v4 | 2026-06-26 | deprecated | Strategy router — solo_micro_saas fast path vs startup_studio |
 | v3 | 2026-06-26 | deprecated | Prompt path resolution; desk-only; BUILD manual |
 | v2 | 2026-06-26 | deprecated | Batch mode — up to 5 stages per run, push-triggered auto-continue |
@@ -24,7 +25,7 @@ Requires:
 - [AGENTS.md](../AGENTS.md) conventions
 - Active stage prompts from opportunity `prompt_versions`
 
-Output: updated opportunity sections, frontmatter, portfolio sync after final manager stage. v5 executes **all remaining stages** per invocation with a single commit.
+Output: updated opportunity sections, frontmatter, portfolio sync after final manager stage. v6 executes **all remaining stages** per invocation with a single commit — partial runs are **failed_incomplete**.
 
 ## Related
 
