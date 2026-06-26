@@ -2,9 +2,9 @@
 id: OPP-20260626-suivi-pipeline-prospects-freelance
 title: "Suivi pipeline prospects freelance"
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
@@ -16,7 +16,7 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: micro_saas_evaluation
+pipeline_stage: portfolio_manager_micro
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -371,17 +371,34 @@ MSFI calc: `0.15×50 + 0.15×86 + 0.10×80 + 0.15×52 + 0.15×66 + 0.15×52 + 0.
 
 ## Final Decision (Micro SaaS)
 
-<!-- Paste output from prompts/portfolio-manager-micro.md — primary for solo_micro_saas -->
-
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | XX |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 58.7 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-26 |
+| **Rationale** | All six hard gates PASS (build 80 h, maint 5 h/mo, solo operable, MRR 750 €/mo, distribution_cost 3, ToS low). MSFI 58.7 in MONITOR band (50–69). Desk-only Validation (`desk-only: true`, confidence low) blocks BUILD_MICRO per playbook — no live interviews, landing, or concierge yet. Pipeline-only wedge gap documented (Validation #1) but WTP unknown; Notion (47 % ICP) + SoloPipeline $9.99 + all-in-one €19–49 anchor pricing down. Partial overlap with [OPP-20260626-relance-devis-freelance](../opportunities/OPP-20260626-relance-devis-freelance.md) — bundling « funnel commercial freelance » to resolve in sprint. BUILD capacity open (0 BUILD_MICRO active) but MONITOR queue exceeds cap (6/5 after this entry) — sprint validation prioritized; not KILL because MSFI ≥50 and planned experiments address distinct pre-quote pain. |
 
-**confidence_level**: high / medium / low
+### Expected Learnings
+
+- [ ] Topic: pre_quote_pipeline_pain — Method: 8 entretiens freelances FR (Malt, LinkedIn, CPM) — Applies to: MONITOR_MICRO, KILL_MICRO
+- [ ] Topic: willingness_to_pay — Method: Landing Van Westendorp €12–19/mo + €200 ads Meta/LinkedIn — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: incumbent_sufficiency — Method: 8 interviews Notion/Trello/SoloPipeline vs pipeline-only tracker — Applies to: KILL_MICRO
+- [ ] Topic: concierge_usefulness — Method: Concierge kanban pipeline 10 freelances 4 sem (stagnation >5 j) — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: wedge_bundling — Method: Compare pre-quote vs post-quote pain signals vs relance-devis — Applies to: MONITOR_MICRO, KILL_MICRO
+
+### Next Actions
+
+- [ ] Publier landing FR « pipeline prospects freelance » + waitlist — deadline 2026-07-15
+- [ ] 8 entretiens freelances dev/design/consulting (stagnation pré-devis) — deadline 2026-07-20
+- [ ] Concierge pipeline tracker 10 freelances 4 semaines — deadline 2026-07-25
+- [ ] Trancher bundling vs relance-devis ; re-calculer MSFI — deadline 2026-07-26
+
+### Portfolio Update
+
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md) (Monitoring)
+
+**confidence_level**: medium
 
 ---
 
