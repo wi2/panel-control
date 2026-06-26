@@ -16,7 +16,7 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: discovery
+pipeline_stage: validation
 next_review_action: null
 created: 2026-06-26
 updated: 2026-06-26
@@ -115,26 +115,43 @@ We believe **solo FR/EU freelancers** (consultants, devs, designers) sending **5
 
 ## Validation
 
-<!-- Paste output from prompts/validation.md -->
+**desk-only**: true — live customer experiments (interviews, landing, concierge) are **planned** for sprint validation; one desk audit completed. BUILD_MICRO requires live validation before promotion. See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
 | # | Experiment | Hypothesis | Method | Success Criteria | Status |
 |---|------------|------------|--------|------------------|--------|
-| 1 | | | | | planned |
+| 1 | Competitive & pain-signal audit | Solo freelancers lose deals from absent quote follow-up; incumbents are over-scoped/expensive for tracker-only wedge | Desk research: FR/US benchmarks, incumbent pricing, portfolio overlap vs [OPP-20260625-relance-factures-freelance](../opportunities/OPP-20260625-relance-factures-freelance.md) | ≥3 verified sources confirm follow-up lift; no ≤€15/mo FR-first tracker-only incumbent; wedge distinct from invoice relance | completed |
+| 2 | Problem interviews | Solo FR freelancers (dev/design/consulting) forget quote follow-up ≥1×/month | 8 entretiens (Malt, LinkedIn, CPM) | ≥5/8 confirment oubli/retard relance + citent Notion/Excel/calendrier | planned |
+| 3 | WTP landing page | Demande €9–19/mo pour tracker devis minimal (sans génération devis) | Landing FR + Van Westendorp ; €200 ads Meta/LinkedIn freelance | ≥25 signups ; ≥25 % acceptent ≥€9/mo | planned |
+| 4 | Concierge quote tracker | Rappels J+3/J+7/J+14 + alerte expiration réduisent devis expirés sans signature | 10 freelances, suivi manuel 4 sem, 3+ devis chacun | ≥7/10 NPS ≥8 ; ≥5 citent devis oublié/expiré sans concierge | planned |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
-| | | | | |
+| devis_signed_after_followup | 44 % des devis signés après ≥1 relance | verified | lefreelance.fr — article relance freelance 2026 | 2026 |
+| followup_required_b2b | 80 % des ventes B2B nécessitent ≥5 points de contact ; 48 % des reps abandonnent avant 2e relance | verified | Propal.io citant étude Uptoo | 2026 |
+| structured_followup_lift | +15–30 pts taux transformation avec séquence structurée | estimated | DevisTrack blog ; PromptConsulting cadence 7-14-30 | 2026 |
+| cadence_7_14_30_lift | 22 % → 34 % signature (médiane PME) avec cadence automatisée | estimated | PromptConsulting — déploiements 18 mois | 2025 |
+| automated_reminders_lift | +10 % close rate avec rappels automatisés | verified | Proposify State of Proposals 2025 (~1 M propositions) | 2025 |
+| auto_reminder_adoption | 7 % seulement des vendeurs activent rappels auto | verified | Proposify 2025 report | 2025 |
+| btp_systematic_followup_lift | +5–8 pts conversion si relances systématiques | estimated | Payflo benchmark BTP 2026 (15 000+ devis) | 2026 |
+| incumbent_all_in_one_floor | €19–49/mo (Bonsai Starter ~$19 ; HoneyBook Essentials ~$39–49 pour automation) | verified | HoneyBook / Bonsai pricing pages ; Plutio compare 2026 | 2026 |
+| free_incumbent_relance | Henrri/Indy/Tiime incluent relances email devis/facture gratuites ou low-cost | inferred | Discovery competitor table ; pas d'entretiens ICP | 2026 |
+| calendar_sufficient_subset | Partie ICP peut utiliser rappels Google/Outlook sans payer outil dédié | inferred | PR hypothèse Discovery ; à tester exp. 2 | 2026 |
+| portfolio_wedge_distinct | Devis pre-win ≠ relance facture post-win ; OPP factures archivée KILL_MICRO (mrr-below-minimum) | verified | [OPP-20260625-relance-factures-freelance](../opportunities/OPP-20260625-relance-factures-freelance.md) | 2026 |
+| tracker_only_incumbent_gap | Aucun tier FR-first ≤€15/mo « tracker seul » identifié (DevisTrack/Relance+ = devis complet ou enterprise) | estimated | Discovery + audit concurrentiel desk | 2026 |
+| pain_confirmation_live | — | unknown | Pas d'entretiens studio (exp. 2 planned) | — |
+| wtp_signal_live | — | unknown | Pas de landing / LOI (exp. 3 planned) | — |
+| concierge_usefulness | — | unknown | Pas de concierge (exp. 4 planned) | — |
 
 ### Kill / Continue Signals
 
-- **Continue if**: ...
-- **Kill if**: ...
+- **Continue if**: ≥5/8 entretiens confirment oubli relance devis + insuffisance Notion/calendrier ; ≥25 signups landing avec ≥25 % WTP ≥€9/mo ; concierge NPS ≥8 pour ≥7/10 ; aucun incumbent ne lance tier tracker ≤€15/mo FR-first
+- **Kill if**: ≥6/8 disent Henrri/Indy/calendrier suffisent ; 0 signup après €200 ads ; ≥4/8 n'envoient <3 devis/mo ; DevisTrack ou facturation FR lance tracker seul ≤€12/mo avec stats conversion ; chevauchement bundling rend wedge indifférencié vs suite existante
 
-**confidence_level**: high / medium / low
+**confidence_level**: low
 
 ---
 
