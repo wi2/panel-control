@@ -19,6 +19,12 @@ VALID_PORTFOLIO_STRATEGY = {"solo_micro_saas", "startup_studio", "vc_moonshot", 
 OPP_FILENAME = re.compile(r"^OPP-\d{8}-[a-z0-9-]+\.md$")
 LINK_PATTERN = re.compile(r"\]\(([^)]+)\)")
 H2_SECTION = re.compile(r"^## .+", re.MULTILINE)
+TABLE_SEP = re.compile(r"^\|[-:\s|]+\|$")
+MICRO_SAAS_SECTIONS: dict[str, str] = {
+    "Active (BUILD_MICRO)": "BUILD_MICRO",
+    "Monitoring (MONITOR_MICRO)": "MONITOR_MICRO",
+    "Archived (KILL_MICRO)": "KILL_MICRO",
+}
 
 
 def h2_section(body: str, heading: str) -> str:
@@ -167,10 +173,110 @@ def validate_opportunity(path: Path) -> tuple[list[str], list[str]]:
     return errors, warnings
 
 
-def validate_portfolio(path: Path) -> list[str]:
+def parse_table_rows(section_text: str) -> list[list[str]]:
+    rows: list[list[str]] = []
+    for line in section_text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            continue
+        if TABLE_SEP.match(stripped):
+            continue
+        cells = [cell.strip() for cell in stripped.strip("|").split("|")]
+        rows.append(cells)
+    return rows
+
+
+def parse_micro_saas_registry(text: str) -> dict[str, tuple[str, str, str]]:
+    """Return opp_id -> (section_heading, table_decision, expected_decision)."""
+    registry: dict[str, tuple[str, str, str]] = {}
+    for heading, expected in MICRO_SAAS_SECTIONS.items():
+        section = h2_section(text, heading)
+        if not section:
+            continue
+        for cells in parse_table_rows(section):
+            if not cells:
+                continue
+            opp_id = cells[0]
+            if not opp_id.startswith("OPP-"):
+                continue
+            table_decision = cells[3] if len(cells) > 3 else ""
+            registry[opp_id] = (heading, table_decision, expected)
+    return registry
+
+
+def validate_micro_saas_registry(
+    registry: dict[str, tuple[str, str, str]],
+) -> tuple[list[str], list[str]]:
     errors: list[str] = []
+    warnings: list[str] = []
+
+    for opp_id, (section, table_decision, expected) in registry.items():
+        opp_path = OPPORTUNITIES / f"{opp_id}.md"
+        if not opp_path.exists():
+            errors.append(
+                f"portfolio/micro-saas.md: {opp_id} in {section} but missing {opp_path.relative_to(ROOT)}"
+            )
+            continue
+
+        fm, _ = parse_frontmatter(opp_path.read_text(encoding="utf-8"))
+        if fm is None:
+            errors.append(f"{opp_path.relative_to(ROOT)}: missing YAML frontmatter (linked from micro-saas.md)")
+            continue
+
+        fm_id = fm.get("id", "").strip()
+        if fm_id and fm_id != opp_id:
+            errors.append(
+                f"portfolio/micro-saas.md: row id '{opp_id}' does not match "
+                f"{opp_path.relative_to(ROOT)} frontmatter id '{fm_id}'"
+            )
+
+        fm_decision = fm.get("decision", "").strip()
+        if fm_decision and fm_decision != expected:
+            errors.append(
+                f"portfolio/micro-saas.md: {opp_id} in {section} expects decision {expected}, "
+                f"frontmatter has '{fm_decision}'"
+            )
+
+        if table_decision and table_decision != expected:
+            errors.append(
+                f"portfolio/micro-saas.md: {opp_id} Decision column '{table_decision}' "
+                f"does not match section {expected}"
+            )
+
+    return errors, warnings
+
+
+def validate_orphan_micro_opportunities(registry_ids: set[str]) -> list[str]:
+    warnings: list[str] = []
+    for path in sorted(OPPORTUNITIES.glob("OPP-*.md")):
+        fm, _ = parse_frontmatter(path.read_text(encoding="utf-8"))
+        if fm is None:
+            continue
+        status = fm.get("status", "").strip()
+        ps = fm.get("portfolio_strategy", "solo_micro_saas").strip() or "solo_micro_saas"
+        if status != "decided" or ps != "solo_micro_saas":
+            continue
+        opp_id = fm.get("id", path.stem).strip()
+        if opp_id not in registry_ids:
+            warnings.append(
+                f"{path.relative_to(ROOT)}: decided solo_micro_saas not listed in portfolio/micro-saas.md"
+            )
+    return warnings
+
+
+def validate_portfolio(path: Path) -> tuple[list[str], list[str], set[str]]:
+    errors: list[str] = []
+    warnings: list[str] = []
+    registry_ids: set[str] = set()
     text = path.read_text(encoding="utf-8")
     rel = path.relative_to(ROOT)
+
+    if path.name == "micro-saas.md":
+        registry = parse_micro_saas_registry(text)
+        registry_ids = set(registry.keys())
+        reg_errors, reg_warnings = validate_micro_saas_registry(registry)
+        errors.extend(reg_errors)
+        warnings.extend(reg_warnings)
 
     if "_example-opportunity.md" in text and path.name == "monitoring.md":
         in_entries = False
@@ -186,12 +292,13 @@ def validate_portfolio(path: Path) -> list[str]:
                 break
 
     errors.extend(check_links(text, path))
-    return errors
+    return errors, warnings, registry_ids
 
 
 def main() -> int:
     errors: list[str] = []
     warnings: list[str] = []
+    registry_ids: set[str] = set()
 
     for path in sorted(OPPORTUNITIES.glob("*.md")):
         if path.name == "README.md":
@@ -201,7 +308,12 @@ def main() -> int:
         warnings.extend(opp_warnings)
 
     for path in sorted(PORTFOLIO.glob("*.md")):
-        errors.extend(validate_portfolio(path))
+        port_errors, port_warnings, port_registry = validate_portfolio(path)
+        errors.extend(port_errors)
+        warnings.extend(port_warnings)
+        registry_ids |= port_registry
+
+    warnings.extend(validate_orphan_micro_opportunities(registry_ids))
 
     if warnings:
         print("Validation warnings:\n")
