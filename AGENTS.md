@@ -29,11 +29,21 @@ vision → mvp → roadmap → architecture → success_contract
 | status | Action |
 |--------|--------|
 | `draft` | Run discovery; set `status: evaluating` |
-| `evaluating` | Find first empty or gate-failing section; run matching prompt from `prompts/{stage}-v{N}.md` |
-| `decided` + `build` | Run first incomplete BUILD section |
+| `evaluating` | Find first empty or gate-failing section; run matching prompt (see [Prompt path resolution](#prompt-path-resolution)) |
+| `decided` + `build` | Run first incomplete BUILD section **manually** (CP — Eval does not orchestrate BUILD) |
 | `decided` + `monitor` / `kill` | Do not re-run pipeline unless review trigger or explicit user request |
 
 Use `prompt_versions` in frontmatter — never silently switch prompt versions.
+
+### Prompt path resolution
+
+Frontmatter `prompt_versions` keys use underscores (`distribution_analysis`). Versioned prompt files use hyphens. Resolve paths as:
+
+```text
+prompts/{stage_key with _ replaced by -}-v{N}.md
+```
+
+Example: `prompt_versions.distribution_analysis: v1` → `prompts/distribution-analysis-v1.md`.
 
 For automated pipeline advancement, use Cursor Automation **CP — Eval** (push on branch **`opp/pipeline`**, batches of up to 5 stages — [docs/automations.md](docs/automations.md)) or [prompts/pipeline-orchestrator.md](prompts/pipeline-orchestrator.md) manually.
 
@@ -72,6 +82,9 @@ Before writing `global_score` or `opportunity_quality_index` to frontmatter, app
 
 ## References (load for scoring and decisions)
 
+- [playbooks/evaluation-process.md](playbooks/evaluation-process.md)
+- [playbooks/discovery.md](playbooks/discovery.md)
+- [playbooks/validation.md](playbooks/validation.md)
 - [playbooks/scoring-rules.md](playbooks/scoring-rules.md)
 - [playbooks/scoring-weights.md](playbooks/scoring-weights.md)
 - [playbooks/opportunity-quality-index.md](playbooks/opportunity-quality-index.md)

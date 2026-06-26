@@ -2,13 +2,14 @@
 
 ## Current Version
 
-**Active**: [pipeline-orchestrator-v2.md](pipeline-orchestrator-v2.md)
+**Active**: [pipeline-orchestrator-v3.md](pipeline-orchestrator-v3.md)
 
 ## Changelog
 
 | Version | Date | Status | Notes |
 |---------|------|--------|-------|
-| v2 | 2026-06-26 | active | Batch mode — up to 5 stages per run, push-triggered auto-continue |
+| v3 | 2026-06-26 | active | Prompt path resolution; desk-only fast path; BUILD manual scope |
+| v2 | 2026-06-26 | deprecated | Batch mode — up to 5 stages per run, push-triggered auto-continue |
 | v1 | 2026-06-25 | deprecated | Single stage per run; superseded by v2 |
 
 ## Usage

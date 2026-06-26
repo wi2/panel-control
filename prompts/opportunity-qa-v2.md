@@ -1,14 +1,13 @@
 ---
-version: 1
+version: 2
 stage: opportunity_qa
-status: deprecated
-created: 2026-06-25
-supersedes: null
-superseded_by: opportunity-qa-v2
-changelog: "PR validation checklist for opportunity and portfolio changes"
+status: active
+created: 2026-06-26
+supersedes: opportunity-qa-v1
+changelog: "Prompt path resolution (underscore→hyphen); portfolio override column check"
 ---
 
-# Opportunity QA Prompt v1
+# Opportunity QA Prompt v2
 
 ## Role
 
@@ -37,6 +36,16 @@ Run this prompt when the PR modifies any file under:
 
 If the PR only changes other paths (prompts, playbooks, docs), output `NOOP: outside QA scope` and stop.
 
+## Prompt path resolution
+
+When verifying `prompt_versions`, resolve versioned prompt files as:
+
+```text
+prompts/{stage_key with _ replaced by -}-v{N}.md
+```
+
+Example: `distribution_analysis: v1` → `prompts/distribution-analysis-v1.md` (must exist).
+
 ## Checks (blocking — any failure → verdict `fail`)
 
 ### Identity and naming
@@ -44,12 +53,13 @@ If the PR only changes other paths (prompts, playbooks, docs), output `NOOP: out
 - [ ] Opportunity ID is unique across `opportunities/`
 - [ ] Filename matches pattern `OPP-YYYYMMDD-{slug}.md`
 - [ ] Frontmatter `id` matches filename (without `.md`)
+- [ ] `_example-opportunity.md` is not listed in portfolio entry tables
 
 ### Pipeline completeness
 
 - [ ] `status` aligns with content (`draft` / `evaluating` / `decided`)
-- [ ] `prompt_versions` present and each version references an existing `prompts/{stage}-v{N}.md` file
-- [ ] Every completed decision-path section has `confidence_level` (high / medium / low)
+- [ ] `prompt_versions` present and each version references an existing resolved prompt file
+- [ ] Every completed decision-path section has `confidence_level` (high / medium / low), including **Final Decision**
 
 Decision-path sections: Discovery, Validation, Scoring, Distribution Analysis, Unfair Advantage Analysis, Maintenance Evaluation, Risk Analysis, Portfolio Intelligence, Scenario Planning, Final Decision.
 
@@ -86,7 +96,7 @@ For each opportunity with `status: decided`:
 - [ ] Appears in exactly one portfolio file (`active.md`, `monitoring.md`, or `archived.md`)
 - [ ] Row data matches frontmatter: ID, Global Score, OQI, Decision, Owner, Decision Date
 - [ ] `Next Review` set: +30 days for BUILD, +90 days for MONITOR
-- [ ] No row in `monitoring.md` with Global Score < 50 unless that opportunity has `decision_override: true`
+- [ ] No row in `monitoring.md` with Global Score < 50 unless that opportunity has `decision_override: true` **and** Notes column documents override
 - [ ] Kill entries in `archived.md` include Kill reason from [kill-rules.md](../playbooks/kill-rules.md) vocabulary
 
 ### Learnings
@@ -102,9 +112,10 @@ For each opportunity with `status: decided`:
 Flag but do not fail:
 
 - Active (BUILD) count > 3 or Monitoring count > 10 per [portfolio-rules.md](../playbooks/portfolio-rules.md)
-- Validation section has `confidence_level: low` and zero experiments with status `completed`
+- Validation section has `confidence_level: low` and zero experiments with status `completed` (unless `desk-only: true` documented)
 - `override_expires` is within 14 days of today
 - Desk evaluation note present with no live validation (informational)
+- `status: decided` files still contain `<!-- Paste output -->` placeholders
 
 ## Verdict rules
 

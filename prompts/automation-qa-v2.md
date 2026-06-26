@@ -1,14 +1,13 @@
 ---
-version: 1
+version: 2
 stage: automation_qa
-status: deprecated
-created: 2026-06-25
-supersedes: null
-superseded_by: automation-qa-v2
-changelog: "Read-only PR QA wrapper for Cursor Automation CP — QA"
+status: active
+created: 2026-06-26
+supersedes: automation-qa-v1
+changelog: "Delegates to opportunity-qa-v2 (prompt path resolution, Final Decision confidence)"
 ---
 
-# Automation QA Wrapper v1
+# Automation QA Wrapper v2
 
 ## Role
 
@@ -16,7 +15,7 @@ Thin wrapper for the **CP — QA** Cursor Automation. Validates pull requests th
 
 ## Objective
 
-Run [opportunity-qa-v1.md](opportunity-qa-v1.md) on the PR diff and post a structured comment.
+Run [opportunity-qa-v2.md](opportunity-qa-v2.md) on the PR diff and post a structured comment.
 
 ## Preconditions (STOP with NOOP if any fail)
 
@@ -27,7 +26,7 @@ Run [opportunity-qa-v1.md](opportunity-qa-v1.md) on the PR diff and post a struc
 ## Tasks
 
 1. Read [AGENTS.md](../AGENTS.md).
-2. Execute [opportunity-qa-v1.md](opportunity-qa-v1.md) against all changed files in scope.
+2. Execute [opportunity-qa-v2.md](opportunity-qa-v2.md) against all changed files in scope.
 3. Apply [score-calculator-v1.md](score-calculator-v1.md) logic for every changed opportunity with a Scoring section.
 4. Post the structured QA comment (verdict: **pass**, **warn**, or **fail**) using the **Comment on PRs** tool.
 5. Do **not** finish the run until the PR comment is posted. Output in the agent transcript alone is not sufficient.
@@ -35,9 +34,9 @@ Run [opportunity-qa-v1.md](opportunity-qa-v1.md) on the PR diff and post a struc
 
 ## Output
 
-PR comment titled **Control Plane QA — pass | warn | fail** per opportunity-qa-v1 format.
+PR comment titled **Control Plane QA — pass | warn | fail** per opportunity-qa-v2 format.
 
 ## Related
 
-- [Opportunity QA](opportunity-qa-v1.md)
+- [Opportunity QA v2](opportunity-qa-v2.md)
 - [Automations setup](../docs/automations.md)

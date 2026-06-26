@@ -51,7 +51,7 @@ If primary decision is BUILD, complete:
 | Decision | Criteria |
 |----------|----------|
 | BUILD | `global_score >= 75` AND `OQI >= 70` |
-| MONITOR | `global_score` 50–74 |
+| MONITOR | `global_score` 50–74, OR score qualifies for BUILD but OQI < 70 |
 | KILL | `global_score < 50` |
 
 4. Record primary decision, OQI breakdown, scenarios, and `expected_learnings` in **Final Decision**.
@@ -102,8 +102,9 @@ When submitting changes via git:
 - [ ] `prompt_versions` recorded in opportunity frontmatter
 - [ ] Prompt version bumps follow conventions (no in-place edits to used versions)
 - [ ] Internal links use relative paths
+- [ ] `python scripts/validate_opportunities.py` passes locally (CI runs on PR)
 
-Automated review: **CP — QA** runs [prompts/automation-qa-v1.md](prompts/automation-qa-v1.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
+Automated review: **CP — QA** runs [prompts/automation-qa-v2.md](prompts/automation-qa-v2.md) on PR open/push (see [docs/automations.md](docs/automations.md)). Do not merge when verdict is **fail**.
 
 ## GitHub labels and branch conventions
 

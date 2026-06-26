@@ -51,6 +51,9 @@ Standards for all markdown assets in this repository.
 ## Prompt Versioning
 
 - Canonical prompt content lives in versioned files: `{stage}-v{N}.md`.
+- **Stage key → filename**: frontmatter `prompt_versions` uses underscore keys (`distribution_analysis`, `portfolio_manager`). Prompt files use hyphens. Before building the path, replace `_` with `-` in the stage key.
+  - Example: `distribution_analysis: v1` → `prompts/distribution-analysis-v1.md`
+  - Single-word keys are unchanged: `discovery: v1` → `prompts/discovery-v1.md`
 - Index file `{stage}.md` points to the current version and lists changelog entries.
 - Integer versions only (`v1`, `v2`, …).
 - Material changes to questions, criteria, or output shape require a new version file.

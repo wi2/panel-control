@@ -65,7 +65,7 @@ Produce a multi-dimensional score breakdown with `global_score` (0–100) that m
 | **Total** | | **100%** | **XX** | | |
 
 **global_score**: XX
-**Decision mapping**: BUILD (>= 75 + OQI >= 70) | MONITOR (50–74) | KILL (< 50)
+**Decision mapping**: BUILD (>= 75 + OQI >= 70) | MONITOR (50–74, OR score qualifies but OQI < 70) | KILL (< 50)
 
 ```yaml
 scores:

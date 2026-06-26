@@ -3,7 +3,7 @@ version: 1
 stage: scoring
 status: deprecated
 created: 2026-06-25
-superseded_by: v2
+superseded_by: scoring-v2
 changelog: "Initial release — superseded by v2 multi-dimensional scoring"
 ---
 

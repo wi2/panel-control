@@ -21,6 +21,11 @@ scores:
   maintenance_score: 5.2
   risk_exposure_score: 54
   portfolio_fit_score: 50
+decision_override: false
+override_rationale: null
+override_expires: null
+pipeline_stage: portfolio_manager
+next_review_action: validate
 created: 2026-06-25
 updated: 2026-06-25
 owner: studio-team
@@ -130,7 +135,7 @@ We believe **solo artisans and small contractor firms (1–10 employees)** in **
 
 ## Validation
 
-Desk evaluation — **no completed experiments**. Planned 90-day MONITOR validation sprint.
+Desk evaluation — **desk-only**: true — no completed live experiments. Planned 90-day MONITOR validation sprint. See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
@@ -381,6 +386,8 @@ Formula: `OQI = 0.30×evidence_quality + 0.25×confidence_aggregate + 0.25×scor
 ### Dissent (if any)
 
 None documented.
+
+**confidence_level**: low
 
 ### Portfolio Update
 

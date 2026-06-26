@@ -3,7 +3,7 @@ version: 1
 stage: portfolio_manager
 status: deprecated
 created: 2026-06-25
-superseded_by: v2
+superseded_by: portfolio-manager-v2
 changelog: "Initial release — superseded by v2 dual-gate decision engine"
 ---
 
@@ -90,4 +90,4 @@ Check automatic kill triggers in [kill-rules.md](../playbooks/kill-rules.md) eve
 - [Portfolio rules](../playbooks/portfolio-rules.md)
 - [Kill rules](../playbooks/kill-rules.md)
 - [Decision template](../templates/decision-template.md)
-- Previous: [success-contract-v1.md](success-contract-v1.md)
+- Previous: [scenario-planning-v1.md](scenario-planning-v1.md)

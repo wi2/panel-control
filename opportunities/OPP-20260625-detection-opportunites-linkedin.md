@@ -21,6 +21,11 @@ scores:
   maintenance_score: 5.5
   risk_exposure_score: 58
   portfolio_fit_score: 52
+decision_override: false
+override_rationale: null
+override_expires: null
+pipeline_stage: portfolio_manager
+next_review_action: validate
 created: 2026-06-25
 updated: 2026-06-25
 owner: studio-team
@@ -140,7 +145,7 @@ We believe **French B2B freelancers and PME commercial leads** (5–30 employees
 
 ## Validation
 
-Desk evaluation only. Experiments below are **planned**, not executed.
+Desk evaluation only. **desk-only**: true — live experiments below are **planned**, not executed. See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
@@ -396,6 +401,8 @@ Formula: `OQI = 0.30×evidence_quality + 0.25×confidence_aggregate + 0.25×scor
 ### Dissent (if any)
 
 None documented.
+
+**confidence_level**: low
 
 ### Portfolio Update
 

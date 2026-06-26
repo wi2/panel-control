@@ -132,7 +132,7 @@ We believe French freelancers (micro-entrepreneurs and SASU/EURL solo) with 5–
 
 ## Validation
 
-Desk evaluation only. Experiments below are **planned**, not executed.
+Desk evaluation only. **desk-only**: true — live experiments below are **planned**, not executed. See [validation.md](../playbooks/validation.md).
 
 ### Experiments
 
@@ -383,6 +383,8 @@ Formula: `OQI = 0.30×evidence_quality + 0.25×confidence_aggregate + 0.25×scor
 ### Dissent (if any)
 
 None documented. Note: strict application of [scoring-rules.md](../playbooks/scoring-rules.md) yields KILL at 46; MONITOR justified only by unresolved WhatsApp/WTP uncertainty and 90-day validation contract.
+
+**confidence_level**: low
 
 ### Portfolio Update
 

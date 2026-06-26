@@ -26,11 +26,12 @@ Versioned AI prompts for each stage of the evaluation pipeline.
 
 | Stage | Index | Active Version |
 |-------|-------|----------------|
-| Pipeline Orchestrator | [pipeline-orchestrator.md](pipeline-orchestrator.md) | v2 |
+| Pipeline Orchestrator | [pipeline-orchestrator.md](pipeline-orchestrator.md) | v3 |
 | Score Calculator | [score-calculator.md](score-calculator.md) | v1 |
-| Opportunity QA | [opportunity-qa.md](opportunity-qa.md) | v1 |
+| Opportunity QA | [opportunity-qa.md](opportunity-qa.md) | v2 |
 | Intake | [intake.md](intake.md) | v4 |
 | Portfolio Review Runner | [portfolio-review-runner.md](portfolio-review-runner.md) | v1 |
+| Micro SaaS | [micro-saas.md](micro-saas.md) | v1 |
 
 ### Automation wrappers (Cursor Automations)
 
@@ -38,9 +39,9 @@ Thin preconditions + delegation to orchestration prompts above. See [docs/automa
 
 | Automation | Index | Active Version |
 |------------|-------|----------------|
-| CP — QA | [automation-qa.md](automation-qa.md) | v1 |
+| CP — QA | [automation-qa.md](automation-qa.md) | v2 |
 | CP — Intake | [automation-intake.md](automation-intake.md) | v4 |
-| CP — Eval | [automation-eval.md](automation-eval.md) | v4 |
+| CP — Eval | [automation-eval.md](automation-eval.md) | v5 |
 | CP — Review | [automation-review.md](automation-review.md) | v1 |
 
 See [AGENTS.md](../AGENTS.md) for agent operating rules.
@@ -48,6 +49,7 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules.
 ## Versioning
 
 - **Canonical content** lives in `{stage}-v{N}.md`.
+- **Stage key → filename**: frontmatter keys use underscores; files use hyphens — replace `_` with `-` before building the path (see [CONVENTIONS.md](../CONVENTIONS.md)).
 - **Index file** `{stage}.md` points to the current version and lists changelog.
 - Integer versions only: `v1`, `v2`, `v3`, …
 - Never delete deprecated prompts; mark `status: deprecated` and set `superseded_by`.

@@ -80,5 +80,5 @@ Branch is `opp/pipeline`. Catalogue of `decided` OPP files from `master` may coe
 ## Related
 
 - [Discovery](discovery-v1.md)
-- [Pipeline orchestrator v2](pipeline-orchestrator-v2.md)
+- [Pipeline orchestrator v3](pipeline-orchestrator-v3.md)
 - [Automations setup](../docs/automations.md)

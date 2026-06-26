@@ -1,0 +1,10 @@
+# GitHub labels for panel-control Cursor Automations
+# Sync manually or via .github/workflows/sync-labels.yml
+
+- name: "cp:intake"
+  color: "0E8A16"
+  description: "Trigger CP — Intake (create OPP + Discovery on opp/pipeline)"
+
+- name: "cp:review"
+  color: "D93F0B"
+  description: "Trigger CP — Review (portfolio review on review/** branch)"

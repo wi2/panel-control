@@ -9,9 +9,9 @@ See [AGENTS.md](../AGENTS.md) for agent operating rules shared by all automation
 Four automations — one job each, thin wrapper → versioned prompt:
 
 ```text
-CP — QA      (read-only)  → prompts/automation-qa-v1.md       → opportunity-qa-v1
+CP — QA      (read-only)  → prompts/automation-qa-v2.md       → opportunity-qa-v2
 CP — Intake  (write)      → prompts/automation-intake-v4.md   → intake-v4
-CP — Eval    (write)      → prompts/automation-eval-v4.md     → pipeline-orchestrator-v2
+CP — Eval    (write)      → prompts/automation-eval-v5.md     → pipeline-orchestrator-v3
 CP — Review  (write)      → prompts/automation-review-v1.md   → portfolio-review-runner-v1
 ```
 
@@ -33,7 +33,7 @@ Before enabling automations:
 
 1. Push this repository to GitHub and connect it in Cursor.
 2. Configure `gitConfig` in each automation: repo `wi2/panel-control`, branch `master`.
-3. Create GitHub labels (see [GitHub labels](#github-labels)).
+3. Create GitHub labels — run workflow [Sync GitHub labels](../.github/workflows/sync-labels.yml) or apply [`.github/labels.yml`](../.github/labels.yml) manually (`gh label list` to verify).
 4. Enable **usage-based pricing** and a spend limit in Cursor (Background Agents require billing).
 5. Work via pull requests — do not push directly to the default branch (see [AGENTS.md](../AGENTS.md)).
 6. Enable **ignore draft PRs** on Git triggers where available.
@@ -50,6 +50,8 @@ Before enabling automations:
 | `cp:review` | `#D93F0B` | CP — Review | Portfolio review on demand |
 
 **Removed**: `cp:eval` — Eval is push-triggered on `opp/pipeline`, no label.
+
+Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync via GitHub Actions workflow **Sync GitHub labels** or create manually in the repo settings.
 
 **Rules**
 
@@ -96,7 +98,7 @@ Read-only validation. **Never commits.**
 ```text
 You are running CP — QA for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-qa-v1.md against this pull request.
+Execute prompts/automation-qa-v2.md against this pull request.
 Do not modify any files.
 
 You MUST post the QA verdict on this pull request using the Comment on PRs tool.
@@ -181,7 +183,7 @@ Advances the pipeline in **batches of up to 5 stages** per push. **No label.**
 ```text
 You are running CP — Eval for the AI Startup Studio Brain control plane.
 
-Execute prompts/automation-eval-v4.md against this pull request.
+Execute prompts/automation-eval-v5.md against this pull request.
 Commit and push to opp/pipeline. Up to 5 pipeline stages per run. Do not push to master.
 ```
 
@@ -208,7 +210,7 @@ After merging v4 docs, update automation instructions only (triggers unchanged):
 | Automation | Instructions file |
 |------------|-------------------|
 | **CP — Intake** | `prompts/automation-intake-v4.md` |
-| **CP — Eval** | `prompts/automation-eval-v4.md` |
+| **CP — Eval** | `prompts/automation-eval-v5.md` |
 
 ---
 
@@ -296,7 +298,7 @@ Run after merging v4 docs to `master` and reconfiguring Cursor automations to v4
 ### Prerequisites
 
 1. Merge docs PR (v4 prompts + this file) to `master`.
-2. **CP — Eval**: trigger **New push to branch** → `opp/pipeline`; instructions → `automation-eval-v4.md`.
+2. **CP — Eval**: trigger **New push to branch** → `opp/pipeline`; instructions → `automation-eval-v5.md`.
 3. **CP — Intake**: instructions → `automation-intake-v4.md`.
 4. Close without merge (if still open): PRs on `opp/automation-v2-smoke`, `intake/automation-smoke-test`, `test/qa-smoke`.
 
@@ -350,6 +352,27 @@ git push origin --delete opp/pipeline
 | `opp/automation-v2-smoke` | Delete remote + local after smoke passes |
 | `intake/automation-smoke-test` | Close PR; delete branch |
 | `test/qa-smoke`, `test/qa-pr-automation` | Close if obsolete |
+
+---
+
+## Onboarding checklist
+
+After configuring all four Cursor Automations, verify each item:
+
+- [ ] `gh label list` shows `cp:intake` and `cp:review` (or run **Sync GitHub labels** workflow)
+- [ ] **CP — QA** uses `prompts/automation-qa-v2.md`; test with a PR touching `opportunities/`
+- [ ] **CP — Intake** uses `prompts/automation-intake-v4.md`; branch trigger or manual on `opp/pipeline`
+- [ ] **CP — Eval** uses `prompts/automation-eval-v5.md`; push trigger on `opp/pipeline`
+- [ ] **CP — Review** uses `prompts/automation-review-v1.md`; cron + `cp:review` on `review/**`
+- [ ] GitHub Action **Validate opportunities and portfolio** passes on PR (see [`.github/workflows/validate-opportunities.yml`](../.github/workflows/validate-opportunities.yml))
+- [ ] Smoke test procedure below completes with `decided` + kill on a test OPP
+
+### Post-setup verification commands
+
+```bash
+gh label list | grep cp:
+python scripts/validate_opportunities.py
+```
 
 ---
 

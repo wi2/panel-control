@@ -46,8 +46,8 @@ Record `prompt_versions` in frontmatter after completing the decision path.
 
 Do not advance without minimum output:
 
-- **Discovery → Validation**: problem statement, hypothesis, market claims with evidence types
-- **Validation → Scoring**: at least one experiment completed with evidence-typed results
+- **Discovery → Validation**: problem statement, hypothesis, market claims with evidence types (see [discovery.md](discovery.md))
+- **Validation → Scoring**: at least one experiment completed with evidence-typed results, **or** documented desk-only fast path (see [validation.md](validation.md))
 - **Scoring → Distribution**: `global_score` calculated with 10-dimension breakdown
 - **Distribution → Unfair Advantage**: `distribution_score` and notes documented
 - **Unfair Advantage → Maintenance**: `unfair_advantages` and `moat_score` documented
@@ -84,7 +84,7 @@ Update frontmatter: `decision`, `status: decided`, `updated`.
 
 ## Step 5: BUILD Preparation (BUILD only)
 
-If primary decision is BUILD, complete BUILD-only sections:
+If primary decision is BUILD, complete BUILD-only sections **manually** (not orchestrated by CP — Eval):
 
 | Order | Prompt | Section |
 |-------|--------|---------|

@@ -20,7 +20,7 @@ Standalone decision record for opportunity [{opportunity_id}](../opportunities/O
 | **Primary Decision** | build / monitor / kill |
 | **global_score** | XX |
 | **opportunity_quality_index** | XX |
-| **Threshold** | BUILD: global_score >= 75 AND OQI >= 70; MONITOR: 50–74; KILL: < 50 |
+| **Threshold** | BUILD: global_score >= 75 AND OQI >= 70; MONITOR: 50–74 OR score qualifies but OQI < 70; KILL: < 50 |
 | **Date** | YYYY-MM-DD |
 | **Decided by** | |
 

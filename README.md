@@ -48,7 +48,7 @@ Each stage is driven by a versioned prompt in [`prompts/`](prompts/). Outputs ar
 | Decision | Criteria | Portfolio file |
 |----------|----------|----------------|
 | **BUILD** | `global_score >= 75` AND `OQI >= 70` | [`portfolio/active.md`](portfolio/active.md) |
-| **MONITOR** | `global_score` 50–74 | [`portfolio/monitoring.md`](portfolio/monitoring.md) |
+| **MONITOR** | `global_score` 50–74, OR score qualifies for BUILD but OQI < 70 | [`portfolio/monitoring.md`](portfolio/monitoring.md) |
 | **KILL** | `global_score < 50` | [`portfolio/archived.md`](portfolio/archived.md) |
 
 Micro SaaS wedge decisions (independent lens): [`portfolio/micro-saas.md`](portfolio/micro-saas.md). See [`playbooks/micro-saas-portfolio.md`](playbooks/micro-saas-portfolio.md).

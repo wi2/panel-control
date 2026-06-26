@@ -24,7 +24,7 @@ prompt_versions:
 
 # AI Invoice Parser for SMB Accountants
 
-> **Note**: Fictional example for demonstration. Not a live portfolio entry.
+> **Note**: Fictional example for demonstration. **Not a live portfolio entry** — never add to [portfolio/monitoring.md](../portfolio/monitoring.md) or other portfolio tables.
 
 ## Discovery
 
@@ -270,6 +270,8 @@ We believe SMB accountants (5–20 staff) will pay $50–100/month for an AI-pow
 ### Dissent (if any)
 
 None.
+
+**confidence_level**: medium
 
 ### Portfolio Update
 

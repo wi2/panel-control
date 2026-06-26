@@ -1,14 +1,13 @@
 ---
-version: 4
+version: 5
 stage: automation_eval
-status: deprecated
+status: active
 created: 2026-06-26
-supersedes: automation-eval-v3
-superseded_by: automation-eval-v5
-changelog: "Active OPP resolution — catalogue decided from master coexists on opp/pipeline"
+supersedes: automation-eval-v4
+changelog: "Delegates to pipeline-orchestrator-v3 (prompt path resolution, BUILD scope)"
 ---
 
-# Automation Eval Wrapper v4
+# Automation Eval Wrapper v5
 
 ## Role
 
@@ -16,7 +15,7 @@ Thin wrapper for the **CP — Eval** Cursor Automation. Advances an opportunity 
 
 ## Objective
 
-Delegate to [pipeline-orchestrator-v2.md](pipeline-orchestrator-v2.md) after enforcing branch and opportunity resolution gates.
+Delegate to [pipeline-orchestrator-v3.md](pipeline-orchestrator-v3.md) after enforcing branch and opportunity resolution gates.
 
 ## Trigger
 
@@ -40,7 +39,7 @@ Pattern `OPP-*.md` excludes [`_example-opportunity.md`](../opportunities/_exampl
    | Active count | Result |
    |--------------|--------|
    | 0 | NOOP: no pipeline OPP in progress (catalogue `decided` only) |
-   | 1 | **Target file** for pipeline-orchestrator-v2 |
+   | 1 | **Target file** for pipeline-orchestrator-v3 |
    | 2+ | NOOP: ambiguous — studio rule (one active OPP at a time) |
 
    In NOOP comments, report catalogue count (decided), active count, and list active filenames.
@@ -54,10 +53,10 @@ If preconditions fail, post a short PR comment explaining what is missing. Do no
 ## Tasks
 
 1. Read [AGENTS.md](../AGENTS.md).
-2. Execute [pipeline-orchestrator-v2.md](pipeline-orchestrator-v2.md) for the resolved active OPP only.
+2. Execute [pipeline-orchestrator-v3.md](pipeline-orchestrator-v3.md) for the resolved active OPP only.
 3. **Up to 5 stages per run** — single commit at end of batch.
 4. Commit and **push** to **`opp/pipeline`** (not `master`). Push re-triggers the next batch if pipeline not complete.
-5. Post the **Pipeline Run Summary** from pipeline-orchestrator-v2 output format.
+5. Post the **Pipeline Run Summary** from pipeline-orchestrator-v3 output format.
 6. Do **not** run QA in this automation — **CP — QA** runs separately on push.
 
 ## Constraints
@@ -65,8 +64,9 @@ If preconditions fail, post a short PR comment explaining what is missing. Do no
 - Never push directly to the default branch.
 - Do not edit `prompts/*` or `playbooks/*`.
 - Studio capacity: **one active OPP** on `opp/pipeline` at a time; catalogue `decided` files are ignored for resolution.
+- BUILD preparation stages are **not** in scope — manual after `decision: build`.
 
 ## Related
 
-- [Pipeline orchestrator v2](pipeline-orchestrator-v2.md)
+- [Pipeline orchestrator v3](pipeline-orchestrator-v3.md)
 - [Automations setup](../docs/automations.md)
