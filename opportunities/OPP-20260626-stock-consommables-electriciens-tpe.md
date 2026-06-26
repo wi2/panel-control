@@ -2,9 +2,9 @@
 id: OPP-20260626-stock-consommables-electriciens-tpe
 title: "Suivi stock consommables et réappro pour électriciens TPE locaux"
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
 global_score: null
 opportunity_quality_index: null
@@ -16,8 +16,8 @@ scores: {}
 decision_override: false
 override_rationale: null
 override_expires: null
-pipeline_stage: micro_saas_evaluation
-next_review_action: null
+pipeline_stage: portfolio_manager_micro
+next_review_action: "Sprint validation: 8 entretiens CMA + landing WTP + concierge SMS — deadline 2026-07-26"
 created: 2026-06-26
 updated: 2026-06-26
 owner: studio-team
@@ -360,17 +360,33 @@ MSFI calc: `0.15×50 + 0.15×85 + 0.10×75 + 0.15×58 + 0.15×82 + 0.15×62 + 0.
 
 ## Final Decision (Micro SaaS)
 
-<!-- Paste output from prompts/portfolio-manager-micro.md — primary for solo_micro_saas -->
-
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | XX |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 64.3 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-26 |
+| **Rationale** | All six hard gates PASS (build 92 h, maint 8 h/mo, solo-operable, MRR 750 €/mo, distribution_cost 3, ToS low). MSFI 64.3 in MONITOR band (50–69). Desk-only Validation (`desk-only: true`, confidence low) blocks BUILD_MICRO — no live interviews, landing, or concierge completed. WTP unknown vs Tolteck ~€19/mo and Excel gratuit. Wedge gap plausible (Validation #4 desk scan) but requires live sprint before BUILD promotion. Portfolio capacity available (0 BUILD active, 3/5 MONITOR slots) — not capacity-blocked. |
 
-**confidence_level**: high / medium / low
+### Expected Learnings
+
+- [ ] Topic: pain_frequency — Method: 8 entretiens TPE électriciens via CMA / Facebook métier dept pilote — Applies to: MONITOR_MICRO, KILL_MICRO
+- [ ] Topic: willingness_to_pay — Method: Landing FR + Van Westendorp €9–19/mo + €200 ads Facebook artisans — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: concierge_value — Method: Concierge SMS seuils 8 TPE × 4 semaines — Applies to: MONITOR_MICRO, BUILD_MICRO
+- [ ] Topic: incumbent_sufficiency — Method: ≥5/8 disent Excel/Tolteck suffisent ? — Applies to: KILL_MICRO
+
+### Next Actions
+
+- [ ] 8 entretiens CMA / groupe Facebook électriciens dept pilote — deadline 2026-07-15
+- [ ] Publier landing « stock consommables électricien » + waitlist Van Westendorp — deadline 2026-07-15
+- [ ] Concierge manuel alertes SMS 8 TPE × 4 semaines — deadline 2026-07-20
+- [ ] Re-calculer MSFI ; promouvoir BUILD_MICRO si MSFI ≥70 + live validation pass — deadline 2026-07-26
+
+### Portfolio Update
+
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md) (Monitoring)
+
+**confidence_level**: medium
 
 ---
 
