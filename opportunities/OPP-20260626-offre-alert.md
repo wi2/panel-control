@@ -3,25 +3,25 @@ id: OPP-20260626-offre-alert
 title: "OffreAlert — veille appels d'offres ultra ciblée pour PME locales"
 eval_engine: v3-lite
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
-msfi: null
-speed_score: null
-economics_score: null
-reach_score: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
-build_hours_estimate: null
-maintenance_hours_estimate: null
+msfi: 52.7
+speed_score: 60
+economics_score: 52
+reach_score: 42
+time_to_first_revenue_days: 75
+monthly_revenue_potential: 1500
+distribution_channel: seo
+distribution_cost: 2
+build_hours_estimate: 88
+maintenance_hours_estimate: 8
 wedge: "Multi-source tender monitoring (CPV/NAF, geo, amount) → AI summary + relevance score → daily digest of 3–10 high-fit alerts for local SMEs without a procurement team"
-pipeline_stage: discovery
-next_review_action: null
+pipeline_stage: fit_and_decide
+next_review_action: validate
 created: 2026-06-26
-updated: 2026-06-26
+updated: 2026-06-27
 automation_intake_at: 2026-06-26
 owner: studio-team
 tags: [b2b, micro-saas, ai, pme, procurement]
@@ -88,66 +88,74 @@ confidence_level: medium
 
 ## Validation
 
-<!-- Paste output from prompts/validation-v2.md -->
-
 ### Experiments
 
 | # | Experiment | Method | Success Criteria | Status |
 |---|------------|--------|------------------|--------|
+| 1 | AlertOffres feature-parity audit | Desk research: AlertOffres pricing, features, source coverage, AI capabilities | Document overlap with proposed wedge (multi-source, CPV/geo filters, AI DCE summary, PME pricing); identify any gap on "3–10 curated digest" positioning | completed |
+| 2 | Wedge pricing & incumbent benchmark | Desk research: AlertOffres, France Marchés, Marchés Online, BOAMP free alerts | €29–49/mo wedge is ≤50% of legacy aggregator spend (€80–300/mo) and within 2× of AlertOffres Pro €29.99/mo | completed |
+| 3 | Live validation sprint (planned) | SEO landing + 5 SME owner interviews + 2-week concierge digest | ≥4/5 confirm daily multi-source monitoring pain; ≥3/5 rate curated 3–10 alert digest as "would use weekly"; waitlist ≥30 emails in 30 days | planned |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
+| alertoffres_direct_overlap | AlertOffres Pro at €29.99/mo HT aggregates 7 official sources (BOAMP, TED, PLACE, Maximilien, Mégalis, MarchésOnline, data.gouv.fr) with unlimited email alerts and 50 AI credits/mo | verified | AlertOffres pricing & about pages | 2026-06-27 |
+| alertoffres_ai_parity | AlertOffres already markets AI DCE summaries, CPV/dept/montant filters, and PME/artisan positioning — core overlap with OffreAlert wedge | verified | AlertOffres homepage & comparatives | 2026-06-27 |
+| legacy_pricing_gap | Legacy aggregators (France Marchés, Marchés Online, e-Marchespublics) start €80–150+/mo with annual commitments | verified | AlertOffres alternatives comparatif 2026 | 2026-06-27 |
+| boamp_open_api | BOAMP data reusable via free DILA API under Licence Ouverte 2.0 with attribution requirements | verified | data.gouv.fr / DILA API documentation | 2026-06-27 |
+| mapa_coverage_gap | MAPA below ~€90k HT may publish only on regional buyer profiles, not BOAMP — multi-source aggregation remains necessary | verified | DILA API docs; Discovery OLRA guide | 2026-06-27 |
+| regional_tos_uncertainty | Regional buyer platforms (Maximilien, AWS-Achat, e-Marchespublics) lack uniform open APIs; scraping ToS varies by platform | inferred | Discovery competitor scan; no unified open-data feed found | 2026-06-27 |
+| wedge_price_compression | Proposed €29–49/mo sits at or below AlertOffres Pro (€29.99) — limited pricing headroom without clear differentiation | inferred | Pricing benchmark vs intake hypothesis | 2026-06-27 |
+| digest_differentiation_unproven | "3–10 ultra-relevant daily digest" vs unlimited alerts is positioning-only; no live SME signal that curation beats AlertOffres filters | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
+| live_validation_pending | Zero SME interviews, concierge digests, or waitlist signups completed | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
 
 ### Kill / Continue Signals
 
-- **Continue if**:
-- **Kill if**:
+- **Continue if**: ≥4/5 SME owners confirm 30+ min/day multi-source monitoring pain; ≥3/5 rate a concierge 3–10 alert digest as "would pay €29+/mo"; waitlist reaches 30 emails within 30 days of SEO landing; a defensible wedge emerges (e.g. NAF+CPV hybrid scoring, admin-trap detection, hyper-local buyer graph) that AlertOffres does not cover
+- **Kill if**: ≥3/5 SMEs say AlertOffres free/Pro tier is sufficient; zero waitlist after 4 weeks of targeted SEO; regional source integration exceeds 15 h seed budget; legal review flags high ToS risk on regional scraping with no compliant alternative
 
 ```yaml
 desk_only: true
-confidence_level: high / medium / low
+confidence_level: low
 ```
 
 ---
 
 ## Fit and Decide
 
-<!-- Paste output from prompts/fit-and-decide-v1.md -->
-
-**Wedge scope**:
+**Wedge scope**: Daily email digest of 3–10 high-relevance tender alerts for local trade/service SMEs (5–50 employees), built on multi-source aggregation (BOAMP API + regional buyer profiles), CPV/NAF/geo/amount filters, AI DCE summary, and relevance scoring — priced €29–49/mo, solo-operable without a procurement team.
 
 ### Hard Gates
 
 | Gate | Threshold | Estimate | Result |
 |------|-----------|----------|--------|
-| build_hours | ≤ 100 h | | |
-| maintenance_hours | ≤ 10 h/mo | | |
-| solo_operable | Yes | | |
-| monthly_revenue_potential | ≥ 500 €/mo | | |
-| distribution_cost | ≤ 7 | | |
-| platform / ToS | see playbook | | |
+| build_hours | ≤ 100 h | 88 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 8 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 1 500 €/mo | PASS |
+| distribution_cost | ≤ 7 | 2 (channel: seo) | PASS |
+| platform / ToS | see playbook | BOAMP via DILA open API; regional sources hybrid; not scraping-only | PASS |
 
 ### Platform Risk
 
 | Field | Value |
 |-------|-------|
-| tos_risk | |
-| platform_dependency | |
-| alternative_data_source | |
+| tos_risk | medium |
+| platform_dependency | medium |
+| alternative_data_source | true |
 
 ### MSFI-lite
 
 | Component | Score |
 |-----------|-------|
-| speed_score | |
-| economics_score | |
-| reach_score | |
-| **MSFI** | |
+| speed_score | 60 |
+| economics_score | 52 |
+| reach_score | 42 |
+| **MSFI** | **52.7** |
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: medium
 ```
 
 ---
@@ -156,26 +164,32 @@ confidence_level: high / medium / low
 
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 52.7 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-27 |
+| **Rationale** | All hard gates pass. MSFI 52.7 sits in monitor band (50–69). Desk-only validation confirms real SME pain (fragmented sources, MAPA coverage gaps) and viable BOAMP open-data path, but AlertOffres Pro at €29.99/mo already delivers multi-source aggregation, AI DCE summaries, and PME positioning — direct overlap compresses pricing power and reach. BUILD_MICRO blocked until live validation proves a differentiated wedge (curated digest quality, NAF+CPV scoring, or hyper-local buyer graph) that incumbents do not satisfy. |
 
 ### Expected Learnings
 
-- [ ] Topic — Method — Applies to: MONITOR_MICRO / KILL_MICRO
+- [ ] Curated 3–10 digest vs unlimited alerts — Method: 5 SME interviews + 2-week concierge pilot — Applies to: MONITOR_MICRO
+- [ ] Defensible differentiation beyond AlertOffres filters — Method: feature-gap audit on NAF mapping, admin-trap detection, regional buyer graph — Applies to: MONITOR_MICRO
+- [ ] Regional source ToS compliance path — Method: legal desk review + seed integration on 2 regional platforms — Applies to: MONITOR_MICRO
 
 ### Next Actions
 
-- [ ] Action 1
+- [ ] Ship SEO landing page targeting "veille AO [métier] [département]" long-tail keywords
+- [ ] Run 5 problem interviews with local trade/service SME owners (5–50 employees, no procurement team)
+- [ ] Deliver 2-week concierge digest (manual curation + AI summary) to 3 SMEs; collect usefulness and willingness-to-pay ratings
+- [ ] Document compliant regional source integration plan (Maximilien + 1 additional buyer profile) within 15 h seed budget
+- [ ] Re-evaluate at 30-day review (2026-07-27); promote to BUILD_MICRO only if MSFI ≥ 70 and live validation passes with clear differentiation
 
 ### Portfolio Update
 
-- [ ] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: medium
 ```
 
 ---
