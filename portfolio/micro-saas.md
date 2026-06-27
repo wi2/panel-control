@@ -52,6 +52,7 @@ _No entries._
 | ID | Wedge | MSFI | Decision | Build h | Maint h/mo | MRR target 12m | Owner | Decision Date | Next Review | Notes | Link |
 |----|-------|------|----------|---------|------------|----------------|-------|---------------|-------------|-------|------|
 | OPP-20260626-coachbrief | CSV → weekly roster digest for solo endurance coaches | 63.5 | MONITOR_MICRO | 68 | 5 | €980/mo | studio-team | 2026-06-26 | 2026-07-26 | Desk-only; run interview + concierge sprint before BUILD | [OPP](../opportunities/OPP-20260626-coachbrief.md) |
+| OPP-20260626-offre-alert | Multi-source AO digest (3–10 alerts) for local trade SMEs | 52.7 | MONITOR_MICRO | 88 | 8 | €1 500/mo | studio-team | 2026-06-27 | 2026-07-27 | Desk-only; AlertOffres overlap — prove differentiation before BUILD | [OPP](../opportunities/OPP-20260626-offre-alert.md) |
 
 ## Archived (KILL_MICRO)
 
