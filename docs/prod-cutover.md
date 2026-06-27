@@ -31,10 +31,16 @@ Bootstrap for **eval engine v3-lite**. ADR: [decisions/2026-06-simplification-v3
 ## Prod-ready checklist
 
 - [x] v3-lite prompts and scripts merged
+- [x] Boundary ADR + build handoff + product template
 - [ ] Cursor automations updated per [automations.md](automations.md)
-- [ ] First real OPP through full-run pipeline
+- [ ] First OPP through full-run pipeline — [smoke-test.md](smoke-test.md)
+
+## BUILD_MICRO handoff
+
+When an OPP reaches `BUILD_MICRO`, use [playbooks/build-handoff.md](../playbooks/build-handoff.md) — not agents in this repo.
 
 ## Related
 
 - [automations.md](automations.md)
+- [roadmap.md](roadmap.md)
 - [AGENTS.md](../AGENTS.md)

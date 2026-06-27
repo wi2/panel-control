@@ -19,7 +19,7 @@ Execute [intake-v7.md](intake-v7.md). Commit and push to `opp/pipeline`.
 
 ## Trigger
 
-PR opened + optional label `cp:eval` fallback `cp:intake`.
+PR opened + optional label `cp:intake` (fallback if PR-open trigger did not run).
 
 ## Branch gate
 

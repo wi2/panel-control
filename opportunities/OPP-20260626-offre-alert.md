@@ -194,8 +194,12 @@ confidence_level: medium
 
 ---
 
-## Post-BUILD_MICRO (manual)
+## Post-BUILD_MICRO (product repo — not panel-control)
 
-Complete after BUILD_MICRO decision — not orchestrated by CP — Eval.
+After `BUILD_MICRO`, bootstrap a dedicated product repository:
 
-See [docs/legacy-studio.md](../docs/legacy-studio.md) BUILD prep prompts (vision, mvp, roadmap, architecture, success_contract) or a separate product repo.
+```bash
+./scripts/bootstrap_product_repo.sh OPP-YYYYMMDD-slug slug ~/Projects/slug
+```
+
+See [playbooks/build-handoff.md](../playbooks/build-handoff.md). Vision, architecture, and code agents run in the product repo only.

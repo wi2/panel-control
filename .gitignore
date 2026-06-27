@@ -12,6 +12,7 @@ Thumbs.db
 # Temp
 *.tmp
 *.bak
+.tmp-bootstrap-test/
 
 # Python
 __pycache__/

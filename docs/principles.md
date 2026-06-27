@@ -2,6 +2,8 @@
 
 Operational principles for running the evaluation pipeline and maintaining the control plane.
 
+> **Active path:** `eval_engine: v3-lite`, `portfolio_strategy: solo_micro_saas` only. Decision thresholds below use **MSFI-lite** and **hard gates** — see [micro-saas-portfolio.md](../playbooks/micro-saas-portfolio.md). Studio thresholds (`global_score`, OQI) in the legacy section are frozen — [legacy-studio.md](legacy-studio.md).
+
 ## Reproducibility
 
 Every opportunity records which prompt versions were used (`prompt_versions` in frontmatter). Evaluations must be reproducible: given the same inputs and prompt versions, another reviewer should reach similar conclusions.
@@ -10,17 +12,17 @@ Every opportunity records which prompt versions were used (`prompt_versions` in 
 
 Prompts are versioned artifacts, not living documents. Material changes create a new version; deprecated versions are retained. Never delete a prompt that was used in an evaluation.
 
-## Decision Thresholds
+## Decision Thresholds (v3-lite — active)
 
-Decisions map to criteria by fixed thresholds:
+Decisions map to criteria by fixed thresholds for `solo_micro_saas`:
 
 | Decision | Criteria |
 |----------|----------|
-| BUILD | `global_score >= 75` AND `opportunity_quality_index >= 70` |
-| MONITOR | `global_score` 50–74, OR score qualifies but OQI < 70 |
-| KILL | `global_score < 50` |
+| BUILD_MICRO | All hard gates PASS + MSFI-lite ≥ 70 + **live** validation (not desk-only) + capacity available |
+| MONITOR_MICRO | Gates PASS + MSFI 50–69, OR one borderline gate (10%), OR `capacity_blocked: true` |
+| KILL_MICRO | Any hard gate FAIL OR MSFI-lite < 50 |
 
-Thresholds are applied consistently. Override requires documented rationale in the Final Decision section.
+`decision_override` is **not allowed** on the solo path. Thresholds are applied consistently via [scripts/msfi_calculator.py](../scripts/msfi_calculator.py) and CI.
 
 ## Evidence Quality
 
@@ -39,33 +41,46 @@ Map to evidence types per [evidence-classification.md](../playbooks/evidence-cla
 | Tier 5 | `inferred` |
 | Tier 6 | `unknown` or `synthetic` |
 
-Every claim influencing scoring or decisions must include an evidence type. OQI penalizes decisions built on weak evidence.
+Every claim influencing scoring or decisions must include an evidence type.
 
 ## Confidence Levels
 
-Every decision-path section must declare `confidence_level`. Portfolio Manager must not BUILD when critical sections (Scoring, Distribution, Risk) are `low` without documented override.
+Every decision-path section must declare `confidence_level: high | medium | low`.
 
-## Separation of Stages
+For BUILD_MICRO: do not proceed to product development when Validation or Fit and Decide are `low` without documented mitigation in Final Decision.
+
+## Separation of Stages (v3-lite)
 
 Each pipeline stage has a distinct purpose:
 
-- Discovery identifies *what might be worth validating*
-- Validation tests *whether the hypothesis holds*
-- Scoring and intelligence analyses quantify *how strong and reliable the opportunity is*
-- Scenario Planning models *decision outcomes under uncertainty*
-- Portfolio Management decides *build, monitor, or kill*
-- Vision through Success Contract define *what to build if we build* (BUILD-only)
+- **Discovery** identifies *what might be worth validating*
+- **Validation** tests *whether the hypothesis holds*
+- **Fit and Decide** applies hard gates, MSFI-lite, and records the final decision
+- **Post-BUILD prep** (manual) defines *what to build* — vision through success contract in the product repo
 
-## Portfolio Discipline
+## Portfolio Discipline (v3-lite)
 
-- Capacity limits apply (see [portfolio rules](../playbooks/portfolio-rules.md))
-- BUILD requires dual-gate: global_score AND OQI
-- MONITOR opportunities that fail re-validation are killed, not indefinitely deferred
-- Every KILL and MONITOR must record `expected_learnings`
+- Capacity limits apply — see [micro-saas-portfolio.md](../playbooks/micro-saas-portfolio.md)
+- BUILD_MICRO requires live validation signal (not desk-only)
+- MONITOR_MICRO opportunities that fail re-validation are killed, not indefinitely deferred
+- Every KILL_MICRO and MONITOR_MICRO must record expected learnings
+- Merge policy: [merge-policy.md](../playbooks/merge-policy.md)
+
+## Legacy — startup_studio (frozen)
+
+The following applied to the frozen studio path only. Do not use for new opportunities.
+
+| Decision | Criteria |
+|----------|----------|
+| BUILD | `global_score >= 75` AND `opportunity_quality_index >= 70` |
+| MONITOR | `global_score` 50–74, OR score qualifies but OQI < 70 |
+| KILL | `global_score < 50` |
+
+See [legacy-studio.md](legacy-studio.md) and [opportunity-quality-index.md](../playbooks/opportunity-quality-index.md).
 
 ## Related
 
 - [Philosophy](philosophy.md)
 - [Evaluation process](../playbooks/evaluation-process.md)
-- [Opportunity quality index](../playbooks/opportunity-quality-index.md)
+- [Portfolio strategy](portfolio-strategy.md)
 - [Conventions](../CONVENTIONS.md)

@@ -38,9 +38,15 @@ Fit and Decide sets `decision`, MSFI-lite scores, `status: decided`, and syncs [
 | MONITOR_MICRO | Gates PASS + MSFI 50–69 or capacity_blocked |
 | KILL_MICRO | Gate FAIL or MSFI < 50 |
 
-## Step 5: Post-BUILD (manual)
+## Step 5: BUILD handoff (product repo)
 
-After BUILD_MICRO, use BUILD prep prompts in [legacy-studio.md](../docs/legacy-studio.md) or separate product repos.
+When `decision: BUILD_MICRO`, **stop in panel-control** and bootstrap a product repository:
+
+```bash
+./scripts/bootstrap_product_repo.sh OPP-YYYYMMDD-slug slug ~/Projects/slug
+```
+
+See [build-handoff.md](build-handoff.md). Vision, architecture, and code agents run **in the product repo** only — ADR [control-plane vs product-repo](../docs/decisions/2026-07-control-plane-vs-product-repo.md).
 
 ## Review
 

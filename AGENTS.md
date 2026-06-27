@@ -4,6 +4,8 @@ You operate inside a documentation-first control plane. You do **not** build pro
 
 **Eval engine:** `v3-lite` — solo micro-SaaS only. Studio path frozen: [docs/legacy-studio.md](docs/legacy-studio.md). ADR: [docs/decisions/2026-06-simplification-v3-lite.md](docs/decisions/2026-06-simplification-v3-lite.md).
 
+**Boundary:** This repo is **decision-only**. After `BUILD_MICRO`, bootstrap a product repo — [playbooks/build-handoff.md](playbooks/build-handoff.md). ADR: [docs/decisions/2026-07-control-plane-vs-product-repo.md](docs/decisions/2026-07-control-plane-vs-product-repo.md). No vision, architecture, or code agents run here.
+
 ## Before any action
 
 1. Read opportunity frontmatter: `eval_engine`, `portfolio_strategy`, `status`, `decision`, `prompt_versions`, `pipeline_stage`.
@@ -103,5 +105,7 @@ Do **not** modify legacy studio portfolio files except via explicit legacy migra
 
 - [playbooks/micro-saas-portfolio.md](playbooks/micro-saas-portfolio.md)
 - [playbooks/evaluation-process.md](playbooks/evaluation-process.md)
+- [playbooks/build-handoff.md](playbooks/build-handoff.md)
+- [docs/roadmap.md](docs/roadmap.md)
 - [docs/legacy-studio.md](docs/legacy-studio.md)
 - [docs/prod-cutover.md](docs/prod-cutover.md)

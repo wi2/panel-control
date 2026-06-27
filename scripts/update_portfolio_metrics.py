@@ -24,7 +24,15 @@ def section(body: str, name: str) -> str:
 
 
 def count_opps(sec: str) -> int:
-    return len(re.findall(r"\bOPP-\d{8}-", sec))
+    """Count portfolio table rows whose first column is an OPP id (not link duplicates)."""
+    n = 0
+    for line in sec.splitlines():
+        if not line.strip().startswith("|") or "---" in line:
+            continue
+        cells = [c.strip() for c in line.strip("|").split("|")]
+        if cells and re.match(r"OPP-\d{8}-", cells[0]):
+            n += 1
+    return n
 
 
 def sum_maint(sec: str) -> float:

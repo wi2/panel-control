@@ -44,7 +44,7 @@ Sync [portfolio/micro-saas.md](portfolio/micro-saas.md). Refresh [metrics/portfo
 - [ ] `confidence_level` on Discovery, Validation, Fit and Decide, Final Decision
 - [ ] Portfolio row in micro-saas.md when `decided`
 - [ ] `validate_opportunities.py` passes
-- [ ] CP — QA pass or warn on decided push
+- [ ] CP — QA pass or warn on decided push — see [merge-policy.md](playbooks/merge-policy.md)
 
 ## Prompt Changes
 

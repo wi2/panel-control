@@ -65,3 +65,9 @@ Example: [opportunities/_example-opportunity.md](opportunities/_example-opportun
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 
 Production bootstrap: [docs/prod-cutover.md](docs/prod-cutover.md).
+
+**Roadmap:** [docs/roadmap.md](docs/roadmap.md) · **BUILD handoff:** [playbooks/build-handoff.md](playbooks/build-handoff.md)
+
+## Control plane vs product repos
+
+This repo **decides only** (`BUILD_MICRO` / `MONITOR_MICRO` / `KILL_MICRO`). Each `BUILD_MICRO` gets its own product repository for vision, docs, and code. ADR: [docs/decisions/2026-07-control-plane-vs-product-repo.md](docs/decisions/2026-07-control-plane-vs-product-repo.md).

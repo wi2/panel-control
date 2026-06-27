@@ -17,6 +17,10 @@ CP — Review  (write)      → prompts/automation-review-v3.md   → portfolio-
 
 **Eval v3-lite:** Intake → **1×** `cp:eval` (full-run) → `decided`. See [decisions/2026-06-simplification-v3-lite.md](../docs/decisions/2026-06-simplification-v3-lite.md).
 
+**Scope:** Decision only. No post-BUILD agents here — see [build-handoff.md](../playbooks/build-handoff.md) and [ADR control-plane vs product-repo](decisions/2026-07-control-plane-vs-product-repo.md).
+
+Merge policy: [merge-policy.md](../playbooks/merge-policy.md).
+
 ## Cursor UI constraints
 
 | Limitation | Workaround |
@@ -47,7 +51,7 @@ Before enabling automations:
 | Label | Color (suggested) | Automation | Purpose |
 |-------|-------------------|------------|---------|
 | `cp:intake` | `#0E8A16` | CP — Intake | Optional fallback if PR-open Intake did not run |
-| `cp:eval` | `#1D76DB` | CP — Eval | Staged evaluation — one stage per label until `decided` |
+| `cp:eval` | `#1D76DB` | CP — Eval | v3-lite full-run — validation + fit_and_decide → `decided` (add once after Intake) |
 | `cp:review` | `#D93F0B` | CP — Review | Portfolio review on demand |
 
 Label definitions live in [`.github/labels.yml`](../.github/labels.yml). Sync via GitHub Actions workflow **Sync GitHub labels** or create manually in the repo settings.

@@ -1,8 +1,9 @@
 ---
 version: 4
 stage: automation_intake
-status: active
+status: deprecated
 created: 2026-06-26
+superseded_by: automation-intake-v8
 supersedes: automation-intake-v3
 changelog: "Allow decided OPP catalogue on opp/pipeline; block only when active OPP exists"
 ---

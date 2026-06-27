@@ -7,7 +7,7 @@
 
 - name: "cp:eval"
   color: "1D76DB"
-  description: "Trigger CP — Eval (staged — one stage per label on opp/pipeline until decided)"
+  description: "Trigger CP — Eval (v3-lite full-run — validation + fit_and_decide on opp/pipeline)"
 
 - name: "cp:review"
   color: "D93F0B"
