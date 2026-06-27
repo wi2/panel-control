@@ -15,7 +15,7 @@ product repo   →  build (vision → docs → code)
 
 | Epic | Status | Goal |
 |------|--------|------|
-| 0 — Ops Go-Live | in progress | Cursor automations + smoke test |
+| 0 — Ops Go-Live | done | Cursor automations + smoke test (PR #17) |
 | 1 — Governance | in progress | ADR, roadmap, merge policy |
 | 2 — Reliability | pending | Branch protection, runbook |
 | 3 — Portfolio Ops | pending | First review, metrics hygiene |
@@ -31,9 +31,9 @@ product repo   →  build (vision → docs → code)
 
 | Story | Status | Deliverable |
 |-------|--------|-------------|
-| 0.1 Reconfigure Cursor automations (v8/v10/v6/v3) | pending | [prod-cutover.md](prod-cutover.md) checked |
-| 0.2 Smoke test end-to-end | pending | [smoke-test.md](smoke-test.md) |
-| 0.3 Fix doc drift | in progress | labels.yml, deprecated wrappers |
+| 0.1 Reconfigure Cursor automations (v8/v10/v6/v3) | done | [prod-cutover.md](prod-cutover.md) checked |
+| 0.2 Smoke test end-to-end | done | [smoke-test.md](smoke-test.md) — PR #17 |
+| 0.3 Fix doc drift | done | labels.yml, deprecated wrappers |
 
 ---
 

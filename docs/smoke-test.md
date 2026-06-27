@@ -77,7 +77,7 @@ python3 scripts/validate_opportunities.py
 
 | Run | Date | Operator | Intake | Eval | QA | CI | Notes |
 |-----|------|----------|--------|------|----|----|-------|
-| 1 | | | | | | | |
+| 1 | 2026-06-27 | studio | pass (PR #17) | pass full-run | pass/warn | pass | OPP-20260627-widget-tracker → KILL_MICRO; control plane validated |
 
 ## Related
 

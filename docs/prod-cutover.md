@@ -32,8 +32,8 @@ Bootstrap for **eval engine v3-lite**. ADR: [decisions/2026-06-simplification-v3
 
 - [x] v3-lite prompts and scripts merged
 - [x] Boundary ADR + build handoff + product template
-- [ ] Cursor automations updated per [automations.md](automations.md)
-- [ ] First OPP through full-run pipeline — [smoke-test.md](smoke-test.md)
+- [x] Cursor automations updated per [automations.md](automations.md)
+- [x] First OPP through full-run pipeline — [smoke-test.md](smoke-test.md) (PR #17, OPP-20260627-widget-tracker, KILL_MICRO)
 
 ## BUILD_MICRO handoff
 
