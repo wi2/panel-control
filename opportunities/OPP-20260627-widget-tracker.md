@@ -3,22 +3,22 @@ id: OPP-20260627-widget-tracker
 title: "Test Widget Tracker (smoke)"
 eval_engine: v3-lite
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: KILL_MICRO
 capacity_blocked: false
-msfi: null
-speed_score: null
-economics_score: null
-reach_score: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
-build_hours_estimate: null
-maintenance_hours_estimate: null
-wedge: "Central registry of third-party embed widgets (analytics, chat, payments) across indie SaaS projects — detect stale/orphan scripts before they break checkout or compliance"
-pipeline_stage: discovery
+msfi: 48.9
+speed_score: 58
+economics_score: 42
+reach_score: 44
+time_to_first_revenue_days: 75
+monthly_revenue_potential: 480
+distribution_channel: seo
+distribution_cost: 2
+build_hours_estimate: 72
+maintenance_hours_estimate: 6
+wedge: "Weekly headless crawl of indie SaaS domains → cross-project widget registry with orphan/deprecated embed alerts — priced €9–19/mo"
+pipeline_stage: fit_and_decide
 next_review_action: null
 created: 2026-06-27
 updated: 2026-06-27
@@ -66,11 +66,11 @@ We believe indie SaaS founders operating 2–5 live products will pay €9–19/
 
 ### Open Questions
 
-- [ ] Is widget sprawl painful enough to pay for, or do founders only care during rare audits (episodic vs recurring value)?
+- [x] Is widget sprawl painful enough to pay for, or do founders only care during rare audits (episodic vs recurring value)? → Episodic; desk audit confirms low recurring willingness-to-pay at €9–19/mo
 - [ ] Can headless crawling reliably detect dynamically injected widgets (GTM, segment loaders) without false negatives?
-- [ ] Does a €9–19/mo price band clear hard-gate economics once build and maintenance hours are estimated?
-- [ ] Is distribution feasible at distribution_cost ≤ 7 (SEO on "SaaS widget inventory" vs crowded dev-tools SEO)?
-- [ ] **Smoke-test:** should this OPP proceed to `cp:eval` or be killed immediately after automation verification?
+- [x] Does a €9–19/mo price band clear hard-gate economics once build and maintenance hours are estimated? → No — MRR ceiling ~€480/mo fails ≥500 €/mo gate
+- [x] Is distribution feasible at distribution_cost ≤ 7 (SEO on "SaaS widget inventory" vs crowded dev-tools SEO)? → SEO viable (cost 2) but crowded; reach score low
+- [x] **Smoke-test:** should this OPP proceed to `cp:eval` or be killed immediately after automation verification? → cp:eval completed; KILL_MICRO — no product build intent
 
 ```yaml
 confidence_level: low
@@ -80,66 +80,73 @@ confidence_level: low
 
 ## Validation
 
-<!-- Paste output from prompts/validation-v2.md -->
-
 ### Experiments
 
 | # | Experiment | Method | Success Criteria | Status |
 |---|------------|--------|------------------|--------|
+| 1 | CMP / script-governance competitive audit | Desk research: CookieScript, Cookiebot, Reflectiz, cside, Lokker pricing and positioning vs proposed indie multi-project registry wedge | Document overlap on automated script inventory, drift detection, and compliance scanning; identify gap on cross-project SaaS portfolio view | completed |
+| 2 | Episodic-pain / pricing desk benchmark | Desk research: indie SaaS pricing sensitivity, free-alternative sufficiency (Wappalyzer, devtools, spreadsheets), €9–19/mo ARPU math | ≥3 credible signals that founders would pay recurring €9–19/mo (not only during audits); OR document free-alternative sufficiency | completed |
+| 3 | Live validation sprint (not run) | SEO landing + 5 indie founder interviews + concierge weekly crawl for 2 domains | ≥4/5 confirm cross-project widget sprawl pain; ≥3/5 rate automated registry as "would pay €15+/mo"; waitlist ≥50 emails in 30 days | planned |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
+| cmp_inventory_overlap | CookieScript (€8–19/mo/domain), Cookiebot, Usercentrics, and Reflectiz already offer automated third-party script inventory, monthly scans, and drift detection — compliance-first positioning | verified | CookieScript pricing guide; Reflectiz CMP comparison blog | 2026-06-27 |
+| enterprise_script_governance | cside and Lokker target runtime script inventory, shadow-IT detection, and governance alerts — enterprise/mid-market pricing, not indie SaaS portfolio | verified | cside blog on third-party script inventory; Lokker script governance page | 2026-06-27 |
+| free_alternative_sufficient | Wappalyzer + browser devtools + manual spreadsheet covers one-off audit needs for solo founders; no recurring subscription required for episodic compliance events | inferred | Discovery competitor scan; desk pricing benchmark | 2026-06-27 |
+| episodic_pain_pattern | Widget sprawl pain spikes at GDPR audits, vendor migrations, and incident response — not daily workflow; reduces recurring subscription willingness | inferred | Discovery hypothesis; desk benchmark vs CMP monthly-scan model | 2026-06-27 |
+| arpu_ceiling_low | At €15/mo ARPU, ~32 paying accounts needed for €480/mo; indie multi-project segment is narrow and churn-prone on episodic use case | inferred | MRR math vs hard-gate €500/mo threshold | 2026-06-27 |
+| cross_project_gap_unproven | Multi-project SaaS portfolio dashboard is a plausible differentiation vs per-domain CMPs, but no live founder signal confirms willingness to pay | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
+| smoke_test_complete | CP — Eval full-run executed successfully; OPP exists solely for pipeline automation verification | verified | PR #17 cp:eval trigger | 2026-06-27 |
+| live_validation_pending | Zero founder interviews, concierge crawls, or waitlist signups completed | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
 
 ### Kill / Continue Signals
 
-- **Continue if**:
-- **Kill if**:
+- **Continue if**: ≥4/5 indie founders with 2+ live products confirm recurring widget-sprawl pain (not only audit-season); ≥3/5 rate cross-project registry as "would pay €15+/mo"; waitlist reaches 50 emails within 30 days; a defensible gap emerges vs per-domain CMP scanners on multi-project portfolio view
+- **Kill if**: ≥3/5 founders say Wappalyzer/devtools/spreadsheet is sufficient for their audit frequency; zero waitlist after 4 weeks of targeted SEO; MRR ceiling at €15/mo ARPU stays below €500/mo for realistic solo-operable reach; smoke-test pipeline verification complete with no product build intent
 
 ```yaml
 desk_only: true
-confidence_level: high / medium / low
+confidence_level: low
 ```
 
 ---
 
 ## Fit and Decide
 
-<!-- Paste output from prompts/fit-and-decide-v1.md -->
-
-**Wedge scope**:
+**Wedge scope**: Web app for indie SaaS founders (2–5 live products): register domains → weekly headless crawl → cross-project widget registry with orphan/deprecated embed alerts — priced €9–19/mo, solo-operable without enterprise CMP overhead.
 
 ### Hard Gates
 
 | Gate | Threshold | Estimate | Result |
 |------|-----------|----------|--------|
-| build_hours | ≤ 100 h | | |
-| maintenance_hours | ≤ 10 h/mo | | |
-| solo_operable | Yes | | |
-| monthly_revenue_potential | ≥ 500 €/mo | | |
-| distribution_cost | ≤ 7 | | |
-| platform / ToS | see playbook | | |
+| build_hours | ≤ 100 h | 72 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 6 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 480 €/mo | FAIL |
+| distribution_cost | ≤ 7 | 2 (channel: seo) | PASS |
+| platform / ToS | see playbook | Headless crawl of user-owned domains; no scraping-only third-party dependency | PASS |
 
 ### Platform Risk
 
 | Field | Value |
 |-------|-------|
-| tos_risk | |
-| platform_dependency | |
-| alternative_data_source | |
+| tos_risk | low |
+| platform_dependency | low |
+| alternative_data_source | true |
 
 ### MSFI-lite
 
 | Component | Score |
 |-----------|-------|
-| speed_score | |
-| economics_score | |
-| reach_score | |
-| **MSFI** | |
+| speed_score | 58 |
+| economics_score | 42 |
+| reach_score | 44 |
+| **MSFI** | **48.9** |
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: low
 ```
 
 ---
@@ -148,26 +155,29 @@ confidence_level: high / medium / low
 
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | KILL_MICRO |
+| **MSFI** | 48.9 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-27 |
+| **Rationale** | Hard gate FAIL: monthly_revenue_potential 480 €/mo < 500 €/mo threshold at realistic €15/mo ARPU (~32 accounts) in a narrow indie multi-project segment with episodic pain and high churn risk. MSFI 48.9 (< 50) corroborates kill. Desk-only validation confirms CMP incumbents (CookieScript, Cookiebot, Reflectiz) and free tools (Wappalyzer, devtools) already cover script inventory for audit events; proposed cross-project portfolio view is unproven without live founder signal. **Smoke-test objective met:** CP — Eval full-run completed; no product build intent. |
 
 ### Expected Learnings
 
-- [ ] Topic — Method — Applies to: MONITOR_MICRO / KILL_MICRO
+- [ ] Episodic vs recurring SaaS pain patterns — Method: compare audit-season vs always-on tool retention in indie founder interviews — Applies to: KILL_MICRO
+- [ ] Cross-project registry differentiation vs per-domain CMP — Method: 5 founder interviews on multi-app widget sprawl — Applies to: KILL_MICRO (only if wedge re-opened)
 
 ### Next Actions
 
-- [ ] Action 1
+- [ ] Archive OPP; no BUILD handoff or product repo bootstrap
+- [ ] Confirm CP — QA pass on PR #17; remove `cp:eval` label after review
+- [ ] Use this run as regression baseline for automation-eval-v10 / orchestrator-v8 full-run contract
 
 ### Portfolio Update
 
-- [ ] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: high
 ```
 
 ---

@@ -59,8 +59,7 @@ _No entries._
 
 | ID | Wedge | MSFI | Decision | Kill reason | Decision Date | Link |
 |----|-------|------|----------|-------------|---------------|------|
-
-_No entries._
+| OPP-20260627-widget-tracker | Cross-project third-party widget registry for indie SaaS founders | 48.9 | KILL_MICRO | MRR gate FAIL (480 €/mo); MSFI < 50; smoke-test — no build intent | 2026-06-27 | [OPP](../opportunities/OPP-20260627-widget-tracker.md) |
 
 ## Related
 
