@@ -3,23 +3,23 @@ id: OPP-20260627-renew-desk
 title: "RenewDesk — assistant de renouvellement de contrats et abonnements B2B"
 eval_engine: v3-lite
 portfolio_strategy: solo_micro_saas
-status: evaluating
+status: decided
 intake_complete: true
-decision: null
+decision: MONITOR_MICRO
 capacity_blocked: false
-msfi: null
-speed_score: null
-economics_score: null
-reach_score: null
-time_to_first_revenue_days: null
-monthly_revenue_potential: null
-distribution_channel: null
-distribution_cost: null
-build_hours_estimate: null
-maintenance_hours_estimate: null
-wedge: "Light contract/subscription cockpit for French SMEs (5–50 FTE): AI PDF extraction → notice-period alerts (30/60/90d) → shared renewal calendar for owner + admin/accountant — without full CLM"
-pipeline_stage: discovery
-next_review_action: null
+msfi: 51.4
+speed_score: 58
+economics_score: 52
+reach_score: 40
+time_to_first_revenue_days: 45
+monthly_revenue_potential: 900
+distribution_channel: seo
+distribution_cost: 2
+build_hours_estimate: 78
+maintenance_hours_estimate: 7
+wedge: "AI PDF extraction → notice-period alerts (30/60/90d) → shared renewal calendar for French SME owner + admin/accountant — without full CLM"
+pipeline_stage: fit_and_decide
+next_review_action: validate
 created: 2026-06-27
 updated: 2026-06-27
 automation_intake_at: 2026-06-27
@@ -94,66 +94,74 @@ confidence_level: medium
 
 ## Validation
 
-<!-- Paste output from prompts/validation-v2.md -->
-
 ### Experiments
 
 | # | Experiment | Method | Success Criteria | Status |
 |---|------------|--------|------------------|--------|
+| 1 | TACIT feature-parity audit | Desk research: TACIT pricing, features, FR positioning, testimonials, EU hosting/RGPD claims | Document overlap with proposed wedge (AI PDF extraction, tacit-renewal alerts, notice-period focus, PME pricing); identify any gap on accountant collaboration or multi-category FR compliance | completed |
+| 2 | Global renewal-tracker benchmark | Desk research: Termedora, Renewl, DocRenewal, KnowRenewals pricing and feature pages | €19–49/mo wedge is within global renewal-tracker band and ≤25% of one missed tacit-renewal cost cited by TACIT (€500+) | completed |
+| 3 | Live validation sprint (planned) | SEO landing + 5 SME owner/admin interviews + 2-week concierge alert delivery | ≥4/5 confirm missed-renewal pain; ≥3/5 rate shared calendar + accountant read-only portal as "would pay €29+/mo"; waitlist ≥30 emails in 30 days | planned |
 
 ### Results
 
 | Claim | Value | Evidence | Source | Date |
 |-------|-------|----------|--------|------|
+| tacit_direct_overlap | TACIT (FR PME) offers AI PDF extraction, tacit-renewal alerts, notice-period focus, unlimited users, EU hosting, Mistral AI — Starter €29/mo (25 contracts), Growth €49/mo (60 contracts) | verified | TACIT pricing page; Discovery competitor scan | 2026-06-27 |
+| tacit_live_testimonials | TACIT homepage cites missed-notice cost examples (€500–50 000) and PME testimonials — product is live and marketed in target segment | verified | TACIT homepage marketing | 2026-06-27 |
+| tacit_wedge_parity | RenewDesk intake wedge (AI PDF → 30/60/90d alerts → shared calendar) is near-identical to TACIT core positioning; differentiation path unproven without live SME signal | inferred | Feature-parity audit vs intake hypothesis | 2026-06-27 |
+| global_price_band | Focused renewal trackers priced $0–59/mo globally (DocRenewal $19.99; Renewl $59; Termedora $49) — validates €19–49/mo band but English-first incumbents | verified | DocRenewal, Renewl, Termedora pricing pages | 2026-06-27 |
+| price_compression | Proposed €29/mo sits at TACIT Starter tier (25 contracts, same price) — limited pricing headroom without clear differentiation | inferred | Pricing benchmark vs TACIT Starter €29/mo | 2026-06-27 |
+| accountant_portal_unproven | Shared calendar + read-only accountant portal is a plausible differentiation vs TACIT email-only alerts, but no live SME signal confirms willingness to pay for it | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
+| compliance_category_gap | Multi-category FR obligations (assurance, maintenance réglementaire, SaaS) may differentiate vs generic global trackers, but TACIT already targets FR PME tacit-renewal pain | inferred | Discovery competitor scan; TACIT FR positioning | 2026-06-27 |
+| category_demand_validated | 40% of companies struggle to track contract status; 25% miss renewals on time — pain is real and recurring | estimated | La Fabrique du Net — comparatif gestion contrats 2026 | 2026-01-01 |
+| live_validation_pending | Zero SME interviews, concierge alert deliveries, or waitlist signups completed | synthetic | No live experiments run in this eval cycle | 2026-06-27 |
 
 ### Kill / Continue Signals
 
-- **Continue if**:
-- **Kill if**:
+- **Continue if**: ≥4/5 SME owners/admins confirm missed tacit-renewal pain in last 12 months; ≥3/5 rate accountant read-only portal or multi-category FR compliance templates as "would pay €29+/mo"; waitlist reaches 30 emails within 30 days of SEO landing; a defensible wedge emerges (accountant collaboration, maintenance réglementaire categories) that TACIT does not cover
+- **Kill if**: ≥3/5 SMEs say TACIT free/Starter tier is sufficient; zero waitlist after 4 weeks of targeted SEO ("alerte reconduction tacite PME"); AI extraction accuracy <80% on notice-period clauses in concierge pilot; TACIT or enterprise CLM adds accountant portal before differentiation is proven
 
 ```yaml
 desk_only: true
-confidence_level: high / medium / low
+confidence_level: low
 ```
 
 ---
 
 ## Fit and Decide
 
-<!-- Paste output from prompts/fit-and-decide-v1.md -->
-
-**Wedge scope**:
+**Wedge scope**: Web app for French SMEs (5–50 FTE): upload contract PDFs → AI extraction of notice periods and tacit-renewal clauses → 30/60/90-day email alerts → shared renewal calendar with read-only accountant portal — priced €29–49/mo, solo-operable without full CLM.
 
 ### Hard Gates
 
 | Gate | Threshold | Estimate | Result |
 |------|-----------|----------|--------|
-| build_hours | ≤ 100 h | | |
-| maintenance_hours | ≤ 10 h/mo | | |
-| solo_operable | Yes | | |
-| monthly_revenue_potential | ≥ 500 €/mo | | |
-| distribution_cost | ≤ 7 | | |
-| platform / ToS | see playbook | | |
+| build_hours | ≤ 100 h | 78 h | PASS |
+| maintenance_hours | ≤ 10 h/mo | 7 h/mo | PASS |
+| solo_operable | Yes | Yes | PASS |
+| monthly_revenue_potential | ≥ 500 €/mo | 900 €/mo | PASS |
+| distribution_cost | ≤ 7 | 2 (channel: seo) | PASS |
+| platform / ToS | see playbook | User-upload PDFs; LLM API (Mistral/OpenAI); no scraping-only dependency | PASS |
 
 ### Platform Risk
 
 | Field | Value |
 |-------|-------|
-| tos_risk | |
-| platform_dependency | |
-| alternative_data_source | |
+| tos_risk | low |
+| platform_dependency | medium |
+| alternative_data_source | true |
 
 ### MSFI-lite
 
 | Component | Score |
 |-----------|-------|
-| speed_score | |
-| economics_score | |
-| reach_score | |
-| **MSFI** | |
+| speed_score | 58 |
+| economics_score | 52 |
+| reach_score | 40 |
+| **MSFI** | **51.4** |
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: medium
 ```
 
 ---
@@ -162,26 +170,32 @@ confidence_level: high / medium / low
 
 | Field | Value |
 |-------|-------|
-| **Primary Decision** | BUILD_MICRO / MONITOR_MICRO / KILL_MICRO |
-| **MSFI** | |
-| **capacity_blocked** | true / false |
-| **Date** | YYYY-MM-DD |
-| **Rationale** | |
+| **Primary Decision** | MONITOR_MICRO |
+| **MSFI** | 51.4 |
+| **capacity_blocked** | false |
+| **Date** | 2026-06-27 |
+| **Rationale** | All hard gates pass. MSFI 51.4 sits in monitor band (50–69). Desk-only validation confirms real SME pain (missed tacit renewals, fragmented tracking) and viable MVP scope (~78 h), but TACIT (FR) already delivers AI PDF extraction, tacit-renewal alerts, and PME pricing at €29–49/mo with live testimonials — near-identical wedge compresses pricing power and reach. BUILD_MICRO blocked until live validation proves a differentiated angle (accountant read-only portal, multi-category FR compliance templates, or shared calendar retention lift) that TACIT does not satisfy. |
 
 ### Expected Learnings
 
-- [ ] Topic — Method — Applies to: MONITOR_MICRO / KILL_MICRO
+- [ ] Accountant collaboration wedge — Method: 5 SME owner + expert-comptable interviews — Applies to: MONITOR_MICRO
+- [ ] Shared calendar vs email-only alerts retention lift — Method: 2-week concierge pilot with 3 SMEs — Applies to: MONITOR_MICRO
+- [ ] AI extraction accuracy on FR notice-period clauses — Method: concierge import of 15–25 contract PDFs — Applies to: MONITOR_MICRO
 
 ### Next Actions
 
-- [ ] Action 1
+- [ ] Ship SEO landing page targeting "alerte reconduction tacite PME" / "gestion échéances contrats PME" long-tail keywords
+- [ ] Run 5 problem interviews with French SME owners/admins (5–50 employees, 15–40 recurring contracts)
+- [ ] Deliver 2-week concierge alert + shared calendar to 3 SMEs using their contract PDFs; collect usefulness and willingness-to-pay ratings
+- [ ] Document TACIT feature-gap audit on accountant portal and maintenance réglementaire categories
+- [ ] Re-evaluate at 30-day review (2026-07-27); promote to BUILD_MICRO only if MSFI ≥ 70 and live validation passes with clear differentiation vs TACIT
 
 ### Portfolio Update
 
-- [ ] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
+- [x] Added to [portfolio/micro-saas.md](../portfolio/micro-saas.md)
 
 ```yaml
-confidence_level: high / medium / low
+confidence_level: medium
 ```
 
 ---
