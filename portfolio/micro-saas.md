@@ -54,6 +54,7 @@ _No entries._
 | OPP-20260626-coachbrief | CSV → weekly roster digest for solo endurance coaches | 63.5 | MONITOR_MICRO | 68 | 5 | €980/mo | studio-team | 2026-06-26 | 2026-07-26 | Desk-only; run interview + concierge sprint before BUILD | [OPP](../opportunities/OPP-20260626-coachbrief.md) |
 | OPP-20260626-offre-alert | Multi-source AO digest (3–10 alerts) for local trade SMEs | 52.7 | MONITOR_MICRO | 88 | 8 | €1 500/mo | studio-team | 2026-06-27 | 2026-07-27 | Desk-only; AlertOffres overlap — prove differentiation before BUILD | [OPP](../opportunities/OPP-20260626-offre-alert.md) |
 | OPP-20260627-renew-desk | AI PDF → notice-period alerts + shared renewal calendar for FR SMEs | 51.4 | MONITOR_MICRO | 78 | 7 | €900/mo | studio-team | 2026-06-27 | 2026-07-27 | Desk-only; TACIT overlap — prove accountant/compliance wedge before BUILD | [OPP](../opportunities/OPP-20260627-renew-desk.md) |
+| OPP-20260701-gen-reponses-avis-clients | Google + Facebook review queue → AI brand-tone replies + negative-review escalation for 1–5 location FR operators | 51.0 | MONITOR_MICRO | 85 | 8 | €720/mo | studio-team | 2026-07-01 | 2026-07-31 | Desk-only; Voicy/BonjourAvis overlap — prove Facebook+escalation wedge before BUILD | [OPP](../opportunities/OPP-20260701-gen-reponses-avis-clients.md) |
 
 ## Archived (KILL_MICRO)
 
